@@ -9,6 +9,7 @@ import {
 import { GmailRouter } from './modules/gmail/router';
 import { dbPlugin } from './modules/db/plugin';
 import { AuthRouter } from './modules/auth/router';
+import { EmailAgentRouter } from './agents/email_handler/router';
 
 const app = fastify({ logger: true });
 app.setValidatorCompiler(validatorCompiler);
@@ -22,6 +23,7 @@ app.register(cookie, {
 app.register(dbPlugin);
 app.register(AuthRouter, { prefix: '/auth' });
 app.register(GmailRouter);
+app.register(EmailAgentRouter);
 
 app.listen({ port: 3000 }, (err) => {
   if (err) {

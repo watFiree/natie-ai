@@ -83,17 +83,10 @@ export class GmailOAuthService {
     return this.repository.delete(email);
   }
 
-  async refreshTokensIfNeeded(email: string): Promise<Auth.OAuth2Client | null> {
+  async getEnsuredAccessToken(userId: string, email: string): Promise<string> {
     const account = await this.repository.findByEmail(email);
-    if (!account) return null;
+    if (!account || account.userId !== userId) throw new Error('Account not found');
 
-    this.oauth2.setCredentials({
-      access_token: account.accessToken,
-      refresh_token: account.refreshToken,
-      expiry_date: account.expiresAt?.getTime(),
-    });
-
-    // Check if token is expired or about to expire (5 minute buffer)
     const isExpired = account.expiresAt
       ? account.expiresAt.getTime() < Date.now() + 5 * 60 * 1000
       : true;
@@ -104,6 +97,6 @@ export class GmailOAuthService {
       this.oauth2.setCredentials(credentials);
     }
 
-    return this.oauth2;
+    return account.accessToken;
   }
 }

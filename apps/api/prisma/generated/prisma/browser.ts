@@ -27,3 +27,28 @@ export type User = Prisma.UserModel
  * 
  */
 export type GmailAccount = Prisma.GmailAccountModel
+/**
+ * Model EmailAgentSettings
+ * 
+ */
+export type EmailAgentSettings = Prisma.EmailAgentSettingsModel
+/**
+ * Model Agent
+ * 
+ */
+export type Agent = Prisma.AgentModel
+/**
+ * Model UserAgent
+ * 
+ */
+export type UserAgent = Prisma.UserAgentModel
+/**
+ * Model UserAgentConversation
+ * 
+ */
+export type UserAgentConversation = Prisma.UserAgentConversationModel
+/**
+ * Model Message
+ * 
+ */
+export type Message = Prisma.MessageModel

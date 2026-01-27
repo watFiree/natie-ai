@@ -1,10 +1,11 @@
-import { createAgent } from 'langchain/dist/agents/index.cjs';
+import { createAgent as createLangChainAgent } from 'langchain/dist/agents/index.cjs';
 import { model } from './model';
-import { tools } from './tools/gmail';
+import { StructuredTool } from 'langchain';
 
-export const agent = createAgent({
-  model: model,
-  description:
-    'Email Handler is a agent that handles emails. It can read emails, send emails, organize emails and delete emails.',
-  tools: tools,
-});
+export function createAgent(systemPrompt: string, tools: StructuredTool[]) {
+  return createLangChainAgent({
+    model: model,
+    systemPrompt: systemPrompt,
+    tools: tools,
+  });
+}

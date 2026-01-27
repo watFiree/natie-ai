@@ -52,7 +52,12 @@ export const AnyNull = runtime.AnyNull
 
 export const ModelName = {
   User: 'User',
-  GmailAccount: 'GmailAccount'
+  GmailAccount: 'GmailAccount',
+  EmailAgentSettings: 'EmailAgentSettings',
+  Agent: 'Agent',
+  UserAgent: 'UserAgent',
+  UserAgentConversation: 'UserAgentConversation',
+  Message: 'Message'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -96,12 +101,85 @@ export const GmailAccountScalarFieldEnum = {
 export type GmailAccountScalarFieldEnum = (typeof GmailAccountScalarFieldEnum)[keyof typeof GmailAccountScalarFieldEnum]
 
 
+export const EmailAgentSettingsScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  labels: 'labels'
+} as const
+
+export type EmailAgentSettingsScalarFieldEnum = (typeof EmailAgentSettingsScalarFieldEnum)[keyof typeof EmailAgentSettingsScalarFieldEnum]
+
+
+export const AgentScalarFieldEnum = {
+  id: 'id',
+  description: 'description'
+} as const
+
+export type AgentScalarFieldEnum = (typeof AgentScalarFieldEnum)[keyof typeof AgentScalarFieldEnum]
+
+
+export const UserAgentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  agentId: 'agentId',
+  displayName: 'displayName',
+  isEnabled: 'isEnabled',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserAgentScalarFieldEnum = (typeof UserAgentScalarFieldEnum)[keyof typeof UserAgentScalarFieldEnum]
+
+
+export const UserAgentConversationScalarFieldEnum = {
+  id: 'id',
+  userAgentId: 'userAgentId',
+  title: 'title',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserAgentConversationScalarFieldEnum = (typeof UserAgentConversationScalarFieldEnum)[keyof typeof UserAgentConversationScalarFieldEnum]
+
+
+export const MessageScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  type: 'type',
+  content: 'content',
+  name: 'name',
+  additionalKwargs: 'additionalKwargs',
+  responseMetadata: 'responseMetadata',
+  toolCallId: 'toolCallId',
+  toolName: 'toolName',
+  createdAt: 'createdAt',
+  seq: 'seq'
+} as const
+
+export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const JsonNullValueInput = {
+  JsonNull: JsonNull
+} as const
+
+export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -118,4 +196,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
