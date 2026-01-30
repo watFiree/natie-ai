@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { AgentRequestSchema } from './schema';
 import { authHandler } from '../../modules/auth/handler';
-import { createAgent } from './agent';
+import { createAgent } from '../common/createAgent';
 import { createSystemPrompt } from './system';
 import { GmailOAuthService } from '../../modules/gmail/service';
 import { createOAuth2Client } from '../../modules/gmail/clientFactory';
@@ -69,8 +69,12 @@ export const EmailAgentRouter = async (fastify: FastifyInstance) => {
       });
       const emailAccounts = await gmailAccountRepo.findByUserId(req.user.id);
 
-      const systemPrompt = createSystemPrompt(settings?.labels ?? [], emailAccounts.map((account) => account.email));
-      const tokenProvider = (email: string) => gmailService.getEnsuredAccessToken(req.user!.id, email);
+      const systemPrompt = createSystemPrompt(
+        settings?.labels ?? [],
+        emailAccounts.map((account) => account.email)
+      );
+      const tokenProvider = (email: string) =>
+        gmailService.getEnsuredAccessToken(req.user!.id, email);
       const tools = createTools(tokenProvider);
 
       const agent = createAgent(systemPrompt, tools);

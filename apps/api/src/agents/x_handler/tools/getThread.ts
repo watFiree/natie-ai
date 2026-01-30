@@ -1,0 +1,45 @@
+import { StructuredTool } from '@langchain/core/tools';
+import { z } from 'zod';
+import { XClientProvider } from './consts';
+
+export class XGetThreadTool extends StructuredTool {
+  name = 'x_get_thread';
+  description =
+    'Get all tweets in a thread/conversation starting from a specific tweet ID. Returns the full thread with all replies in the conversation.';
+
+  schema = z.object({
+    tweetId: z.string().describe('The tweet ID to start the thread from'),
+  });
+
+  constructor(private readonly clientProvider: XClientProvider) {
+    super();
+  }
+
+  async _call(input: { tweetId: string }) {
+    const client = await this.clientProvider();
+    const result = await client.getThread(input.tweetId);
+
+    if (!result.success) {
+      return `Error fetching thread: ${(result as { error: string }).error}`;
+    }
+
+    if (result.tweets.length === 0) {
+      return 'No tweets found in this thread.';
+    }
+
+    const tweets = result.tweets.map((tweet) => ({
+      id: tweet.id,
+      text: tweet.text,
+      author: tweet.author,
+      createdAt: tweet.createdAt,
+      replyCount: tweet.replyCount,
+      retweetCount: tweet.retweetCount,
+      likeCount: tweet.likeCount,
+      conversationId: tweet.conversationId,
+      inReplyToStatusId: tweet.inReplyToStatusId,
+      media: tweet.media?.map((m) => ({ type: m.type, url: m.url })),
+    }));
+
+    return JSON.stringify({ tweets }, null, 2);
+  }
+}
