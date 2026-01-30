@@ -10,6 +10,7 @@ export class XGetBookmarksTool extends StructuredTool {
   schema = z.object({
     count: z
       .number()
+      .positive()
       .optional()
       .describe('Number of bookmarks to fetch (default: 20)'),
   });

@@ -8,20 +8,22 @@ export class XGetRepliesTool extends StructuredTool {
 
   schema = z.object({
     tweetId: z.string().describe('The tweet ID to get replies for'),
-    count: z
+    pagesCount: z
       .number()
+      .positive()
       .optional()
-      .describe('Number of replies to fetch (default: 20)'),
+      .describe('Number of pages to fetch (default: 1)'),
   });
 
   constructor(private readonly clientProvider: XClientProvider) {
     super();
   }
 
-  async _call(input: { tweetId: string; count?: number }) {
+  async _call(input: { tweetId: string; pagesCount?: number }) {
     const client = await this.clientProvider();
-    const result = await client.getReplies(input.tweetId, {
+    const result = await client.getRepliesPaged(input.tweetId, {
       includeRaw: false,
+      maxPages: input.pagesCount ?? 1,
     });
 
     if (!result.success) {

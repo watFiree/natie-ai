@@ -15,6 +15,7 @@ export class XSearchTool extends StructuredTool {
       ),
     count: z
       .number()
+      .positive()
       .optional()
       .describe('Number of tweets to fetch (default: 20)'),
   });

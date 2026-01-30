@@ -10,6 +10,7 @@ export class XGetHomeTimelineTool extends StructuredTool {
   schema = z.object({
     count: z
       .number()
+      .positive()
       .optional()
       .describe('Number of tweets to fetch (default: 20)'),
     latest: z

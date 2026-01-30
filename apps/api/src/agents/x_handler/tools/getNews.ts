@@ -10,6 +10,7 @@ export class XGetNewsTool extends StructuredTool {
   schema = z.object({
     count: z
       .number()
+      .positive()
       .optional()
       .describe('Number of news items to fetch (default: 10)'),
     tabs: z

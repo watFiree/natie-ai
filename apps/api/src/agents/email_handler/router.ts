@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { AgentRequestSchema } from './schema';
 import { authHandler } from '../../modules/auth/handler';
-import { createAgent } from '../common/createAgent';
+import { createAgent } from './createAgent';
 import { createSystemPrompt } from './system';
 import { GmailOAuthService } from '../../modules/gmail/service';
 import { createOAuth2Client } from '../../modules/gmail/clientFactory';

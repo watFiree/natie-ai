@@ -1,5 +1,5 @@
 import { createAgent as createLangChainAgent, StructuredTool } from 'langchain';
-import { model } from '../email_handler/model';
+import { model } from './model';
 
 export function createAgent(systemPrompt: string, tools: StructuredTool[]) {
   return createLangChainAgent({
