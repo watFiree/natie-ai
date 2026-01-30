@@ -23,7 +23,7 @@ app.register(cookie, {
 app.register(dbPlugin);
 app.register(AuthRouter, { prefix: '/auth' });
 app.register(GmailRouter);
-app.register(EmailAgentRouter);
+app.register(EmailAgentRouter, { prefix: '/email' });
 
 app.listen({ port: 3000 }, (err) => {
   if (err) {
