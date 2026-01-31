@@ -2,6 +2,12 @@ import { StructuredTool } from '@langchain/core/tools';
 import { z } from 'zod';
 import { XClientProvider } from './consts';
 
+interface TweetResult {
+  success: boolean;
+  tweet?: unknown;
+  error?: string;
+}
+
 export class XGetTweetTool extends StructuredTool {
   name = 'x_get_tweet';
   description =
@@ -21,11 +27,25 @@ export class XGetTweetTool extends StructuredTool {
       const result = await client.getTweet(input.tweetId);
 
       if (!result.success) {
-        return `Error fetching tweet: ${result.error || 'Unknown error'}`;
+        return JSON.stringify(
+          {
+            success: false,
+            error: result.error,
+          } as TweetResult,
+          null,
+          2
+        );
       }
 
       if (!result.tweet) {
-        return 'Tweet not found.';
+        return JSON.stringify(
+          {
+            success: true,
+            tweet: null,
+          } as TweetResult,
+          null,
+          2
+        );
       }
 
       const tweet = {
@@ -55,9 +75,15 @@ export class XGetTweetTool extends StructuredTool {
           : undefined,
       };
 
-      return JSON.stringify(tweet, null, 2);
+      return JSON.stringify({
+        success: true,
+        tweet,
+      } as TweetResult);
     } catch (err) {
-      return `Error fetching tweet: ${err instanceof Error ? err.message : String(err)}`;
+      return JSON.stringify({
+        success: false,
+        error: err instanceof Error ? err.message : String(err),
+      } as TweetResult);
     }
   }
 }

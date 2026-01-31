@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
-import { AgentRequestSchema } from './schema';
+import { AgentRequestSchema, CreateEmailAgentConversationSchema } from './schema';
 import { authHandler } from '../../modules/auth/handler';
 import { createAgent } from './createAgent';
 import { createSystemPrompt } from './system';
@@ -25,17 +25,25 @@ export const EmailAgentRouter = async (fastify: FastifyInstance) => {
     '/create',
     {
       preHandler: authHandler,
+      schema: {
+        body: CreateEmailAgentConversationSchema,
+      },
     },
     async (req, reply) => {
       if (!req.user?.id) return reply.code(401).send({ error: 'Unauthorized' });
 
+      const { userAgentId } = req.body;
+
+      const userAgent = await fastify.prisma.userAgent.findUnique({
+        where: { id: userAgentId },
+      });
+      if (!userAgent) {
+        return reply.code(404).send({ error: 'User Agent not found' });
+      }
+
       const conversation = await fastify.prisma.userAgentConversation.create({
         data: {
-          userAgent: {
-            connect: {
-              userId_agentId: { userId: req.user.id, agentId: req.user.id },
-            },
-          },
+          userAgentId: userAgent.id,
         },
       });
 

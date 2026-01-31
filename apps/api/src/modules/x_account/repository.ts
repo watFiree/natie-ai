@@ -1,5 +1,6 @@
 import { PrismaClient } from '../../../prisma/generated/prisma/client';
 import { UpsertXAccountData } from './consts';
+import { encrypt, decrypt } from '../../common/encryption';
 
 export class XAccountRepository {
   constructor(private readonly prisma: PrismaClient) {}
@@ -10,21 +11,31 @@ export class XAccountRepository {
     return this.prisma.xAccount.upsert({
       where: { userId },
       update: {
-        authToken,
-        ct0,
+        authToken: encrypt(authToken),
+        ct0: encrypt(ct0),
       },
       create: {
         userId,
-        authToken,
-        ct0,
+        authToken: encrypt(authToken),
+        ct0: encrypt(ct0),
       },
     });
   }
 
   async findByUserId(userId: string) {
-    return this.prisma.xAccount.findUnique({
+    const account = await this.prisma.xAccount.findUnique({
       where: { userId },
     });
+
+    if (!account) {
+      return null;
+    }
+
+    return {
+      ...account,
+      authToken: decrypt(account.authToken),
+      ct0: decrypt(account.ct0),
+    };
   }
 
   async delete(userId: string) {

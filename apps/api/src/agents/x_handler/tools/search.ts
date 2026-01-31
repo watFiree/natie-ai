@@ -2,6 +2,13 @@ import { StructuredTool } from '@langchain/core/tools';
 import { z } from 'zod';
 import { XClientProvider } from './consts';
 
+interface SearchResult {
+  success: boolean;
+  tweets?: unknown[];
+  nextCursor?: string;
+  error?: string;
+}
+
 export class XSearchTool extends StructuredTool {
   name = 'x_search';
   description =
@@ -30,11 +37,19 @@ export class XSearchTool extends StructuredTool {
       const result = await client.search(input.query, input.count ?? 20);
 
       if (!result.success) {
-        return `Error searching tweets: ${(result as { error: string }).error}`;
+        const envelope: SearchResult = {
+          success: false,
+          error: result.error,
+        };
+        return JSON.stringify(envelope, null, 2);
       }
 
       if (result.tweets.length === 0) {
-        return 'No tweets found for the given query.';
+        const envelope: SearchResult = {
+          success: true,
+          tweets: [],
+        };
+        return JSON.stringify(envelope, null, 2);
       }
 
       const tweets = result.tweets.map((tweet) => ({
@@ -48,9 +63,18 @@ export class XSearchTool extends StructuredTool {
         media: tweet.media?.map((m) => ({ type: m.type, url: m.url })),
       }));
 
-      return JSON.stringify({ tweets, nextCursor: result.nextCursor }, null, 2);
+      const envelope: SearchResult = {
+        success: true,
+        tweets,
+        nextCursor: result.nextCursor,
+      };
+      return JSON.stringify(envelope, null, 2);
     } catch (err) {
-      return `Error searching tweets: ${err instanceof Error ? err.message : String(err)}`;
+      const envelope: SearchResult = {
+        success: false,
+        error: err instanceof Error ? err.message : String(err),
+      };
+      return JSON.stringify(envelope);
     }
   }
 }

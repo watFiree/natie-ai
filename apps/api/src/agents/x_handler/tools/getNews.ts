@@ -2,6 +2,12 @@ import { StructuredTool } from '@langchain/core/tools';
 import { z } from 'zod';
 import { XClientProvider } from './consts';
 
+interface NewsResult {
+  success: boolean;
+  news?: unknown[];
+  error?: string;
+}
+
 export class XGetNewsTool extends StructuredTool {
   name = 'x_get_news';
   description =
@@ -10,6 +16,7 @@ export class XGetNewsTool extends StructuredTool {
   schema = z.object({
     count: z
       .number()
+      .int()
       .positive()
       .optional()
       .describe('Number of news items to fetch (default: 10)'),
@@ -36,7 +43,7 @@ export class XGetNewsTool extends StructuredTool {
     tabs?: ('forYou' | 'trending' | 'news' | 'sports' | 'entertainment')[];
     aiOnly?: boolean;
     withTweets?: boolean;
-  }) {
+  }): Promise<string> {
     try {
       const client = await this.clientProvider();
       const result = await client.getNews(input.count ?? 10, {
@@ -47,11 +54,19 @@ export class XGetNewsTool extends StructuredTool {
       });
 
       if (!result.success) {
-        return `Error fetching news: ${(result as { error: string }).error}`;
+        const errorResult: NewsResult = {
+          success: false,
+          error: result.error,
+        };
+        return JSON.stringify(errorResult, null, 2);
       }
 
       if (result.items.length === 0) {
-        return 'No news items found.';
+        const emptyResult: NewsResult = {
+          success: true,
+          news: [],
+        };
+        return JSON.stringify(emptyResult, null, 2);
       }
 
       const news = result.items.map((item) => ({
@@ -69,9 +84,17 @@ export class XGetNewsTool extends StructuredTool {
         })),
       }));
 
-      return JSON.stringify(news, null, 2);
+      const successResult: NewsResult = {
+        success: true,
+        news,
+      };
+      return JSON.stringify(successResult, null, 2);
     } catch (err) {
-      return `Error fetching news: ${err instanceof Error ? err.message : String(err)}`;
+      const errorResult: NewsResult = {
+        success: false,
+        error: err instanceof Error ? err.message : String(err),
+      };
+      return JSON.stringify(errorResult, null, 2);
     }
   }
 }

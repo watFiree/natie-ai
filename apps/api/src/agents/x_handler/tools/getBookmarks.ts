@@ -2,6 +2,13 @@ import { StructuredTool } from '@langchain/core/tools';
 import { z } from 'zod';
 import { XClientProvider } from './consts';
 
+interface BookmarksResult {
+  success: boolean;
+  bookmarks?: unknown[];
+  nextCursor?: string;
+  error?: string;
+}
+
 export class XGetBookmarksTool extends StructuredTool {
   name = 'x_get_bookmarks';
   description =
@@ -10,6 +17,7 @@ export class XGetBookmarksTool extends StructuredTool {
   schema = z.object({
     count: z
       .number()
+      .int()
       .positive()
       .optional()
       .describe('Number of bookmarks to fetch (default: 20)'),
@@ -25,11 +33,19 @@ export class XGetBookmarksTool extends StructuredTool {
       const result = await client.getBookmarks(input.count ?? 20);
 
       if (!result.success) {
-        return `Error fetching bookmarks: ${(result as { error: string }).error}`;
+        const errorResult: BookmarksResult = {
+          success: false,
+          error: result.error,
+        };
+        return JSON.stringify(errorResult, null, 2);
       }
 
       if (result.tweets.length === 0) {
-        return 'No bookmarks found.';
+        const emptyResult: BookmarksResult = {
+          success: true,
+          bookmarks: [],
+        };
+        return JSON.stringify(emptyResult, null, 2);
       }
 
       const bookmarks = result.tweets.map((tweet) => ({
@@ -50,13 +66,18 @@ export class XGetBookmarksTool extends StructuredTool {
           : undefined,
       }));
 
-      return JSON.stringify(
-        { bookmarks, nextCursor: result.nextCursor },
-        null,
-        2
-      );
+      const successResult: BookmarksResult = {
+        success: true,
+        bookmarks,
+        nextCursor: result.nextCursor,
+      };
+      return JSON.stringify(successResult, null, 2);
     } catch (err) {
-      return `Error fetching bookmarks: ${err instanceof Error ? err.message : String(err)}`;
+      const errorResult: BookmarksResult = {
+        success: false,
+        error: err instanceof Error ? err.message : String(err),
+      };
+      return JSON.stringify(errorResult, null, 2);
     }
   }
 }

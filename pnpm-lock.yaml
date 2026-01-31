@@ -39,7 +39,7 @@ importers:
         specifier: ^0.8.0
         version: 0.8.0
       '@steipete/sweet-cookie':
-        specifier: 0.1.0
+        specifier: ^0.1.0
         version: 0.1.0
       '@workos-inc/node':
         specifier: ^8.0.0
@@ -7177,7 +7177,7 @@ snapshots:
       isstream: 0.1.2
       jsonwebtoken: 9.0.3
       mime-types: 2.1.35
-      retry-axios: 2.6.0(axios@1.13.2(debug@4.4.3))
+      retry-axios: 2.6.0(axios@1.13.2)
       tough-cookie: 4.1.4
     transitivePeerDependencies:
       - supports-color
@@ -8528,7 +8528,7 @@ snapshots:
 
   ret@0.5.0: {}
 
-  retry-axios@2.6.0(axios@1.13.2(debug@4.4.3)):
+  retry-axios@2.6.0(axios@1.13.2):
     dependencies:
       axios: 1.13.2(debug@4.4.3)
 

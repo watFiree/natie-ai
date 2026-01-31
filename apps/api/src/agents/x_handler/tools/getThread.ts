@@ -2,6 +2,12 @@ import { StructuredTool } from '@langchain/core/tools';
 import { z } from 'zod';
 import { XClientProvider } from './consts';
 
+interface ThreadResult {
+  success: boolean;
+  tweets?: unknown[];
+  error?: string;
+}
+
 export class XGetThreadTool extends StructuredTool {
   name = 'x_get_thread';
   description =
@@ -21,11 +27,25 @@ export class XGetThreadTool extends StructuredTool {
       const result = await client.getThread(input.tweetId);
 
       if (!result.success) {
-        return `Error fetching thread: ${(result as { error: string }).error}`;
+        return JSON.stringify(
+          {
+            success: false,
+            error: result.error,
+          } as ThreadResult,
+          null,
+          2
+        );
       }
 
       if (result.tweets.length === 0) {
-        return 'No tweets found in this thread.';
+        return JSON.stringify(
+          {
+            success: true,
+            tweets: [],
+          } as ThreadResult,
+          null,
+          2
+        );
       }
 
       const tweets = result.tweets.map((tweet) => ({
@@ -41,9 +61,19 @@ export class XGetThreadTool extends StructuredTool {
         media: tweet.media?.map((m) => ({ type: m.type, url: m.url })),
       }));
 
-      return JSON.stringify({ tweets }, null, 2);
+      return JSON.stringify(
+        {
+          success: true,
+          tweets,
+        } as ThreadResult,
+        null,
+        2
+      );
     } catch (err) {
-      return `Error fetching thread: ${err instanceof Error ? err.message : String(err)}`;
+      return JSON.stringify({
+        success: false,
+        error: err instanceof Error ? err.message : String(err),
+      } as ThreadResult);
     }
   }
 }

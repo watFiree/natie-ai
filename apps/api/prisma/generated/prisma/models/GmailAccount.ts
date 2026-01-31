@@ -28,8 +28,8 @@ export type GmailAccountMinAggregateOutputType = {
   id: string | null;
   userId: string | null;
   email: string | null;
-  accessToken: string | null;
-  refreshToken: string | null;
+  accessToken: runtime.Bytes | null;
+  refreshToken: runtime.Bytes | null;
   expiresAt: Date | null;
   createdAt: Date | null;
   updatedAt: Date | null;
@@ -39,8 +39,8 @@ export type GmailAccountMaxAggregateOutputType = {
   id: string | null;
   userId: string | null;
   email: string | null;
-  accessToken: string | null;
-  refreshToken: string | null;
+  accessToken: runtime.Bytes | null;
+  refreshToken: runtime.Bytes | null;
   expiresAt: Date | null;
   createdAt: Date | null;
   updatedAt: Date | null;
@@ -176,8 +176,8 @@ export type GmailAccountGroupByOutputType = {
   id: string;
   userId: string;
   email: string;
-  accessToken: string;
-  refreshToken: string | null;
+  accessToken: runtime.Bytes;
+  refreshToken: runtime.Bytes;
   expiresAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
@@ -206,8 +206,8 @@ export type GmailAccountWhereInput = {
   id?: Prisma.StringFilter<'GmailAccount'> | string;
   userId?: Prisma.StringFilter<'GmailAccount'> | string;
   email?: Prisma.StringFilter<'GmailAccount'> | string;
-  accessToken?: Prisma.StringFilter<'GmailAccount'> | string;
-  refreshToken?: Prisma.StringNullableFilter<'GmailAccount'> | string | null;
+  accessToken?: Prisma.BytesFilter<'GmailAccount'> | runtime.Bytes;
+  refreshToken?: Prisma.BytesFilter<'GmailAccount'> | runtime.Bytes;
   expiresAt?:
     | Prisma.DateTimeNullableFilter<'GmailAccount'>
     | Date
@@ -223,7 +223,7 @@ export type GmailAccountOrderByWithRelationInput = {
   userId?: Prisma.SortOrder;
   email?: Prisma.SortOrder;
   accessToken?: Prisma.SortOrder;
-  refreshToken?: Prisma.SortOrderInput | Prisma.SortOrder;
+  refreshToken?: Prisma.SortOrder;
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
@@ -238,8 +238,8 @@ export type GmailAccountWhereUniqueInput = Prisma.AtLeast<
     OR?: Prisma.GmailAccountWhereInput[];
     NOT?: Prisma.GmailAccountWhereInput | Prisma.GmailAccountWhereInput[];
     userId?: Prisma.StringFilter<'GmailAccount'> | string;
-    accessToken?: Prisma.StringFilter<'GmailAccount'> | string;
-    refreshToken?: Prisma.StringNullableFilter<'GmailAccount'> | string | null;
+    accessToken?: Prisma.BytesFilter<'GmailAccount'> | runtime.Bytes;
+    refreshToken?: Prisma.BytesFilter<'GmailAccount'> | runtime.Bytes;
     expiresAt?:
       | Prisma.DateTimeNullableFilter<'GmailAccount'>
       | Date
@@ -257,7 +257,7 @@ export type GmailAccountOrderByWithAggregationInput = {
   userId?: Prisma.SortOrder;
   email?: Prisma.SortOrder;
   accessToken?: Prisma.SortOrder;
-  refreshToken?: Prisma.SortOrderInput | Prisma.SortOrder;
+  refreshToken?: Prisma.SortOrder;
   expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
@@ -277,11 +277,12 @@ export type GmailAccountScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<'GmailAccount'> | string;
   userId?: Prisma.StringWithAggregatesFilter<'GmailAccount'> | string;
   email?: Prisma.StringWithAggregatesFilter<'GmailAccount'> | string;
-  accessToken?: Prisma.StringWithAggregatesFilter<'GmailAccount'> | string;
+  accessToken?:
+    | Prisma.BytesWithAggregatesFilter<'GmailAccount'>
+    | runtime.Bytes;
   refreshToken?:
-    | Prisma.StringNullableWithAggregatesFilter<'GmailAccount'>
-    | string
-    | null;
+    | Prisma.BytesWithAggregatesFilter<'GmailAccount'>
+    | runtime.Bytes;
   expiresAt?:
     | Prisma.DateTimeNullableWithAggregatesFilter<'GmailAccount'>
     | Date
@@ -300,8 +301,8 @@ export type GmailAccountScalarWhereWithAggregatesInput = {
 export type GmailAccountCreateInput = {
   id?: string;
   email: string;
-  accessToken: string;
-  refreshToken?: string | null;
+  accessToken: runtime.Bytes;
+  refreshToken: runtime.Bytes;
   expiresAt?: Date | string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -312,8 +313,8 @@ export type GmailAccountUncheckedCreateInput = {
   id?: string;
   userId: string;
   email: string;
-  accessToken: string;
-  refreshToken?: string | null;
+  accessToken: runtime.Bytes;
+  refreshToken: runtime.Bytes;
   expiresAt?: Date | string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -322,11 +323,8 @@ export type GmailAccountUncheckedCreateInput = {
 export type GmailAccountUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   email?: Prisma.StringFieldUpdateOperationsInput | string;
-  accessToken?: Prisma.StringFieldUpdateOperationsInput | string;
-  refreshToken?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
+  accessToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
+  refreshToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
   expiresAt?:
     | Prisma.NullableDateTimeFieldUpdateOperationsInput
     | Date
@@ -341,11 +339,8 @@ export type GmailAccountUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   userId?: Prisma.StringFieldUpdateOperationsInput | string;
   email?: Prisma.StringFieldUpdateOperationsInput | string;
-  accessToken?: Prisma.StringFieldUpdateOperationsInput | string;
-  refreshToken?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
+  accessToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
+  refreshToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
   expiresAt?:
     | Prisma.NullableDateTimeFieldUpdateOperationsInput
     | Date
@@ -359,8 +354,8 @@ export type GmailAccountCreateManyInput = {
   id?: string;
   userId: string;
   email: string;
-  accessToken: string;
-  refreshToken?: string | null;
+  accessToken: runtime.Bytes;
+  refreshToken: runtime.Bytes;
   expiresAt?: Date | string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -369,11 +364,8 @@ export type GmailAccountCreateManyInput = {
 export type GmailAccountUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   email?: Prisma.StringFieldUpdateOperationsInput | string;
-  accessToken?: Prisma.StringFieldUpdateOperationsInput | string;
-  refreshToken?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
+  accessToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
+  refreshToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
   expiresAt?:
     | Prisma.NullableDateTimeFieldUpdateOperationsInput
     | Date
@@ -387,11 +379,8 @@ export type GmailAccountUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   userId?: Prisma.StringFieldUpdateOperationsInput | string;
   email?: Prisma.StringFieldUpdateOperationsInput | string;
-  accessToken?: Prisma.StringFieldUpdateOperationsInput | string;
-  refreshToken?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
+  accessToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
+  refreshToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
   expiresAt?:
     | Prisma.NullableDateTimeFieldUpdateOperationsInput
     | Date
@@ -554,8 +543,8 @@ export type GmailAccountUncheckedUpdateManyWithoutUserNestedInput = {
     | Prisma.GmailAccountScalarWhereInput[];
 };
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null;
+export type BytesFieldUpdateOperationsInput = {
+  set?: runtime.Bytes;
 };
 
 export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -565,8 +554,8 @@ export type NullableDateTimeFieldUpdateOperationsInput = {
 export type GmailAccountCreateWithoutUserInput = {
   id?: string;
   email: string;
-  accessToken: string;
-  refreshToken?: string | null;
+  accessToken: runtime.Bytes;
+  refreshToken: runtime.Bytes;
   expiresAt?: Date | string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -575,8 +564,8 @@ export type GmailAccountCreateWithoutUserInput = {
 export type GmailAccountUncheckedCreateWithoutUserInput = {
   id?: string;
   email: string;
-  accessToken: string;
-  refreshToken?: string | null;
+  accessToken: runtime.Bytes;
+  refreshToken: runtime.Bytes;
   expiresAt?: Date | string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -636,8 +625,8 @@ export type GmailAccountScalarWhereInput = {
   id?: Prisma.StringFilter<'GmailAccount'> | string;
   userId?: Prisma.StringFilter<'GmailAccount'> | string;
   email?: Prisma.StringFilter<'GmailAccount'> | string;
-  accessToken?: Prisma.StringFilter<'GmailAccount'> | string;
-  refreshToken?: Prisma.StringNullableFilter<'GmailAccount'> | string | null;
+  accessToken?: Prisma.BytesFilter<'GmailAccount'> | runtime.Bytes;
+  refreshToken?: Prisma.BytesFilter<'GmailAccount'> | runtime.Bytes;
   expiresAt?:
     | Prisma.DateTimeNullableFilter<'GmailAccount'>
     | Date
@@ -650,8 +639,8 @@ export type GmailAccountScalarWhereInput = {
 export type GmailAccountCreateManyUserInput = {
   id?: string;
   email: string;
-  accessToken: string;
-  refreshToken?: string | null;
+  accessToken: runtime.Bytes;
+  refreshToken: runtime.Bytes;
   expiresAt?: Date | string | null;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -660,11 +649,8 @@ export type GmailAccountCreateManyUserInput = {
 export type GmailAccountUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   email?: Prisma.StringFieldUpdateOperationsInput | string;
-  accessToken?: Prisma.StringFieldUpdateOperationsInput | string;
-  refreshToken?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
+  accessToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
+  refreshToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
   expiresAt?:
     | Prisma.NullableDateTimeFieldUpdateOperationsInput
     | Date
@@ -677,11 +663,8 @@ export type GmailAccountUpdateWithoutUserInput = {
 export type GmailAccountUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   email?: Prisma.StringFieldUpdateOperationsInput | string;
-  accessToken?: Prisma.StringFieldUpdateOperationsInput | string;
-  refreshToken?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
+  accessToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
+  refreshToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
   expiresAt?:
     | Prisma.NullableDateTimeFieldUpdateOperationsInput
     | Date
@@ -694,11 +677,8 @@ export type GmailAccountUncheckedUpdateWithoutUserInput = {
 export type GmailAccountUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   email?: Prisma.StringFieldUpdateOperationsInput | string;
-  accessToken?: Prisma.StringFieldUpdateOperationsInput | string;
-  refreshToken?:
-    | Prisma.NullableStringFieldUpdateOperationsInput
-    | string
-    | null;
+  accessToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
+  refreshToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
   expiresAt?:
     | Prisma.NullableDateTimeFieldUpdateOperationsInput
     | Date
@@ -819,8 +799,8 @@ export type $GmailAccountPayload<
       id: string;
       userId: string;
       email: string;
-      accessToken: string;
-      refreshToken: string | null;
+      accessToken: runtime.Bytes;
+      refreshToken: runtime.Bytes;
       expiresAt: Date | null;
       createdAt: Date;
       updatedAt: Date;
@@ -1439,8 +1419,8 @@ export interface GmailAccountFieldRefs {
   readonly id: Prisma.FieldRef<'GmailAccount', 'String'>;
   readonly userId: Prisma.FieldRef<'GmailAccount', 'String'>;
   readonly email: Prisma.FieldRef<'GmailAccount', 'String'>;
-  readonly accessToken: Prisma.FieldRef<'GmailAccount', 'String'>;
-  readonly refreshToken: Prisma.FieldRef<'GmailAccount', 'String'>;
+  readonly accessToken: Prisma.FieldRef<'GmailAccount', 'Bytes'>;
+  readonly refreshToken: Prisma.FieldRef<'GmailAccount', 'Bytes'>;
   readonly expiresAt: Prisma.FieldRef<'GmailAccount', 'DateTime'>;
   readonly createdAt: Prisma.FieldRef<'GmailAccount', 'DateTime'>;
   readonly updatedAt: Prisma.FieldRef<'GmailAccount', 'DateTime'>;

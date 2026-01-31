@@ -2,6 +2,13 @@ import { StructuredTool } from '@langchain/core/tools';
 import { z } from 'zod';
 import { XClientProvider } from './consts';
 
+interface TimelineResult {
+  success: boolean;
+  tweets?: unknown[];
+  nextCursor?: string;
+  error?: string;
+}
+
 export class XGetHomeTimelineTool extends StructuredTool {
   name = 'x_get_home_timeline';
   description =
@@ -37,11 +44,16 @@ export class XGetHomeTimelineTool extends StructuredTool {
         : await client.getHomeTimeline(count);
 
       if (!result.success) {
-        return `Error fetching home timeline: ${(result as { error: string }).error}`;
+        const response: TimelineResult = {
+          success: false,
+          error: result.error,
+        };
+        return JSON.stringify(response, null, 2);
       }
 
       if (result.tweets.length === 0) {
-        return 'No tweets found in home timeline.';
+        const response: TimelineResult = { success: true, tweets: [] };
+        return JSON.stringify(response, null, 2);
       }
 
       const tweets = result.tweets.map((tweet) => ({
@@ -62,9 +74,18 @@ export class XGetHomeTimelineTool extends StructuredTool {
           : undefined,
       }));
 
-      return JSON.stringify({ tweets, nextCursor: result.nextCursor }, null, 2);
+      const response: TimelineResult = {
+        success: true,
+        tweets,
+        nextCursor: result.nextCursor,
+      };
+      return JSON.stringify(response, null, 2);
     } catch (err) {
-      return `Error fetching home timeline: ${err instanceof Error ? err.message : String(err)}`;
+      const response: TimelineResult = {
+        success: false,
+        error: err instanceof Error ? err.message : String(err),
+      };
+      return JSON.stringify(response, null, 2);
     }
   }
 }

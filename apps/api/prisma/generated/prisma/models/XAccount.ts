@@ -27,8 +27,8 @@ export type AggregateXAccount = {
 export type XAccountMinAggregateOutputType = {
   id: string | null;
   userId: string | null;
-  authToken: string | null;
-  ct0: string | null;
+  authToken: runtime.Bytes | null;
+  ct0: runtime.Bytes | null;
   createdAt: Date | null;
   updatedAt: Date | null;
 };
@@ -36,8 +36,8 @@ export type XAccountMinAggregateOutputType = {
 export type XAccountMaxAggregateOutputType = {
   id: string | null;
   userId: string | null;
-  authToken: string | null;
-  ct0: string | null;
+  authToken: runtime.Bytes | null;
+  ct0: runtime.Bytes | null;
   createdAt: Date | null;
   updatedAt: Date | null;
 };
@@ -162,8 +162,8 @@ export type XAccountGroupByArgs<
 export type XAccountGroupByOutputType = {
   id: string;
   userId: string;
-  authToken: string;
-  ct0: string;
+  authToken: runtime.Bytes;
+  ct0: runtime.Bytes;
   createdAt: Date;
   updatedAt: Date;
   _count: XAccountCountAggregateOutputType | null;
@@ -190,8 +190,8 @@ export type XAccountWhereInput = {
   NOT?: Prisma.XAccountWhereInput | Prisma.XAccountWhereInput[];
   id?: Prisma.StringFilter<'XAccount'> | string;
   userId?: Prisma.StringFilter<'XAccount'> | string;
-  authToken?: Prisma.StringFilter<'XAccount'> | string;
-  ct0?: Prisma.StringFilter<'XAccount'> | string;
+  authToken?: Prisma.BytesFilter<'XAccount'> | runtime.Bytes;
+  ct0?: Prisma.BytesFilter<'XAccount'> | runtime.Bytes;
   createdAt?: Prisma.DateTimeFilter<'XAccount'> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<'XAccount'> | Date | string;
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
@@ -214,8 +214,8 @@ export type XAccountWhereUniqueInput = Prisma.AtLeast<
     AND?: Prisma.XAccountWhereInput | Prisma.XAccountWhereInput[];
     OR?: Prisma.XAccountWhereInput[];
     NOT?: Prisma.XAccountWhereInput | Prisma.XAccountWhereInput[];
-    authToken?: Prisma.StringFilter<'XAccount'> | string;
-    ct0?: Prisma.StringFilter<'XAccount'> | string;
+    authToken?: Prisma.BytesFilter<'XAccount'> | runtime.Bytes;
+    ct0?: Prisma.BytesFilter<'XAccount'> | runtime.Bytes;
     createdAt?: Prisma.DateTimeFilter<'XAccount'> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<'XAccount'> | Date | string;
     user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>;
@@ -245,16 +245,16 @@ export type XAccountScalarWhereWithAggregatesInput = {
     | Prisma.XAccountScalarWhereWithAggregatesInput[];
   id?: Prisma.StringWithAggregatesFilter<'XAccount'> | string;
   userId?: Prisma.StringWithAggregatesFilter<'XAccount'> | string;
-  authToken?: Prisma.StringWithAggregatesFilter<'XAccount'> | string;
-  ct0?: Prisma.StringWithAggregatesFilter<'XAccount'> | string;
+  authToken?: Prisma.BytesWithAggregatesFilter<'XAccount'> | runtime.Bytes;
+  ct0?: Prisma.BytesWithAggregatesFilter<'XAccount'> | runtime.Bytes;
   createdAt?: Prisma.DateTimeWithAggregatesFilter<'XAccount'> | Date | string;
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<'XAccount'> | Date | string;
 };
 
 export type XAccountCreateInput = {
   id?: string;
-  authToken: string;
-  ct0: string;
+  authToken: runtime.Bytes;
+  ct0: runtime.Bytes;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   user: Prisma.UserCreateNestedOneWithoutXAccountInput;
@@ -263,16 +263,16 @@ export type XAccountCreateInput = {
 export type XAccountUncheckedCreateInput = {
   id?: string;
   userId: string;
-  authToken: string;
-  ct0: string;
+  authToken: runtime.Bytes;
+  ct0: runtime.Bytes;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
 
 export type XAccountUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
-  authToken?: Prisma.StringFieldUpdateOperationsInput | string;
-  ct0?: Prisma.StringFieldUpdateOperationsInput | string;
+  authToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
+  ct0?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   user?: Prisma.UserUpdateOneRequiredWithoutXAccountNestedInput;
@@ -281,8 +281,8 @@ export type XAccountUpdateInput = {
 export type XAccountUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   userId?: Prisma.StringFieldUpdateOperationsInput | string;
-  authToken?: Prisma.StringFieldUpdateOperationsInput | string;
-  ct0?: Prisma.StringFieldUpdateOperationsInput | string;
+  authToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
+  ct0?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -290,16 +290,16 @@ export type XAccountUncheckedUpdateInput = {
 export type XAccountCreateManyInput = {
   id?: string;
   userId: string;
-  authToken: string;
-  ct0: string;
+  authToken: runtime.Bytes;
+  ct0: runtime.Bytes;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
 
 export type XAccountUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
-  authToken?: Prisma.StringFieldUpdateOperationsInput | string;
-  ct0?: Prisma.StringFieldUpdateOperationsInput | string;
+  authToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
+  ct0?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -307,8 +307,8 @@ export type XAccountUpdateManyMutationInput = {
 export type XAccountUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   userId?: Prisma.StringFieldUpdateOperationsInput | string;
-  authToken?: Prisma.StringFieldUpdateOperationsInput | string;
-  ct0?: Prisma.StringFieldUpdateOperationsInput | string;
+  authToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
+  ct0?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -403,16 +403,16 @@ export type XAccountUncheckedUpdateOneWithoutUserNestedInput = {
 
 export type XAccountCreateWithoutUserInput = {
   id?: string;
-  authToken: string;
-  ct0: string;
+  authToken: runtime.Bytes;
+  ct0: runtime.Bytes;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
 
 export type XAccountUncheckedCreateWithoutUserInput = {
   id?: string;
-  authToken: string;
-  ct0: string;
+  authToken: runtime.Bytes;
+  ct0: runtime.Bytes;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
@@ -447,16 +447,16 @@ export type XAccountUpdateToOneWithWhereWithoutUserInput = {
 
 export type XAccountUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
-  authToken?: Prisma.StringFieldUpdateOperationsInput | string;
-  ct0?: Prisma.StringFieldUpdateOperationsInput | string;
+  authToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
+  ct0?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
 
 export type XAccountUncheckedUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
-  authToken?: Prisma.StringFieldUpdateOperationsInput | string;
-  ct0?: Prisma.StringFieldUpdateOperationsInput | string;
+  authToken?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
+  ct0?: Prisma.BytesFieldUpdateOperationsInput | runtime.Bytes;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -556,8 +556,8 @@ export type $XAccountPayload<
     {
       id: string;
       userId: string;
-      authToken: string;
-      ct0: string;
+      authToken: runtime.Bytes;
+      ct0: runtime.Bytes;
       createdAt: Date;
       updatedAt: Date;
     },
@@ -1168,8 +1168,8 @@ export interface Prisma__XAccountClient<
 export interface XAccountFieldRefs {
   readonly id: Prisma.FieldRef<'XAccount', 'String'>;
   readonly userId: Prisma.FieldRef<'XAccount', 'String'>;
-  readonly authToken: Prisma.FieldRef<'XAccount', 'String'>;
-  readonly ct0: Prisma.FieldRef<'XAccount', 'String'>;
+  readonly authToken: Prisma.FieldRef<'XAccount', 'Bytes'>;
+  readonly ct0: Prisma.FieldRef<'XAccount', 'Bytes'>;
   readonly createdAt: Prisma.FieldRef<'XAccount', 'DateTime'>;
   readonly updatedAt: Prisma.FieldRef<'XAccount', 'DateTime'>;
 }

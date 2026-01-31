@@ -2,6 +2,13 @@ import { StructuredTool } from '@langchain/core/tools';
 import { z } from 'zod';
 import { XClientProvider } from './consts';
 
+interface UserTweetsResult {
+  success: boolean;
+  tweets?: unknown[];
+  nextCursor?: string;
+  error?: string;
+}
+
 export class XGetUserTweetsTool extends StructuredTool {
   name = 'x_get_user_tweets';
   description = 'Get tweets from a specific X (Twitter) user by their user ID';
@@ -32,11 +39,19 @@ export class XGetUserTweetsTool extends StructuredTool {
       );
 
       if (!result.success) {
-        return `Error fetching user tweets: ${(result as { error: string }).error}`;
+        const envelope: UserTweetsResult = {
+          success: false,
+          error: result.error,
+        };
+        return JSON.stringify(envelope, null, 2);
       }
 
       if (result.tweets.length === 0) {
-        return 'No tweets found for this user.';
+        const envelope: UserTweetsResult = {
+          success: true,
+          tweets: [],
+        };
+        return JSON.stringify(envelope, null, 2);
       }
 
       const tweets = result.tweets.map((tweet) => ({
@@ -57,9 +72,18 @@ export class XGetUserTweetsTool extends StructuredTool {
           : undefined,
       }));
 
-      return JSON.stringify({ tweets, nextCursor: result.nextCursor }, null, 2);
+      const envelope: UserTweetsResult = {
+        success: true,
+        tweets,
+        nextCursor: result.nextCursor,
+      };
+      return JSON.stringify(envelope, null, 2);
     } catch (err) {
-      return `Error fetching user tweets: ${err instanceof Error ? err.message : String(err)}`;
+      const envelope: UserTweetsResult = {
+        success: false,
+        error: err instanceof Error ? err.message : String(err),
+      };
+      return JSON.stringify(envelope);
     }
   }
 }

@@ -61,6 +61,11 @@ export const XAccountRouter = async (fastify: FastifyInstance) => {
       return reply.code(401).send({ error: 'Unauthorized' });
     }
 
+    const account = await repository.findByUserId(req.user.id);
+    if (!account) {
+      return reply.code(404).send({ error: 'Not Found' });
+    }
+
     await repository.delete(req.user.id);
 
     return reply.send({ success: true });

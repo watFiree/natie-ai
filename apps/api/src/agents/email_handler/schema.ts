@@ -7,3 +7,9 @@ export const AgentRequestSchema = z.object({
 });
 
 export type AgentRequest = z.infer<typeof AgentRequestSchema>;
+
+export const CreateEmailAgentConversationSchema = z.object({
+  userAgentId: z.string(),
+});
+
+export type CreateEmailAgentConversation = z.infer<typeof CreateEmailAgentConversationSchema>;

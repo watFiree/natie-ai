@@ -2,6 +2,13 @@ import { StructuredTool } from '@langchain/core/tools';
 import { z } from 'zod';
 import { XClientProvider } from './consts';
 
+interface RepliesResult {
+  success: boolean;
+  replies?: unknown[];
+  nextCursor?: string;
+  error?: string;
+}
+
 export class XGetRepliesTool extends StructuredTool {
   name = 'x_get_replies';
   description = 'Get replies to a specific tweet from X (Twitter)';
@@ -9,20 +16,25 @@ export class XGetRepliesTool extends StructuredTool {
 
   schema = z.object({
     tweetId: z.string().describe('The tweet ID to get replies for'),
-     pagesCount: z
-       .number()
+    pagesCount: z
+      .number()
       .int()
-       .positive()
+      .positive()
       .max(this.MAX_PAGES)
-       .optional()
-      .describe(`Number of pages to fetch (default: 1, max: ${this.MAX_PAGES})`),
+      .optional()
+      .describe(
+        `Number of pages to fetch (default: 1, max: ${this.MAX_PAGES})`
+      ),
   });
 
   constructor(private readonly clientProvider: XClientProvider) {
     super();
   }
 
-  async _call(input: { tweetId: string; pagesCount?: number }) {
+  async _call(input: {
+    tweetId: string;
+    pagesCount?: number;
+  }): Promise<string> {
     try {
       const client = await this.clientProvider();
       const pagesCount = Math.min(input.pagesCount ?? 1, this.MAX_PAGES);
@@ -32,11 +44,19 @@ export class XGetRepliesTool extends StructuredTool {
       });
 
       if (!result.success) {
-        return `Error fetching replies: ${(result as { error: string }).error}`;
+        const errorResult: RepliesResult = {
+          success: false,
+          error: result.error,
+        };
+        return JSON.stringify(errorResult, null, 2);
       }
 
       if (result.tweets.length === 0) {
-        return 'No replies found for this tweet.';
+        const emptyResult: RepliesResult = {
+          success: true,
+          replies: [],
+        };
+        return JSON.stringify(emptyResult, null, 2);
       }
 
       const replies = result.tweets.map((tweet) => ({
@@ -50,13 +70,18 @@ export class XGetRepliesTool extends StructuredTool {
         media: tweet.media?.map((m) => ({ type: m.type, url: m.url })),
       }));
 
-      return JSON.stringify(
-        { replies, nextCursor: result.nextCursor },
-        null,
-        2
-      );
+      const successResult: RepliesResult = {
+        success: true,
+        replies,
+        nextCursor: result.nextCursor,
+      };
+      return JSON.stringify(successResult, null, 2);
     } catch (err) {
-      return `Error fetching replies: ${err instanceof Error ? err.message : String(err)}`;
+      const errorResult: RepliesResult = {
+        success: false,
+        error: err instanceof Error ? err.message : String(err),
+      };
+      return JSON.stringify(errorResult);
     }
   }
 }

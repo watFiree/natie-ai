@@ -1,20 +1,18 @@
 import { FastifyInstance } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
-import { AgentRequestSchema } from './schema';
+import { AgentRequestSchema, CreateXAgentSchema } from './schema';
 import { authHandler } from '../../modules/auth/handler';
 import { createAgent } from './createAgent';
 import { createSystemPrompt } from './system';
 import { createTools } from './tools';
 import { AgentRunner } from '../common/runner';
 import { createClient } from './clientFactory';
-import { XCredentials } from './const';
 import { XAccountRepository } from '../../modules/x_account/repository';
+import { MessageRepository } from '../../modules/messages/repository';
 
 export const XAgentRouter = async (fastify: FastifyInstance) => {
   const typedFastify = fastify.withTypeProvider<ZodTypeProvider>();
-  const messageRepo = new (
-    await import('../../modules/messages/repository')
-  ).MessageRepository(fastify.prisma);
+  const messageRepo = new MessageRepository(fastify.prisma);
   const xAccountRepo = new XAccountRepository(fastify.prisma);
   const agentRunner = new AgentRunner({ prisma: fastify.prisma, messageRepo });
 
@@ -22,17 +20,25 @@ export const XAgentRouter = async (fastify: FastifyInstance) => {
     '/create',
     {
       preHandler: authHandler,
+      schema: {
+        body: CreateXAgentSchema,
+      },
     },
     async (req, reply) => {
       if (!req.user?.id) return reply.code(401).send({ error: 'Unauthorized' });
 
+      const { userAgentId } = req.body;
+
+      const userAgent = await fastify.prisma.userAgent.findUnique({
+        where: { id: userAgentId },
+      });
+      if (!userAgent) {
+        return reply.code(404).send({ error: 'User Agent not found' });
+      }
+
       const conversation = await fastify.prisma.userAgentConversation.create({
         data: {
-          userAgent: {
-            connect: {
-              userId_agentId: { userId: req.user.id, agentId: req.user.id },
-            },
-          },
+          userAgentId: userAgentId,
         },
       });
 
@@ -63,11 +69,15 @@ export const XAgentRouter = async (fastify: FastifyInstance) => {
 
       const xAccount = await xAccountRepo.findByUserId(req.user.id);
 
+      if (!xAccount) {
+        return reply.code(400).send({ error: 'X account not linked' });
+      }
+
       const systemPrompt = createSystemPrompt();
       const clientProvider = () =>
         createClient({
-          authToken: xAccount?.authToken ?? '',
-          ct0: xAccount?.ct0 ?? '',
+          authToken: xAccount.authToken,
+          ct0: xAccount.ct0,
         });
       const tools = createTools(clientProvider);
 
