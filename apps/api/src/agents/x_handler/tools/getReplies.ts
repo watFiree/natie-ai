@@ -5,14 +5,17 @@ import { XClientProvider } from './consts';
 export class XGetRepliesTool extends StructuredTool {
   name = 'x_get_replies';
   description = 'Get replies to a specific tweet from X (Twitter)';
+  MAX_PAGES = 6;
 
   schema = z.object({
     tweetId: z.string().describe('The tweet ID to get replies for'),
-    pagesCount: z
-      .number()
-      .positive()
-      .optional()
-      .describe('Number of pages to fetch (default: 1)'),
+     pagesCount: z
+       .number()
+      .int()
+       .positive()
+      .max(this.MAX_PAGES)
+       .optional()
+      .describe(`Number of pages to fetch (default: 1, max: ${this.MAX_PAGES})`),
   });
 
   constructor(private readonly clientProvider: XClientProvider) {
@@ -22,9 +25,10 @@ export class XGetRepliesTool extends StructuredTool {
   async _call(input: { tweetId: string; pagesCount?: number }) {
     try {
       const client = await this.clientProvider();
+      const pagesCount = Math.min(input.pagesCount ?? 1, this.MAX_PAGES);
       const result = await client.getRepliesPaged(input.tweetId, {
         includeRaw: false,
-        maxPages: input.pagesCount ?? 1,
+        maxPages: pagesCount,
       });
 
       if (!result.success) {

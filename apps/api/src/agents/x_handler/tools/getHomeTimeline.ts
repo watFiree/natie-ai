@@ -6,11 +6,14 @@ export class XGetHomeTimelineTool extends StructuredTool {
   name = 'x_get_home_timeline';
   description =
     'Get the home timeline (For You feed) from X (Twitter) for the authenticated user';
+  DEFAULT_COUNT = 20;
+  MAX_COUNT = 200;
 
   schema = z.object({
     count: z
-      .number()
+      .int()
       .positive()
+      .max(this.MAX_COUNT)
       .optional()
       .describe('Number of tweets to fetch (default: 20)'),
     latest: z
@@ -28,10 +31,10 @@ export class XGetHomeTimelineTool extends StructuredTool {
   async _call(input: { count?: number; latest?: boolean }) {
     try {
       const client = await this.clientProvider();
-
+      const count = Math.min(input.count ?? this.DEFAULT_COUNT, this.MAX_COUNT);
       const result = input.latest
-        ? await client.getHomeLatestTimeline(input.count ?? 20)
-        : await client.getHomeTimeline(input.count ?? 20);
+        ? await client.getHomeLatestTimeline(count)
+        : await client.getHomeTimeline(count);
 
       if (!result.success) {
         return `Error fetching home timeline: ${(result as { error: string }).error}`;
