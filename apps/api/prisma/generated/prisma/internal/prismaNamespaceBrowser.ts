@@ -16,8 +16,8 @@
 
 import * as runtime from '@prisma/client/runtime/index-browser';
 
-export type * from '../models.js';
-export type * from './prismaNamespace.js';
+export type * from '../models';
+export type * from './prismaNamespace';
 
 export const Decimal = runtime.Decimal;
 
@@ -56,6 +56,7 @@ export const AnyNull = runtime.AnyNull;
 export const ModelName = {
   User: 'User',
   GmailAccount: 'GmailAccount',
+  XAccount: 'XAccount',
   EmailAgentSettings: 'EmailAgentSettings',
   Agent: 'Agent',
   UserAgent: 'UserAgent',
@@ -103,6 +104,18 @@ export const GmailAccountScalarFieldEnum = {
 
 export type GmailAccountScalarFieldEnum =
   (typeof GmailAccountScalarFieldEnum)[keyof typeof GmailAccountScalarFieldEnum];
+
+export const XAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  authToken: 'authToken',
+  ct0: 'ct0',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type XAccountScalarFieldEnum =
+  (typeof XAccountScalarFieldEnum)[keyof typeof XAccountScalarFieldEnum];
 
 export const EmailAgentSettingsScalarFieldEnum = {
   id: 'id',

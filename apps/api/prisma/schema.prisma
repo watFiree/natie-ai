@@ -14,6 +14,7 @@ model User {
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   gmailAccounts GmailAccount[]
+  xAccount      XAccount?
   emailSettings EmailAgentSettings[]
   userAgents    UserAgent[]
 }
@@ -22,15 +23,24 @@ model GmailAccount {
   id            String   @id @default(cuid())
   userId        String
   email         String   @unique
-  accessToken   String
-  refreshToken  String?
+  accessToken   Bytes
+  refreshToken  Bytes
   expiresAt     DateTime?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
 
-  @@index([userId])
+model XAccount {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  authToken  Bytes
+  ct0        Bytes
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model EmailAgentSettings {

@@ -1,4 +1,7 @@
-export function createSystemPrompt(labels: string[], emailAccounts: string[]): string {
+export function createSystemPrompt(
+  labels: string[],
+  emailAccounts: string[]
+): string {
   const labelsSection =
     labels.length > 0
       ? `Available email labels for organizing:\n${labels.map((l) => `- ${l}`).join('\n')}`
@@ -33,4 +36,3 @@ export function createSystemPrompt(labels: string[], emailAccounts: string[]): s
   The user may ask you about their recent emails. Use the recent messages context provided to answer their questions and help them take action on specific emails.
   `;
 }
-

@@ -8,8 +8,8 @@
  * 🟢 You can import this file directly.
  */
 import type * as runtime from '@prisma/client/runtime/client';
-import type * as $Enums from '../enums.js';
-import type * as Prisma from '../internal/prismaNamespace.js';
+import type * as $Enums from '../enums';
+import type * as Prisma from '../internal/prismaNamespace';
 
 /**
  * Model User
@@ -186,6 +186,10 @@ export type UserWhereInput = {
   createdAt?: Prisma.DateTimeFilter<'User'> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<'User'> | Date | string;
   gmailAccounts?: Prisma.GmailAccountListRelationFilter;
+  xAccount?: Prisma.XOR<
+    Prisma.XAccountNullableScalarRelationFilter,
+    Prisma.XAccountWhereInput
+  > | null;
   emailSettings?: Prisma.EmailAgentSettingsListRelationFilter;
   userAgents?: Prisma.UserAgentListRelationFilter;
 };
@@ -197,6 +201,7 @@ export type UserOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   gmailAccounts?: Prisma.GmailAccountOrderByRelationAggregateInput;
+  xAccount?: Prisma.XAccountOrderByWithRelationInput;
   emailSettings?: Prisma.EmailAgentSettingsOrderByRelationAggregateInput;
   userAgents?: Prisma.UserAgentOrderByRelationAggregateInput;
 };
@@ -212,6 +217,10 @@ export type UserWhereUniqueInput = Prisma.AtLeast<
     createdAt?: Prisma.DateTimeFilter<'User'> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<'User'> | Date | string;
     gmailAccounts?: Prisma.GmailAccountListRelationFilter;
+    xAccount?: Prisma.XOR<
+      Prisma.XAccountNullableScalarRelationFilter,
+      Prisma.XAccountWhereInput
+    > | null;
     emailSettings?: Prisma.EmailAgentSettingsListRelationFilter;
     userAgents?: Prisma.UserAgentListRelationFilter;
   },
@@ -251,6 +260,7 @@ export type UserCreateInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   gmailAccounts?: Prisma.GmailAccountCreateNestedManyWithoutUserInput;
+  xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput;
   emailSettings?: Prisma.EmailAgentSettingsCreateNestedManyWithoutUserInput;
   userAgents?: Prisma.UserAgentCreateNestedManyWithoutUserInput;
 };
@@ -262,6 +272,7 @@ export type UserUncheckedCreateInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   gmailAccounts?: Prisma.GmailAccountUncheckedCreateNestedManyWithoutUserInput;
+  xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput;
   emailSettings?: Prisma.EmailAgentSettingsUncheckedCreateNestedManyWithoutUserInput;
   userAgents?: Prisma.UserAgentUncheckedCreateNestedManyWithoutUserInput;
 };
@@ -273,6 +284,7 @@ export type UserUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   gmailAccounts?: Prisma.GmailAccountUpdateManyWithoutUserNestedInput;
+  xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput;
   emailSettings?: Prisma.EmailAgentSettingsUpdateManyWithoutUserNestedInput;
   userAgents?: Prisma.UserAgentUpdateManyWithoutUserNestedInput;
 };
@@ -284,6 +296,7 @@ export type UserUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput;
+  xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput;
   emailSettings?: Prisma.EmailAgentSettingsUncheckedUpdateManyWithoutUserNestedInput;
   userAgents?: Prisma.UserAgentUncheckedUpdateManyWithoutUserNestedInput;
 };
@@ -375,6 +388,32 @@ export type UserUpdateOneRequiredWithoutGmailAccountsNestedInput = {
   >;
 };
 
+export type UserCreateNestedOneWithoutXAccountInput = {
+  create?: Prisma.XOR<
+    Prisma.UserCreateWithoutXAccountInput,
+    Prisma.UserUncheckedCreateWithoutXAccountInput
+  >;
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutXAccountInput;
+  connect?: Prisma.UserWhereUniqueInput;
+};
+
+export type UserUpdateOneRequiredWithoutXAccountNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.UserCreateWithoutXAccountInput,
+    Prisma.UserUncheckedCreateWithoutXAccountInput
+  >;
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutXAccountInput;
+  upsert?: Prisma.UserUpsertWithoutXAccountInput;
+  connect?: Prisma.UserWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.UserUpdateToOneWithWhereWithoutXAccountInput,
+      Prisma.UserUpdateWithoutXAccountInput
+    >,
+    Prisma.UserUncheckedUpdateWithoutXAccountInput
+  >;
+};
+
 export type UserCreateNestedOneWithoutEmailSettingsInput = {
   create?: Prisma.XOR<
     Prisma.UserCreateWithoutEmailSettingsInput,
@@ -433,6 +472,7 @@ export type UserCreateWithoutGmailAccountsInput = {
   email: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput;
   emailSettings?: Prisma.EmailAgentSettingsCreateNestedManyWithoutUserInput;
   userAgents?: Prisma.UserAgentCreateNestedManyWithoutUserInput;
 };
@@ -443,6 +483,7 @@ export type UserUncheckedCreateWithoutGmailAccountsInput = {
   email: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput;
   emailSettings?: Prisma.EmailAgentSettingsUncheckedCreateNestedManyWithoutUserInput;
   userAgents?: Prisma.UserAgentUncheckedCreateNestedManyWithoutUserInput;
 };
@@ -481,6 +522,7 @@ export type UserUpdateWithoutGmailAccountsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput;
   emailSettings?: Prisma.EmailAgentSettingsUpdateManyWithoutUserNestedInput;
   userAgents?: Prisma.UserAgentUpdateManyWithoutUserNestedInput;
 };
@@ -491,6 +533,79 @@ export type UserUncheckedUpdateWithoutGmailAccountsInput = {
   email?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput;
+  emailSettings?: Prisma.EmailAgentSettingsUncheckedUpdateManyWithoutUserNestedInput;
+  userAgents?: Prisma.UserAgentUncheckedUpdateManyWithoutUserNestedInput;
+};
+
+export type UserCreateWithoutXAccountInput = {
+  id?: string;
+  workosUserId: string;
+  email: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  gmailAccounts?: Prisma.GmailAccountCreateNestedManyWithoutUserInput;
+  emailSettings?: Prisma.EmailAgentSettingsCreateNestedManyWithoutUserInput;
+  userAgents?: Prisma.UserAgentCreateNestedManyWithoutUserInput;
+};
+
+export type UserUncheckedCreateWithoutXAccountInput = {
+  id?: string;
+  workosUserId: string;
+  email: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  gmailAccounts?: Prisma.GmailAccountUncheckedCreateNestedManyWithoutUserInput;
+  emailSettings?: Prisma.EmailAgentSettingsUncheckedCreateNestedManyWithoutUserInput;
+  userAgents?: Prisma.UserAgentUncheckedCreateNestedManyWithoutUserInput;
+};
+
+export type UserCreateOrConnectWithoutXAccountInput = {
+  where: Prisma.UserWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.UserCreateWithoutXAccountInput,
+    Prisma.UserUncheckedCreateWithoutXAccountInput
+  >;
+};
+
+export type UserUpsertWithoutXAccountInput = {
+  update: Prisma.XOR<
+    Prisma.UserUpdateWithoutXAccountInput,
+    Prisma.UserUncheckedUpdateWithoutXAccountInput
+  >;
+  create: Prisma.XOR<
+    Prisma.UserCreateWithoutXAccountInput,
+    Prisma.UserUncheckedCreateWithoutXAccountInput
+  >;
+  where?: Prisma.UserWhereInput;
+};
+
+export type UserUpdateToOneWithWhereWithoutXAccountInput = {
+  where?: Prisma.UserWhereInput;
+  data: Prisma.XOR<
+    Prisma.UserUpdateWithoutXAccountInput,
+    Prisma.UserUncheckedUpdateWithoutXAccountInput
+  >;
+};
+
+export type UserUpdateWithoutXAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  workosUserId?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  gmailAccounts?: Prisma.GmailAccountUpdateManyWithoutUserNestedInput;
+  emailSettings?: Prisma.EmailAgentSettingsUpdateManyWithoutUserNestedInput;
+  userAgents?: Prisma.UserAgentUpdateManyWithoutUserNestedInput;
+};
+
+export type UserUncheckedUpdateWithoutXAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  workosUserId?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput;
   emailSettings?: Prisma.EmailAgentSettingsUncheckedUpdateManyWithoutUserNestedInput;
   userAgents?: Prisma.UserAgentUncheckedUpdateManyWithoutUserNestedInput;
 };
@@ -502,6 +617,7 @@ export type UserCreateWithoutEmailSettingsInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   gmailAccounts?: Prisma.GmailAccountCreateNestedManyWithoutUserInput;
+  xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput;
   userAgents?: Prisma.UserAgentCreateNestedManyWithoutUserInput;
 };
 
@@ -512,6 +628,7 @@ export type UserUncheckedCreateWithoutEmailSettingsInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   gmailAccounts?: Prisma.GmailAccountUncheckedCreateNestedManyWithoutUserInput;
+  xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput;
   userAgents?: Prisma.UserAgentUncheckedCreateNestedManyWithoutUserInput;
 };
 
@@ -550,6 +667,7 @@ export type UserUpdateWithoutEmailSettingsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   gmailAccounts?: Prisma.GmailAccountUpdateManyWithoutUserNestedInput;
+  xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput;
   userAgents?: Prisma.UserAgentUpdateManyWithoutUserNestedInput;
 };
 
@@ -560,6 +678,7 @@ export type UserUncheckedUpdateWithoutEmailSettingsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput;
+  xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput;
   userAgents?: Prisma.UserAgentUncheckedUpdateManyWithoutUserNestedInput;
 };
 
@@ -570,6 +689,7 @@ export type UserCreateWithoutUserAgentsInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   gmailAccounts?: Prisma.GmailAccountCreateNestedManyWithoutUserInput;
+  xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput;
   emailSettings?: Prisma.EmailAgentSettingsCreateNestedManyWithoutUserInput;
 };
 
@@ -580,6 +700,7 @@ export type UserUncheckedCreateWithoutUserAgentsInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   gmailAccounts?: Prisma.GmailAccountUncheckedCreateNestedManyWithoutUserInput;
+  xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput;
   emailSettings?: Prisma.EmailAgentSettingsUncheckedCreateNestedManyWithoutUserInput;
 };
 
@@ -618,6 +739,7 @@ export type UserUpdateWithoutUserAgentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   gmailAccounts?: Prisma.GmailAccountUpdateManyWithoutUserNestedInput;
+  xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput;
   emailSettings?: Prisma.EmailAgentSettingsUpdateManyWithoutUserNestedInput;
 };
 
@@ -628,6 +750,7 @@ export type UserUncheckedUpdateWithoutUserAgentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput;
+  xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput;
   emailSettings?: Prisma.EmailAgentSettingsUncheckedUpdateManyWithoutUserNestedInput;
 };
 
@@ -704,6 +827,7 @@ export type UserSelect<
     createdAt?: boolean;
     updatedAt?: boolean;
     gmailAccounts?: boolean | Prisma.User$gmailAccountsArgs<ExtArgs>;
+    xAccount?: boolean | Prisma.User$xAccountArgs<ExtArgs>;
     emailSettings?: boolean | Prisma.User$emailSettingsArgs<ExtArgs>;
     userAgents?: boolean | Prisma.User$userAgentsArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
@@ -759,6 +883,7 @@ export type UserInclude<
     runtime.Types.Extensions.DefaultArgs,
 > = {
   gmailAccounts?: boolean | Prisma.User$gmailAccountsArgs<ExtArgs>;
+  xAccount?: boolean | Prisma.User$xAccountArgs<ExtArgs>;
   emailSettings?: boolean | Prisma.User$emailSettingsArgs<ExtArgs>;
   userAgents?: boolean | Prisma.User$userAgentsArgs<ExtArgs>;
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
@@ -779,6 +904,7 @@ export type $UserPayload<
   name: 'User';
   objects: {
     gmailAccounts: Prisma.$GmailAccountPayload<ExtArgs>[];
+    xAccount: Prisma.$XAccountPayload<ExtArgs> | null;
     emailSettings: Prisma.$EmailAgentSettingsPayload<ExtArgs>[];
     userAgents: Prisma.$UserAgentPayload<ExtArgs>[];
   };
@@ -1350,6 +1476,19 @@ export interface Prisma__UserClient<
       >
     | Null
   >;
+  xAccount<T extends Prisma.User$xAccountArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.User$xAccountArgs<ExtArgs>>
+  ): Prisma.Prisma__XAccountClient<
+    runtime.Types.Result.GetResult<
+      Prisma.$XAccountPayload<ExtArgs>,
+      T,
+      'findUniqueOrThrow',
+      GlobalOmitOptions
+    > | null,
+    null,
+    ExtArgs,
+    GlobalOmitOptions
+  >;
   emailSettings<T extends Prisma.User$emailSettingsArgs<ExtArgs> = {}>(
     args?: Prisma.Subset<T, Prisma.User$emailSettingsArgs<ExtArgs>>
   ): Prisma.PrismaPromise<
@@ -1888,6 +2027,28 @@ export type User$gmailAccountsArgs<
   distinct?:
     | Prisma.GmailAccountScalarFieldEnum
     | Prisma.GmailAccountScalarFieldEnum[];
+};
+
+/**
+ * User.xAccount
+ */
+export type User$xAccountArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the XAccount
+   */
+  select?: Prisma.XAccountSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the XAccount
+   */
+  omit?: Prisma.XAccountOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.XAccountInclude<ExtArgs> | null;
+  where?: Prisma.XAccountWhereInput;
 };
 
 /**

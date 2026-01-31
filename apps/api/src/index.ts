@@ -7,9 +7,11 @@ import {
   validatorCompiler,
 } from 'fastify-type-provider-zod';
 import { GmailRouter } from './modules/gmail/router';
+import { XAccountRouter } from './modules/x_account/router';
 import { dbPlugin } from './modules/db/plugin';
 import { AuthRouter } from './modules/auth/router';
 import { EmailAgentRouter } from './agents/email_handler/router';
+import { XAgentRouter } from './agents/x_handler/router';
 
 const app = fastify({ logger: true });
 app.setValidatorCompiler(validatorCompiler);
@@ -23,7 +25,9 @@ app.register(cookie, {
 app.register(dbPlugin);
 app.register(AuthRouter, { prefix: '/auth' });
 app.register(GmailRouter);
+app.register(XAccountRouter, { prefix: '/x-account' });
 app.register(EmailAgentRouter, { prefix: '/email' });
+app.register(XAgentRouter, { prefix: '/x' });
 
 app.listen({ port: 3000 }, (err) => {
   if (err) {
