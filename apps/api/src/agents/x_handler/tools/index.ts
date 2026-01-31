@@ -21,13 +21,3 @@ export const createTools = (
   new XGetRepliesTool(clientProvider),
   new XGetBookmarksTool(clientProvider),
 ];
-
-export { XClientProvider } from './consts';
-export { XSearchTool } from './search';
-export { XGetNewsTool } from './getNews';
-export { XGetHomeTimelineTool } from './getHomeTimeline';
-export { XGetUserTweetsTool } from './getUserTweets';
-export { XGetTweetTool } from './getTweet';
-export { XGetThreadTool } from './getThread';
-export { XGetRepliesTool } from './getReplies';
-export { XGetBookmarksTool } from './getBookmarks';

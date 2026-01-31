@@ -20,31 +20,39 @@ export class XGetRepliesTool extends StructuredTool {
   }
 
   async _call(input: { tweetId: string; pagesCount?: number }) {
-    const client = await this.clientProvider();
-    const result = await client.getRepliesPaged(input.tweetId, {
-      includeRaw: false,
-      maxPages: input.pagesCount ?? 1,
-    });
+    try {
+      const client = await this.clientProvider();
+      const result = await client.getRepliesPaged(input.tweetId, {
+        includeRaw: false,
+        maxPages: input.pagesCount ?? 1,
+      });
 
-    if (!result.success) {
-      return `Error fetching replies: ${(result as { error: string }).error}`;
+      if (!result.success) {
+        return `Error fetching replies: ${(result as { error: string }).error}`;
+      }
+
+      if (result.tweets.length === 0) {
+        return 'No replies found for this tweet.';
+      }
+
+      const replies = result.tweets.map((tweet) => ({
+        id: tweet.id,
+        text: tweet.text,
+        author: tweet.author,
+        createdAt: tweet.createdAt,
+        replyCount: tweet.replyCount,
+        retweetCount: tweet.retweetCount,
+        likeCount: tweet.likeCount,
+        media: tweet.media?.map((m) => ({ type: m.type, url: m.url })),
+      }));
+
+      return JSON.stringify(
+        { replies, nextCursor: result.nextCursor },
+        null,
+        2
+      );
+    } catch (err) {
+      return `Error fetching replies: ${err instanceof Error ? err.message : String(err)}`;
     }
-
-    if (result.tweets.length === 0) {
-      return 'No replies found for this tweet.';
-    }
-
-    const replies = result.tweets.map((tweet) => ({
-      id: tweet.id,
-      text: tweet.text,
-      author: tweet.author,
-      createdAt: tweet.createdAt,
-      replyCount: tweet.replyCount,
-      retweetCount: tweet.retweetCount,
-      likeCount: tweet.likeCount,
-      media: tweet.media?.map((m) => ({ type: m.type, url: m.url })),
-    }));
-
-    return JSON.stringify({ replies, nextCursor: result.nextCursor }, null, 2);
   }
 }

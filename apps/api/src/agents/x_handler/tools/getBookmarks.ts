@@ -20,39 +20,43 @@ export class XGetBookmarksTool extends StructuredTool {
   }
 
   async _call(input: { count?: number }) {
-    const client = await this.clientProvider();
-    const result = await client.getBookmarks(input.count ?? 20);
+    try {
+      const client = await this.clientProvider();
+      const result = await client.getBookmarks(input.count ?? 20);
 
-    if (!result.success) {
-      return `Error fetching bookmarks: ${(result as { error: string }).error}`;
+      if (!result.success) {
+        return `Error fetching bookmarks: ${(result as { error: string }).error}`;
+      }
+
+      if (result.tweets.length === 0) {
+        return 'No bookmarks found.';
+      }
+
+      const bookmarks = result.tweets.map((tweet) => ({
+        id: tweet.id,
+        text: tweet.text,
+        author: tweet.author,
+        createdAt: tweet.createdAt,
+        replyCount: tweet.replyCount,
+        retweetCount: tweet.retweetCount,
+        likeCount: tweet.likeCount,
+        media: tweet.media?.map((m) => ({ type: m.type, url: m.url })),
+        quotedTweet: tweet.quotedTweet
+          ? {
+              id: tweet.quotedTweet.id,
+              text: tweet.quotedTweet.text,
+              author: tweet.quotedTweet.author,
+            }
+          : undefined,
+      }));
+
+      return JSON.stringify(
+        { bookmarks, nextCursor: result.nextCursor },
+        null,
+        2
+      );
+    } catch (err) {
+      return `Error fetching bookmarks: ${err instanceof Error ? err.message : String(err)}`;
     }
-
-    if (result.tweets.length === 0) {
-      return 'No bookmarks found.';
-    }
-
-    const bookmarks = result.tweets.map((tweet) => ({
-      id: tweet.id,
-      text: tweet.text,
-      author: tweet.author,
-      createdAt: tweet.createdAt,
-      replyCount: tweet.replyCount,
-      retweetCount: tweet.retweetCount,
-      likeCount: tweet.likeCount,
-      media: tweet.media?.map((m) => ({ type: m.type, url: m.url })),
-      quotedTweet: tweet.quotedTweet
-        ? {
-            id: tweet.quotedTweet.id,
-            text: tweet.quotedTweet.text,
-            author: tweet.quotedTweet.author,
-          }
-        : undefined,
-    }));
-
-    return JSON.stringify(
-      { bookmarks, nextCursor: result.nextCursor },
-      null,
-      2
-    );
   }
 }

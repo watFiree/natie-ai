@@ -24,35 +24,42 @@ export class XGetUserTweetsTool extends StructuredTool {
   }
 
   async _call(input: { userId: string; count?: number }) {
-    const client = await this.clientProvider();
-    const result = await client.getUserTweets(input.userId, input.count ?? 20);
+    try {
+      const client = await this.clientProvider();
+      const result = await client.getUserTweets(
+        input.userId,
+        input.count ?? 20
+      );
 
-    if (!result.success) {
-      return `Error fetching user tweets: ${(result as { error: string }).error}`;
+      if (!result.success) {
+        return `Error fetching user tweets: ${(result as { error: string }).error}`;
+      }
+
+      if (result.tweets.length === 0) {
+        return 'No tweets found for this user.';
+      }
+
+      const tweets = result.tweets.map((tweet) => ({
+        id: tweet.id,
+        text: tweet.text,
+        author: tweet.author,
+        createdAt: tweet.createdAt,
+        replyCount: tweet.replyCount,
+        retweetCount: tweet.retweetCount,
+        likeCount: tweet.likeCount,
+        media: tweet.media?.map((m) => ({ type: m.type, url: m.url })),
+        quotedTweet: tweet.quotedTweet
+          ? {
+              id: tweet.quotedTweet.id,
+              text: tweet.quotedTweet.text,
+              author: tweet.quotedTweet.author,
+            }
+          : undefined,
+      }));
+
+      return JSON.stringify({ tweets, nextCursor: result.nextCursor }, null, 2);
+    } catch (err) {
+      return `Error fetching user tweets: ${err instanceof Error ? err.message : String(err)}`;
     }
-
-    if (result.tweets.length === 0) {
-      return 'No tweets found for this user.';
-    }
-
-    const tweets = result.tweets.map((tweet) => ({
-      id: tweet.id,
-      text: tweet.text,
-      author: tweet.author,
-      createdAt: tweet.createdAt,
-      replyCount: tweet.replyCount,
-      retweetCount: tweet.retweetCount,
-      likeCount: tweet.likeCount,
-      media: tweet.media?.map((m) => ({ type: m.type, url: m.url })),
-      quotedTweet: tweet.quotedTweet
-        ? {
-            id: tweet.quotedTweet.id,
-            text: tweet.quotedTweet.text,
-            author: tweet.quotedTweet.author,
-          }
-        : undefined,
-    }));
-
-    return JSON.stringify({ tweets, nextCursor: result.nextCursor }, null, 2);
   }
 }

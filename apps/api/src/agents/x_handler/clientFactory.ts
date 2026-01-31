@@ -1,9 +1,10 @@
 import { TwitterClient, resolveCredentials } from '@steipete/bird';
+import { XCredentials } from './const';
 
-export async function createClient() {
+export async function createClient(credentials: XCredentials) {
   const { cookies, warnings } = await resolveCredentials({
-    authToken: process.env.AUTH_TOKEN,
-    ct0: process.env.CT0,
+    authToken: credentials?.authToken,
+    ct0: credentials?.ct0,
   });
 
   if (warnings?.length) console.warn('[bird warnings]', warnings);

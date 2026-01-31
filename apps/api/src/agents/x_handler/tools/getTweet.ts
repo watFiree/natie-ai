@@ -16,44 +16,48 @@ export class XGetTweetTool extends StructuredTool {
   }
 
   async _call(input: { tweetId: string }) {
-    const client = await this.clientProvider();
-    const result = await client.getTweet(input.tweetId);
+    try {
+      const client = await this.clientProvider();
+      const result = await client.getTweet(input.tweetId);
 
-    if (!result.success) {
-      return `Error fetching tweet: ${result.error || 'Unknown error'}`;
+      if (!result.success) {
+        return `Error fetching tweet: ${result.error || 'Unknown error'}`;
+      }
+
+      if (!result.tweet) {
+        return 'Tweet not found.';
+      }
+
+      const tweet = {
+        id: result.tweet.id,
+        text: result.tweet.text,
+        author: result.tweet.author,
+        authorId: result.tweet.authorId,
+        createdAt: result.tweet.createdAt,
+        replyCount: result.tweet.replyCount,
+        retweetCount: result.tweet.retweetCount,
+        likeCount: result.tweet.likeCount,
+        conversationId: result.tweet.conversationId,
+        inReplyToStatusId: result.tweet.inReplyToStatusId,
+        media: result.tweet.media?.map((m) => ({
+          type: m.type,
+          url: m.url,
+          previewUrl: m.previewUrl,
+          videoUrl: m.videoUrl,
+        })),
+        article: result.tweet.article,
+        quotedTweet: result.tweet.quotedTweet
+          ? {
+              id: result.tweet.quotedTweet.id,
+              text: result.tweet.quotedTweet.text,
+              author: result.tweet.quotedTweet.author,
+            }
+          : undefined,
+      };
+
+      return JSON.stringify(tweet, null, 2);
+    } catch (err) {
+      return `Error fetching tweet: ${err instanceof Error ? err.message : String(err)}`;
     }
-
-    if (!result.tweet) {
-      return 'Tweet not found.';
-    }
-
-    const tweet = {
-      id: result.tweet.id,
-      text: result.tweet.text,
-      author: result.tweet.author,
-      authorId: result.tweet.authorId,
-      createdAt: result.tweet.createdAt,
-      replyCount: result.tweet.replyCount,
-      retweetCount: result.tweet.retweetCount,
-      likeCount: result.tweet.likeCount,
-      conversationId: result.tweet.conversationId,
-      inReplyToStatusId: result.tweet.inReplyToStatusId,
-      media: result.tweet.media?.map((m) => ({
-        type: m.type,
-        url: m.url,
-        previewUrl: m.previewUrl,
-        videoUrl: m.videoUrl,
-      })),
-      article: result.tweet.article,
-      quotedTweet: result.tweet.quotedTweet
-        ? {
-            id: result.tweet.quotedTweet.id,
-            text: result.tweet.quotedTweet.text,
-            author: result.tweet.quotedTweet.author,
-          }
-        : undefined,
-    };
-
-    return JSON.stringify(tweet, null, 2);
   }
 }

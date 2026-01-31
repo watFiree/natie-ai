@@ -15,10 +15,10 @@
  */
 
 import * as runtime from '@prisma/client/runtime/client';
-import type * as Prisma from '../models.js';
-import { type PrismaClient } from './class.js';
+import type * as Prisma from '../models';
+import { type PrismaClient } from './class';
 
-export type * from '../models.js';
+export type * from '../models';
 
 export type DMMF = typeof runtime.DMMF;
 
@@ -414,6 +414,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never
 export const ModelName = {
   User: 'User',
   GmailAccount: 'GmailAccount',
+  XAccount: 'XAccount',
   EmailAgentSettings: 'EmailAgentSettings',
   Agent: 'Agent',
   UserAgent: 'UserAgent',
@@ -443,6 +444,7 @@ export type TypeMap<
     modelProps:
       | 'user'
       | 'gmailAccount'
+      | 'xAccount'
       | 'emailAgentSettings'
       | 'agent'
       | 'userAgent'
@@ -599,6 +601,82 @@ export type TypeMap<
           args: Prisma.GmailAccountCountArgs<ExtArgs>;
           result:
             | runtime.Types.Utils.Optional<Prisma.GmailAccountCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
+    XAccount: {
+      payload: Prisma.$XAccountPayload<ExtArgs>;
+      fields: Prisma.XAccountFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.XAccountFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$XAccountPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.XAccountFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$XAccountPayload>;
+        };
+        findFirst: {
+          args: Prisma.XAccountFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$XAccountPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.XAccountFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$XAccountPayload>;
+        };
+        findMany: {
+          args: Prisma.XAccountFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$XAccountPayload>[];
+        };
+        create: {
+          args: Prisma.XAccountCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$XAccountPayload>;
+        };
+        createMany: {
+          args: Prisma.XAccountCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.XAccountCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$XAccountPayload>[];
+        };
+        delete: {
+          args: Prisma.XAccountDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$XAccountPayload>;
+        };
+        update: {
+          args: Prisma.XAccountUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$XAccountPayload>;
+        };
+        deleteMany: {
+          args: Prisma.XAccountDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.XAccountUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.XAccountUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$XAccountPayload>[];
+        };
+        upsert: {
+          args: Prisma.XAccountUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$XAccountPayload>;
+        };
+        aggregate: {
+          args: Prisma.XAccountAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateXAccount>;
+        };
+        groupBy: {
+          args: Prisma.XAccountGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.XAccountGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.XAccountCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.XAccountCountAggregateOutputType>
             | number;
         };
       };
@@ -1047,6 +1125,18 @@ export const GmailAccountScalarFieldEnum = {
 export type GmailAccountScalarFieldEnum =
   (typeof GmailAccountScalarFieldEnum)[keyof typeof GmailAccountScalarFieldEnum];
 
+export const XAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  authToken: 'authToken',
+  ct0: 'ct0',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type XAccountScalarFieldEnum =
+  (typeof XAccountScalarFieldEnum)[keyof typeof XAccountScalarFieldEnum];
+
 export const EmailAgentSettingsScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -1359,6 +1449,7 @@ export type PrismaClientOptions = (
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit;
   gmailAccount?: Prisma.GmailAccountOmit;
+  xAccount?: Prisma.XAccountOmit;
   emailAgentSettings?: Prisma.EmailAgentSettingsOmit;
   agent?: Prisma.AgentOmit;
   userAgent?: Prisma.UserAgentOmit;

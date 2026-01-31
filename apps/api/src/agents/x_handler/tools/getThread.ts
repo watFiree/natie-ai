@@ -16,30 +16,34 @@ export class XGetThreadTool extends StructuredTool {
   }
 
   async _call(input: { tweetId: string }) {
-    const client = await this.clientProvider();
-    const result = await client.getThread(input.tweetId);
+    try {
+      const client = await this.clientProvider();
+      const result = await client.getThread(input.tweetId);
 
-    if (!result.success) {
-      return `Error fetching thread: ${(result as { error: string }).error}`;
+      if (!result.success) {
+        return `Error fetching thread: ${(result as { error: string }).error}`;
+      }
+
+      if (result.tweets.length === 0) {
+        return 'No tweets found in this thread.';
+      }
+
+      const tweets = result.tweets.map((tweet) => ({
+        id: tweet.id,
+        text: tweet.text,
+        author: tweet.author,
+        createdAt: tweet.createdAt,
+        replyCount: tweet.replyCount,
+        retweetCount: tweet.retweetCount,
+        likeCount: tweet.likeCount,
+        conversationId: tweet.conversationId,
+        inReplyToStatusId: tweet.inReplyToStatusId,
+        media: tweet.media?.map((m) => ({ type: m.type, url: m.url })),
+      }));
+
+      return JSON.stringify({ tweets }, null, 2);
+    } catch (err) {
+      return `Error fetching thread: ${err instanceof Error ? err.message : String(err)}`;
     }
-
-    if (result.tweets.length === 0) {
-      return 'No tweets found in this thread.';
-    }
-
-    const tweets = result.tweets.map((tweet) => ({
-      id: tweet.id,
-      text: tweet.text,
-      author: tweet.author,
-      createdAt: tweet.createdAt,
-      replyCount: tweet.replyCount,
-      retweetCount: tweet.retweetCount,
-      likeCount: tweet.likeCount,
-      conversationId: tweet.conversationId,
-      inReplyToStatusId: tweet.inReplyToStatusId,
-      media: tweet.media?.map((m) => ({ type: m.type, url: m.url })),
-    }));
-
-    return JSON.stringify({ tweets }, null, 2);
   }
 }

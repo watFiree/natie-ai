@@ -25,28 +25,32 @@ export class XSearchTool extends StructuredTool {
   }
 
   async _call(input: { query: string; count?: number }) {
-    const client = await this.clientProvider();
-    const result = await client.search(input.query, input.count ?? 20);
+    try {
+      const client = await this.clientProvider();
+      const result = await client.search(input.query, input.count ?? 20);
 
-    if (!result.success) {
-      return `Error searching tweets: ${(result as { error: string }).error}`;
+      if (!result.success) {
+        return `Error searching tweets: ${(result as { error: string }).error}`;
+      }
+
+      if (result.tweets.length === 0) {
+        return 'No tweets found for the given query.';
+      }
+
+      const tweets = result.tweets.map((tweet) => ({
+        id: tweet.id,
+        text: tweet.text,
+        author: tweet.author,
+        createdAt: tweet.createdAt,
+        replyCount: tweet.replyCount,
+        retweetCount: tweet.retweetCount,
+        likeCount: tweet.likeCount,
+        media: tweet.media?.map((m) => ({ type: m.type, url: m.url })),
+      }));
+
+      return JSON.stringify({ tweets, nextCursor: result.nextCursor }, null, 2);
+    } catch (err) {
+      return `Error searching tweets: ${err instanceof Error ? err.message : String(err)}`;
     }
-
-    if (result.tweets.length === 0) {
-      return 'No tweets found for the given query.';
-    }
-
-    const tweets = result.tweets.map((tweet) => ({
-      id: tweet.id,
-      text: tweet.text,
-      author: tweet.author,
-      createdAt: tweet.createdAt,
-      replyCount: tweet.replyCount,
-      retweetCount: tweet.retweetCount,
-      likeCount: tweet.likeCount,
-      media: tweet.media?.map((m) => ({ type: m.type, url: m.url })),
-    }));
-
-    return JSON.stringify({ tweets, nextCursor: result.nextCursor }, null, 2);
   }
 }

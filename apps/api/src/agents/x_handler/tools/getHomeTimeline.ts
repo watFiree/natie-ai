@@ -26,38 +26,42 @@ export class XGetHomeTimelineTool extends StructuredTool {
   }
 
   async _call(input: { count?: number; latest?: boolean }) {
-    const client = await this.clientProvider();
+    try {
+      const client = await this.clientProvider();
 
-    const result = input.latest
-      ? await client.getHomeLatestTimeline(input.count ?? 20)
-      : await client.getHomeTimeline(input.count ?? 20);
+      const result = input.latest
+        ? await client.getHomeLatestTimeline(input.count ?? 20)
+        : await client.getHomeTimeline(input.count ?? 20);
 
-    if (!result.success) {
-      return `Error fetching home timeline: ${(result as { error: string }).error}`;
+      if (!result.success) {
+        return `Error fetching home timeline: ${(result as { error: string }).error}`;
+      }
+
+      if (result.tweets.length === 0) {
+        return 'No tweets found in home timeline.';
+      }
+
+      const tweets = result.tweets.map((tweet) => ({
+        id: tweet.id,
+        text: tweet.text,
+        author: tweet.author,
+        createdAt: tweet.createdAt,
+        replyCount: tweet.replyCount,
+        retweetCount: tweet.retweetCount,
+        likeCount: tweet.likeCount,
+        media: tweet.media?.map((m) => ({ type: m.type, url: m.url })),
+        quotedTweet: tweet.quotedTweet
+          ? {
+              id: tweet.quotedTweet.id,
+              text: tweet.quotedTweet.text,
+              author: tweet.quotedTweet.author,
+            }
+          : undefined,
+      }));
+
+      return JSON.stringify({ tweets, nextCursor: result.nextCursor }, null, 2);
+    } catch (err) {
+      return `Error fetching home timeline: ${err instanceof Error ? err.message : String(err)}`;
     }
-
-    if (result.tweets.length === 0) {
-      return 'No tweets found in home timeline.';
-    }
-
-    const tweets = result.tweets.map((tweet) => ({
-      id: tweet.id,
-      text: tweet.text,
-      author: tweet.author,
-      createdAt: tweet.createdAt,
-      replyCount: tweet.replyCount,
-      retweetCount: tweet.retweetCount,
-      likeCount: tweet.likeCount,
-      media: tweet.media?.map((m) => ({ type: m.type, url: m.url })),
-      quotedTweet: tweet.quotedTweet
-        ? {
-            id: tweet.quotedTweet.id,
-            text: tweet.quotedTweet.text,
-            author: tweet.quotedTweet.author,
-          }
-        : undefined,
-    }));
-
-    return JSON.stringify({ tweets, nextCursor: result.nextCursor }, null, 2);
   }
 }

@@ -37,37 +37,41 @@ export class XGetNewsTool extends StructuredTool {
     aiOnly?: boolean;
     withTweets?: boolean;
   }) {
-    const client = await this.clientProvider();
-    const result = await client.getNews(input.count ?? 10, {
-      tabs: input.tabs,
-      aiOnly: input.aiOnly,
-      withTweets: input.withTweets,
-      tweetsPerItem: input.withTweets ? 5 : undefined,
-    });
+    try {
+      const client = await this.clientProvider();
+      const result = await client.getNews(input.count ?? 10, {
+        tabs: input.tabs,
+        aiOnly: input.aiOnly,
+        withTweets: input.withTweets,
+        tweetsPerItem: input.withTweets ? 5 : undefined,
+      });
 
-    if (!result.success) {
-      return `Error fetching news: ${(result as { error: string }).error}`;
+      if (!result.success) {
+        return `Error fetching news: ${(result as { error: string }).error}`;
+      }
+
+      if (result.items.length === 0) {
+        return 'No news items found.';
+      }
+
+      const news = result.items.map((item) => ({
+        id: item.id,
+        headline: item.headline,
+        category: item.category,
+        timeAgo: item.timeAgo,
+        postCount: item.postCount,
+        description: item.description,
+        url: item.url,
+        tweets: item.tweets?.map((tweet) => ({
+          id: tweet.id,
+          text: tweet.text,
+          author: tweet.author,
+        })),
+      }));
+
+      return JSON.stringify(news, null, 2);
+    } catch (err) {
+      return `Error fetching news: ${err instanceof Error ? err.message : String(err)}`;
     }
-
-    if (result.items.length === 0) {
-      return 'No news items found.';
-    }
-
-    const news = result.items.map((item) => ({
-      id: item.id,
-      headline: item.headline,
-      category: item.category,
-      timeAgo: item.timeAgo,
-      postCount: item.postCount,
-      description: item.description,
-      url: item.url,
-      tweets: item.tweets?.map((tweet) => ({
-        id: tweet.id,
-        text: tweet.text,
-        author: tweet.author,
-      })),
-    }));
-
-    return JSON.stringify(news, null, 2);
   }
 }
