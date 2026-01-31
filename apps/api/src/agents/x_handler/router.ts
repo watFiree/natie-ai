@@ -1,27 +1,19 @@
 import { FastifyInstance } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
-import {
-  AgentRequestSchema,
-  CreateEmailAgentConversationSchema,
-} from './schema';
+import { AgentRequestSchema, CreateXAgentSchema } from './schema';
 import { authHandler } from '../../modules/auth/handler';
 import { createAgent } from './createAgent';
 import { createSystemPrompt } from './system';
-import { GmailOAuthService } from '../../modules/gmail/service';
-import { createOAuth2Client } from '../../modules/gmail/clientFactory';
-import { GmailAccountRepository } from '../../modules/gmail/repository';
 import { createTools } from './tools';
-import { MessageRepository } from '../../modules/messages/repository';
 import { AgentRunner } from '../common/runner';
+import { createClient } from './clientFactory';
+import { XAccountRepository } from '../../modules/x_account/repository';
+import { MessageRepository } from '../../modules/messages/repository';
 
-export const EmailAgentRouter = async (fastify: FastifyInstance) => {
+export const XAgentRouter = async (fastify: FastifyInstance) => {
   const typedFastify = fastify.withTypeProvider<ZodTypeProvider>();
   const messageRepo = new MessageRepository(fastify.prisma);
-  const gmailAccountRepo = new GmailAccountRepository(fastify.prisma);
-  const gmailService = new GmailOAuthService(
-    createOAuth2Client(),
-    gmailAccountRepo
-  );
+  const xAccountRepo = new XAccountRepository(fastify.prisma);
   const agentRunner = new AgentRunner({ prisma: fastify.prisma, messageRepo });
 
   typedFastify.post(
@@ -29,7 +21,7 @@ export const EmailAgentRouter = async (fastify: FastifyInstance) => {
     {
       preHandler: authHandler,
       schema: {
-        body: CreateEmailAgentConversationSchema,
+        body: CreateXAgentSchema,
       },
     },
     async (req, reply) => {
@@ -38,7 +30,7 @@ export const EmailAgentRouter = async (fastify: FastifyInstance) => {
       const { userAgentId } = req.body;
 
       const userAgent = await fastify.prisma.userAgent.findUnique({
-        where: { id: userAgentId, userId: req.user.id },
+        where: { id: userAgentId },
       });
       if (!userAgent) {
         return reply.code(404).send({ error: 'User Agent not found' });
@@ -46,7 +38,7 @@ export const EmailAgentRouter = async (fastify: FastifyInstance) => {
 
       const conversation = await fastify.prisma.userAgentConversation.create({
         data: {
-          userAgentId: userAgent.id,
+          userAgentId: userAgentId,
         },
       });
 
@@ -78,18 +70,19 @@ export const EmailAgentRouter = async (fastify: FastifyInstance) => {
         return reply.code(404).send({ error: 'Conversation not found' });
       }
 
-      const settings = await fastify.prisma.emailAgentSettings.findFirst({
-        where: { userId: req.user.id },
-      });
-      const emailAccounts = await gmailAccountRepo.findByUserId(req.user.id);
+      const xAccount = await xAccountRepo.findByUserId(req.user.id);
 
-      const systemPrompt = createSystemPrompt(
-        settings?.labels ?? [],
-        emailAccounts.map((account) => account.email)
-      );
-      const tokenProvider = (email: string) =>
-        gmailService.getEnsuredAccessToken(req.user!.id, email);
-      const tools = createTools(tokenProvider);
+      if (!xAccount) {
+        return reply.code(400).send({ error: 'X account not linked' });
+      }
+
+      const systemPrompt = createSystemPrompt();
+      const clientProvider = () =>
+        createClient({
+          authToken: xAccount.authToken,
+          ct0: xAccount.ct0,
+        });
+      const tools = createTools(clientProvider);
 
       const agent = createAgent(systemPrompt, tools);
 

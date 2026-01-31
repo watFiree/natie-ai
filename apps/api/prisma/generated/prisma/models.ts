@@ -7,11 +7,12 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/User.js';
-export type * from './models/GmailAccount.js';
-export type * from './models/EmailAgentSettings.js';
-export type * from './models/Agent.js';
-export type * from './models/UserAgent.js';
-export type * from './models/UserAgentConversation.js';
-export type * from './models/Message.js';
-export type * from './commonInputTypes.js';
+export type * from './models/User';
+export type * from './models/GmailAccount';
+export type * from './models/XAccount';
+export type * from './models/EmailAgentSettings';
+export type * from './models/Agent';
+export type * from './models/UserAgent';
+export type * from './models/UserAgentConversation';
+export type * from './models/Message';
+export type * from './commonInputTypes';
