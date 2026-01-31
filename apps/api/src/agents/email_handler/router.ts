@@ -1,6 +1,9 @@
 import { FastifyInstance } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
-import { AgentRequestSchema, CreateEmailAgentConversationSchema } from './schema';
+import {
+  AgentRequestSchema,
+  CreateEmailAgentConversationSchema,
+} from './schema';
 import { authHandler } from '../../modules/auth/handler';
 import { createAgent } from './createAgent';
 import { createSystemPrompt } from './system';
@@ -35,7 +38,7 @@ export const EmailAgentRouter = async (fastify: FastifyInstance) => {
       const { userAgentId } = req.body;
 
       const userAgent = await fastify.prisma.userAgent.findUnique({
-        where: { id: userAgentId },
+        where: { id: userAgentId, userId: req.user.id },
       });
       if (!userAgent) {
         return reply.code(404).send({ error: 'User Agent not found' });
@@ -66,7 +69,10 @@ export const EmailAgentRouter = async (fastify: FastifyInstance) => {
 
       const conversation =
         await fastify.prisma.userAgentConversation.findUnique({
-          where: { id: agentConversationId },
+          where: {
+            id: agentConversationId,
+            userAgent: { userId: req.user.id },
+          },
         });
       if (!conversation) {
         return reply.code(404).send({ error: 'Conversation not found' });

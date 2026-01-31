@@ -31,7 +31,7 @@ export class XGetThreadTool extends StructuredTool {
           {
             success: false,
             error: result.error,
-          } as ThreadResult,
+          } satisfies ThreadResult,
           null,
           2
         );
@@ -42,7 +42,7 @@ export class XGetThreadTool extends StructuredTool {
           {
             success: true,
             tweets: [],
-          } as ThreadResult,
+          } satisfies ThreadResult,
           null,
           2
         );
@@ -65,15 +65,19 @@ export class XGetThreadTool extends StructuredTool {
         {
           success: true,
           tweets,
-        } as ThreadResult,
+        } satisfies ThreadResult,
         null,
         2
       );
     } catch (err) {
-      return JSON.stringify({
-        success: false,
-        error: err instanceof Error ? err.message : String(err),
-      } as ThreadResult);
+      return JSON.stringify(
+        {
+          success: false,
+          error: err instanceof Error ? err.message : String(err),
+        } satisfies ThreadResult,
+        null,
+        2
+      );
     }
   }
 }

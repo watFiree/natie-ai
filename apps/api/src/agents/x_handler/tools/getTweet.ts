@@ -31,7 +31,7 @@ export class XGetTweetTool extends StructuredTool {
           {
             success: false,
             error: result.error,
-          } as TweetResult,
+          } satisfies TweetResult,
           null,
           2
         );
@@ -42,7 +42,7 @@ export class XGetTweetTool extends StructuredTool {
           {
             success: true,
             tweet: null,
-          } as TweetResult,
+          } satisfies TweetResult,
           null,
           2
         );
@@ -75,15 +75,23 @@ export class XGetTweetTool extends StructuredTool {
           : undefined,
       };
 
-      return JSON.stringify({
-        success: true,
-        tweet,
-      } as TweetResult);
+      return JSON.stringify(
+        {
+          success: true,
+          tweet,
+        } satisfies TweetResult,
+        null,
+        2
+      );
     } catch (err) {
-      return JSON.stringify({
-        success: false,
-        error: err instanceof Error ? err.message : String(err),
-      } as TweetResult);
+      return JSON.stringify(
+        {
+          success: false,
+          error: err instanceof Error ? err.message : String(err),
+        } satisfies TweetResult,
+        null,
+        2
+      );
     }
   }
 }

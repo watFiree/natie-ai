@@ -74,7 +74,7 @@ export class XSearchTool extends StructuredTool {
         success: false,
         error: err instanceof Error ? err.message : String(err),
       };
-      return JSON.stringify(envelope);
+      return JSON.stringify(envelope, null, 2);
     }
   }
 }

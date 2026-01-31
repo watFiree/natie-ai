@@ -61,7 +61,10 @@ export const XAgentRouter = async (fastify: FastifyInstance) => {
 
       const conversation =
         await fastify.prisma.userAgentConversation.findUnique({
-          where: { id: agentConversationId },
+          where: {
+            id: agentConversationId,
+            userAgent: { userId: req.user.id },
+          },
         });
       if (!conversation) {
         return reply.code(404).send({ error: 'Conversation not found' });

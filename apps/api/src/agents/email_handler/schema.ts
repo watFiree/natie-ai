@@ -12,4 +12,6 @@ export const CreateEmailAgentConversationSchema = z.object({
   userAgentId: z.string(),
 });
 
-export type CreateEmailAgentConversation = z.infer<typeof CreateEmailAgentConversationSchema>;
+export type CreateEmailAgentConversation = z.infer<
+  typeof CreateEmailAgentConversationSchema
+>;

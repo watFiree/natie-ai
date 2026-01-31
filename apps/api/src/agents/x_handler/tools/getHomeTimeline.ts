@@ -52,7 +52,11 @@ export class XGetHomeTimelineTool extends StructuredTool {
       }
 
       if (result.tweets.length === 0) {
-        const response: TimelineResult = { success: true, tweets: [] };
+        const response: TimelineResult = {
+          success: true,
+          tweets: [],
+          nextCursor: result.nextCursor,
+        };
         return JSON.stringify(response, null, 2);
       }
 

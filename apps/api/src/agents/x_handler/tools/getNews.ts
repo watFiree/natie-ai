@@ -4,7 +4,25 @@ import { XClientProvider } from './consts';
 
 interface NewsResult {
   success: boolean;
-  news?: unknown[];
+  news?: {
+    id: string;
+    headline: string;
+    category: string | undefined;
+    timeAgo: string | undefined;
+    postCount: number | undefined;
+    description: string | undefined;
+    url: string | undefined;
+    tweets:
+      | {
+          id: string;
+          text: string;
+          author: {
+            username: string;
+            name: string;
+          };
+        }[]
+      | undefined;
+  }[];
   error?: string;
 }
 
