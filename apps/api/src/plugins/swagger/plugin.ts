@@ -21,26 +21,16 @@ async function swaggerPlugin(fastify: FastifyInstance) {
     transform: ({ schema, url }) => {
       if (!schema) return { schema, url };
 
-      if (isZodSchema(schema.body)) {
-        schema.body = toJsonSchema(schema.body);
-      }
-      if (isZodSchema(schema.querystring)) {
-        schema.querystring = toJsonSchema(schema.querystring);
-      }
-      if (isZodSchema(schema.params)) {
-        schema.params = toJsonSchema(schema.params);
-      }
-      if (isZodSchema(schema.headers)) {
-        schema.headers = toJsonSchema(schema.headers);
-      }
+      schema.body = toJsonSchema(schema.body);
+      schema.querystring = toJsonSchema(schema.querystring);
+      schema.params = toJsonSchema(schema.params);
+      schema.headers = toJsonSchema(schema.headers);
       if (schema.response && typeof schema.response === 'object') {
         const response: Record<string, unknown> = {};
         Object.assign(response, schema.response);
         for (const key of Object.keys(response)) {
           const responseSchema = response[key];
-          if (isZodSchema(responseSchema)) {
-            response[key] = toJsonSchema(responseSchema);
-          }
+          response[key] = toJsonSchema(responseSchema);
         }
         schema.response = response;
       }
