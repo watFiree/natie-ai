@@ -3,6 +3,8 @@ import {
   TelegramMessage,
   TelegramSettings,
 } from '../../../prisma/generated/prisma/client';
+import { ExtendedAgentType } from '../../agents/delegate';
+import { CreateMessageData } from '../../modules/messages/consts';
 
 export type CreateTelegramSettingsData = {
   userId: string;
@@ -43,14 +45,9 @@ export class TelegramSettingsRepository {
   }
 }
 
-export type CreateTelegramMessageData = {
-  conversationId: string;
-  type: 'human' | 'ai' | 'system' | 'tool';
-  content: string;
-  agentType?: string;
-  toolCallId?: string;
-  toolName?: string;
-};
+export interface CreateTelegramMessageData extends CreateMessageData {
+  agentType: ExtendedAgentType;
+}
 
 export class TelegramMessageRepository {
   constructor(private readonly prisma: PrismaClient) {}

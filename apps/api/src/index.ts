@@ -6,6 +6,7 @@ import {
   serializerCompiler,
   validatorCompiler,
 } from 'fastify-type-provider-zod';
+import swaggerPlugin from './plugins/swagger/plugin';
 import { GmailRouter } from './modules/gmail/router';
 import { XAccountRouter } from './modules/x_account/router';
 import { dbPlugin } from './modules/db/plugin';
@@ -18,6 +19,8 @@ const app = fastify({ logger: true });
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 app.withTypeProvider<ZodTypeProvider>();
+
+await app.register(swaggerPlugin);
 
 app.register(cookie, {
   secret: process.env.WORKOS_COOKIE_PASSWORD,
@@ -47,6 +50,8 @@ app.listen({ port: 3000 }, async (err) => {
       console.error('Failed to start Telegram gateway:', error);
     }
   } else {
-    console.log('⚠️  TELEGRAM_TOKEN not set, skipping Telegram bot initialization');
+    console.log(
+      '⚠️  TELEGRAM_TOKEN not set, skipping Telegram bot initialization'
+    );
   }
 });

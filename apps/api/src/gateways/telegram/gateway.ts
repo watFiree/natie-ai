@@ -289,7 +289,7 @@ export class TelegramGateway {
       });
 
       if ('messages' in result) {
-        const lastMessage = result.messages.at(-1)
+        const lastMessage = result.messages.at(-1);
         if (lastMessage && 'content' in lastMessage) {
           return String(lastMessage.content);
         }

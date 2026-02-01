@@ -3,9 +3,7 @@ import { ReactAgent } from 'langchain';
 import { Readable } from 'stream';
 import { TelegramMessageRepository } from './repository';
 import { mapInternalMessageToLangChain } from '../../agents/common/formatMessages';
-import {
-  LangChainMessageType,
-} from '../../../prisma/generated/prisma/client';
+import { LangChainMessageType } from '../../../prisma/generated/prisma/client';
 import { AgentRunOptions } from '../../agents/common/runner/consts';
 import { ExtendedAgentType } from '../../agents/delegate/consts';
 
@@ -54,7 +52,7 @@ export class TelegramAgentRunner {
   async saveUserMessage(
     conversationId: string,
     message: string,
-    agentType: string
+    agentType: ExtendedAgentType
   ): Promise<void> {
     await this.context.messageRepo.create({
       conversationId,
@@ -67,7 +65,7 @@ export class TelegramAgentRunner {
   async saveAIMessage(
     conversationId: string,
     content: string,
-    agentType: string,
+    agentType: ExtendedAgentType,
     toolCallId?: string,
     toolName?: string
   ): Promise<void> {
