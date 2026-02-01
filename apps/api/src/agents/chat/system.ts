@@ -1,3 +1,11 @@
+/**
+ * Builds the system prompt that defines the assistant's role, tone, and operational guidelines.
+ *
+ * The prompt instructs the assistant to be helpful, friendly, concise, and honest about knowledge limits;
+ * it also specifies formatting expectations (use of Markdown) and notes lack of external tool access.
+ *
+ * @returns The complete system prompt string used to configure the assistant's behavior and response style.
+ */
 export function createSystemPrompt(): string {
   return `You are a helpful AI assistant. Your role is to answer general questions and have conversations with users.
 
