@@ -84,3 +84,18 @@ export type UserAgentConversation = Prisma.UserAgentConversationModel;
  *
  */
 export type Message = Prisma.MessageModel;
+/**
+ * Model TelegramSettings
+ *
+ */
+export type TelegramSettings = Prisma.TelegramSettingsModel;
+/**
+ * Model TelegramConversation
+ *
+ */
+export type TelegramConversation = Prisma.TelegramConversationModel;
+/**
+ * Model TelegramMessage
+ *
+ */
+export type TelegramMessage = Prisma.TelegramMessageModel;

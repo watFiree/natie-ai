@@ -27,32 +27,38 @@ export type AggregateAgent = {
 export type AgentMinAggregateOutputType = {
   id: string | null;
   description: string | null;
+  type: $Enums.AgentType | null;
 };
 
 export type AgentMaxAggregateOutputType = {
   id: string | null;
   description: string | null;
+  type: $Enums.AgentType | null;
 };
 
 export type AgentCountAggregateOutputType = {
   id: number;
   description: number;
+  type: number;
   _all: number;
 };
 
 export type AgentMinAggregateInputType = {
   id?: true;
   description?: true;
+  type?: true;
 };
 
 export type AgentMaxAggregateInputType = {
   id?: true;
   description?: true;
+  type?: true;
 };
 
 export type AgentCountAggregateInputType = {
   id?: true;
   description?: true;
+  type?: true;
   _all?: true;
 };
 
@@ -138,6 +144,7 @@ export type AgentGroupByArgs<
 export type AgentGroupByOutputType = {
   id: string;
   description: string;
+  type: $Enums.AgentType;
   _count: AgentCountAggregateOutputType | null;
   _min: AgentMinAggregateOutputType | null;
   _max: AgentMaxAggregateOutputType | null;
@@ -161,12 +168,14 @@ export type AgentWhereInput = {
   NOT?: Prisma.AgentWhereInput | Prisma.AgentWhereInput[];
   id?: Prisma.StringFilter<'Agent'> | string;
   description?: Prisma.StringFilter<'Agent'> | string;
+  type?: Prisma.EnumAgentTypeFilter<'Agent'> | $Enums.AgentType;
   userAgents?: Prisma.UserAgentListRelationFilter;
 };
 
 export type AgentOrderByWithRelationInput = {
   id?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
+  type?: Prisma.SortOrder;
   userAgents?: Prisma.UserAgentOrderByRelationAggregateInput;
 };
 
@@ -177,6 +186,7 @@ export type AgentWhereUniqueInput = Prisma.AtLeast<
     OR?: Prisma.AgentWhereInput[];
     NOT?: Prisma.AgentWhereInput | Prisma.AgentWhereInput[];
     description?: Prisma.StringFilter<'Agent'> | string;
+    type?: Prisma.EnumAgentTypeFilter<'Agent'> | $Enums.AgentType;
     userAgents?: Prisma.UserAgentListRelationFilter;
   },
   'id'
@@ -185,6 +195,7 @@ export type AgentWhereUniqueInput = Prisma.AtLeast<
 export type AgentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
+  type?: Prisma.SortOrder;
   _count?: Prisma.AgentCountOrderByAggregateInput;
   _max?: Prisma.AgentMaxOrderByAggregateInput;
   _min?: Prisma.AgentMinOrderByAggregateInput;
@@ -200,65 +211,80 @@ export type AgentScalarWhereWithAggregatesInput = {
     | Prisma.AgentScalarWhereWithAggregatesInput[];
   id?: Prisma.StringWithAggregatesFilter<'Agent'> | string;
   description?: Prisma.StringWithAggregatesFilter<'Agent'> | string;
+  type?: Prisma.EnumAgentTypeWithAggregatesFilter<'Agent'> | $Enums.AgentType;
 };
 
 export type AgentCreateInput = {
   id?: string;
   description: string;
+  type: $Enums.AgentType;
   userAgents?: Prisma.UserAgentCreateNestedManyWithoutAgentInput;
 };
 
 export type AgentUncheckedCreateInput = {
   id?: string;
   description: string;
+  type: $Enums.AgentType;
   userAgents?: Prisma.UserAgentUncheckedCreateNestedManyWithoutAgentInput;
 };
 
 export type AgentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
+  type?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType;
   userAgents?: Prisma.UserAgentUpdateManyWithoutAgentNestedInput;
 };
 
 export type AgentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
+  type?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType;
   userAgents?: Prisma.UserAgentUncheckedUpdateManyWithoutAgentNestedInput;
 };
 
 export type AgentCreateManyInput = {
   id?: string;
   description: string;
+  type: $Enums.AgentType;
 };
 
 export type AgentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
+  type?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType;
 };
 
 export type AgentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
+  type?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType;
 };
 
 export type AgentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
+  type?: Prisma.SortOrder;
 };
 
 export type AgentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
+  type?: Prisma.SortOrder;
 };
 
 export type AgentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
+  type?: Prisma.SortOrder;
 };
 
 export type AgentScalarRelationFilter = {
   is?: Prisma.AgentWhereInput;
   isNot?: Prisma.AgentWhereInput;
+};
+
+export type EnumAgentTypeFieldUpdateOperationsInput = {
+  set?: $Enums.AgentType;
 };
 
 export type AgentCreateNestedOneWithoutUserAgentsInput = {
@@ -290,11 +316,13 @@ export type AgentUpdateOneRequiredWithoutUserAgentsNestedInput = {
 export type AgentCreateWithoutUserAgentsInput = {
   id?: string;
   description: string;
+  type: $Enums.AgentType;
 };
 
 export type AgentUncheckedCreateWithoutUserAgentsInput = {
   id?: string;
   description: string;
+  type: $Enums.AgentType;
 };
 
 export type AgentCreateOrConnectWithoutUserAgentsInput = {
@@ -328,11 +356,13 @@ export type AgentUpdateToOneWithWhereWithoutUserAgentsInput = {
 export type AgentUpdateWithoutUserAgentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
+  type?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType;
 };
 
 export type AgentUncheckedUpdateWithoutUserAgentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.StringFieldUpdateOperationsInput | string;
+  type?: Prisma.EnumAgentTypeFieldUpdateOperationsInput | $Enums.AgentType;
 };
 
 /**
@@ -380,6 +410,7 @@ export type AgentSelect<
   {
     id?: boolean;
     description?: boolean;
+    type?: boolean;
     userAgents?: boolean | Prisma.Agent$userAgentsArgs<ExtArgs>;
     _count?: boolean | Prisma.AgentCountOutputTypeDefaultArgs<ExtArgs>;
   },
@@ -393,6 +424,7 @@ export type AgentSelectCreateManyAndReturn<
   {
     id?: boolean;
     description?: boolean;
+    type?: boolean;
   },
   ExtArgs['result']['agent']
 >;
@@ -404,6 +436,7 @@ export type AgentSelectUpdateManyAndReturn<
   {
     id?: boolean;
     description?: boolean;
+    type?: boolean;
   },
   ExtArgs['result']['agent']
 >;
@@ -411,13 +444,14 @@ export type AgentSelectUpdateManyAndReturn<
 export type AgentSelectScalar = {
   id?: boolean;
   description?: boolean;
+  type?: boolean;
 };
 
 export type AgentOmit<
   ExtArgs extends runtime.Types.Extensions.InternalArgs =
     runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetOmit<
-  'id' | 'description',
+  'id' | 'description' | 'type',
   ExtArgs['result']['agent']
 >;
 export type AgentInclude<
@@ -448,6 +482,7 @@ export type $AgentPayload<
     {
       id: string;
       description: string;
+      type: $Enums.AgentType;
     },
     ExtArgs['result']['agent']
   >;
@@ -1053,6 +1088,7 @@ export interface Prisma__AgentClient<
 export interface AgentFieldRefs {
   readonly id: Prisma.FieldRef<'Agent', 'String'>;
   readonly description: Prisma.FieldRef<'Agent', 'String'>;
+  readonly type: Prisma.FieldRef<'Agent', 'AgentType'>;
 }
 
 // Custom InputTypes

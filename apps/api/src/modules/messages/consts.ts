@@ -7,3 +7,11 @@ export type CreateMessageData = {
   toolCallId?: string;
   toolName?: string;
 };
+
+export type CreateTelegramMessageData = {
+  conversationId: string;
+  type: LangChainMessageType;
+  content: string;
+  toolCallId?: string;
+  toolName?: string;
+};
