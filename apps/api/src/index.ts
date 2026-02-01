@@ -6,17 +6,21 @@ import {
   serializerCompiler,
   validatorCompiler,
 } from 'fastify-type-provider-zod';
+import swaggerPlugin from './plugins/swagger/plugin';
 import { GmailRouter } from './modules/gmail/router';
 import { XAccountRouter } from './modules/x_account/router';
 import { dbPlugin } from './modules/db/plugin';
 import { AuthRouter } from './modules/auth/router';
 import { EmailAgentRouter } from './agents/email_handler/router';
 import { XAgentRouter } from './agents/x_handler/router';
+import { TelegramGateway } from './gateways/telegram/gateway';
 
 const app = fastify({ logger: true });
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 app.withTypeProvider<ZodTypeProvider>();
+
+await app.register(swaggerPlugin);
 
 app.register(cookie, {
   secret: process.env.WORKOS_COOKIE_PASSWORD,
@@ -29,7 +33,7 @@ app.register(XAccountRouter, { prefix: '/x-account' });
 app.register(EmailAgentRouter, { prefix: '/email' });
 app.register(XAgentRouter, { prefix: '/x' });
 
-app.listen({ port: 3000 }, (err) => {
+app.listen({ port: 3000 }, async (err) => {
   if (err) {
     console.error(err);
     process.exit(1);
@@ -37,4 +41,17 @@ app.listen({ port: 3000 }, (err) => {
   console.log(`
   🚀 Server ready at: http://localhost:3000
   ⭐️ See sample requests: https://github.com/prisma/prisma-examples/blob/latest/orm/fastify/README.md#using-the-rest-api`);
+
+  if (process.env.TELEGRAM_TOKEN) {
+    try {
+      const gateway = new TelegramGateway(app);
+      gateway.start();
+    } catch (error) {
+      console.error('Failed to start Telegram gateway:', error);
+    }
+  } else {
+    console.log(
+      '⚠️  TELEGRAM_TOKEN not set, skipping Telegram bot initialization'
+    );
+  }
 });

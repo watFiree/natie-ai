@@ -420,6 +420,9 @@ export const ModelName = {
   UserAgent: 'UserAgent',
   UserAgentConversation: 'UserAgentConversation',
   Message: 'Message',
+  TelegramSettings: 'TelegramSettings',
+  TelegramConversation: 'TelegramConversation',
+  TelegramMessage: 'TelegramMessage',
 } as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -449,7 +452,10 @@ export type TypeMap<
       | 'agent'
       | 'userAgent'
       | 'userAgentConversation'
-      | 'message';
+      | 'message'
+      | 'telegramSettings'
+      | 'telegramConversation'
+      | 'telegramMessage';
     txIsolationLevel: TransactionIsolationLevel;
   };
   model: {
@@ -1061,6 +1067,234 @@ export type TypeMap<
         };
       };
     };
+    TelegramSettings: {
+      payload: Prisma.$TelegramSettingsPayload<ExtArgs>;
+      fields: Prisma.TelegramSettingsFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.TelegramSettingsFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramSettingsPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.TelegramSettingsFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramSettingsPayload>;
+        };
+        findFirst: {
+          args: Prisma.TelegramSettingsFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramSettingsPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.TelegramSettingsFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramSettingsPayload>;
+        };
+        findMany: {
+          args: Prisma.TelegramSettingsFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramSettingsPayload>[];
+        };
+        create: {
+          args: Prisma.TelegramSettingsCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramSettingsPayload>;
+        };
+        createMany: {
+          args: Prisma.TelegramSettingsCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.TelegramSettingsCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramSettingsPayload>[];
+        };
+        delete: {
+          args: Prisma.TelegramSettingsDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramSettingsPayload>;
+        };
+        update: {
+          args: Prisma.TelegramSettingsUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramSettingsPayload>;
+        };
+        deleteMany: {
+          args: Prisma.TelegramSettingsDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.TelegramSettingsUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.TelegramSettingsUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramSettingsPayload>[];
+        };
+        upsert: {
+          args: Prisma.TelegramSettingsUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramSettingsPayload>;
+        };
+        aggregate: {
+          args: Prisma.TelegramSettingsAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTelegramSettings>;
+        };
+        groupBy: {
+          args: Prisma.TelegramSettingsGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.TelegramSettingsGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.TelegramSettingsCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.TelegramSettingsCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
+    TelegramConversation: {
+      payload: Prisma.$TelegramConversationPayload<ExtArgs>;
+      fields: Prisma.TelegramConversationFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.TelegramConversationFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramConversationPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.TelegramConversationFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramConversationPayload>;
+        };
+        findFirst: {
+          args: Prisma.TelegramConversationFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramConversationPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.TelegramConversationFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramConversationPayload>;
+        };
+        findMany: {
+          args: Prisma.TelegramConversationFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramConversationPayload>[];
+        };
+        create: {
+          args: Prisma.TelegramConversationCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramConversationPayload>;
+        };
+        createMany: {
+          args: Prisma.TelegramConversationCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.TelegramConversationCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramConversationPayload>[];
+        };
+        delete: {
+          args: Prisma.TelegramConversationDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramConversationPayload>;
+        };
+        update: {
+          args: Prisma.TelegramConversationUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramConversationPayload>;
+        };
+        deleteMany: {
+          args: Prisma.TelegramConversationDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.TelegramConversationUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.TelegramConversationUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramConversationPayload>[];
+        };
+        upsert: {
+          args: Prisma.TelegramConversationUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramConversationPayload>;
+        };
+        aggregate: {
+          args: Prisma.TelegramConversationAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTelegramConversation>;
+        };
+        groupBy: {
+          args: Prisma.TelegramConversationGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.TelegramConversationGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.TelegramConversationCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.TelegramConversationCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
+    TelegramMessage: {
+      payload: Prisma.$TelegramMessagePayload<ExtArgs>;
+      fields: Prisma.TelegramMessageFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.TelegramMessageFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramMessagePayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.TelegramMessageFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramMessagePayload>;
+        };
+        findFirst: {
+          args: Prisma.TelegramMessageFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramMessagePayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.TelegramMessageFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramMessagePayload>;
+        };
+        findMany: {
+          args: Prisma.TelegramMessageFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramMessagePayload>[];
+        };
+        create: {
+          args: Prisma.TelegramMessageCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramMessagePayload>;
+        };
+        createMany: {
+          args: Prisma.TelegramMessageCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.TelegramMessageCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramMessagePayload>[];
+        };
+        delete: {
+          args: Prisma.TelegramMessageDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramMessagePayload>;
+        };
+        update: {
+          args: Prisma.TelegramMessageUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramMessagePayload>;
+        };
+        deleteMany: {
+          args: Prisma.TelegramMessageDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.TelegramMessageUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.TelegramMessageUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramMessagePayload>[];
+        };
+        upsert: {
+          args: Prisma.TelegramMessageUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TelegramMessagePayload>;
+        };
+        aggregate: {
+          args: Prisma.TelegramMessageAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTelegramMessage>;
+        };
+        groupBy: {
+          args: Prisma.TelegramMessageGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.TelegramMessageGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.TelegramMessageCountArgs<ExtArgs>;
+          result:
+            | runtime.Types.Utils.Optional<Prisma.TelegramMessageCountAggregateOutputType>
+            | number;
+        };
+      };
+    };
   };
 } & {
   other: {
@@ -1149,6 +1383,7 @@ export type EmailAgentSettingsScalarFieldEnum =
 export const AgentScalarFieldEnum = {
   id: 'id',
   description: 'description',
+  type: 'type',
 } as const;
 
 export type AgentScalarFieldEnum =
@@ -1194,6 +1429,46 @@ export const MessageScalarFieldEnum = {
 
 export type MessageScalarFieldEnum =
   (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum];
+
+export const TelegramSettingsScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  telegramUserId: 'telegramUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type TelegramSettingsScalarFieldEnum =
+  (typeof TelegramSettingsScalarFieldEnum)[keyof typeof TelegramSettingsScalarFieldEnum];
+
+export const TelegramConversationScalarFieldEnum = {
+  id: 'id',
+  telegramSettingsId: 'telegramSettingsId',
+  title: 'title',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type TelegramConversationScalarFieldEnum =
+  (typeof TelegramConversationScalarFieldEnum)[keyof typeof TelegramConversationScalarFieldEnum];
+
+export const TelegramMessageScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  type: 'type',
+  agentType: 'agentType',
+  content: 'content',
+  name: 'name',
+  additionalKwargs: 'additionalKwargs',
+  responseMetadata: 'responseMetadata',
+  toolCallId: 'toolCallId',
+  toolName: 'toolName',
+  createdAt: 'createdAt',
+  seq: 'seq',
+} as const;
+
+export type TelegramMessageScalarFieldEnum =
+  (typeof TelegramMessageScalarFieldEnum)[keyof typeof TelegramMessageScalarFieldEnum];
 
 export const SortOrder = {
   asc: 'asc',
@@ -1290,6 +1565,22 @@ export type BytesFieldRefInput<$PrismaModel> = FieldRefInputType<
 export type ListBytesFieldRefInput<$PrismaModel> = FieldRefInputType<
   $PrismaModel,
   'Bytes[]'
+>;
+
+/**
+ * Reference to a field of type 'AgentType'
+ */
+export type EnumAgentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'AgentType'
+>;
+
+/**
+ * Reference to a field of type 'AgentType[]'
+ */
+export type ListEnumAgentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<
+  $PrismaModel,
+  'AgentType[]'
 >;
 
 /**
@@ -1471,6 +1762,9 @@ export type GlobalOmitConfig = {
   userAgent?: Prisma.UserAgentOmit;
   userAgentConversation?: Prisma.UserAgentConversationOmit;
   message?: Prisma.MessageOmit;
+  telegramSettings?: Prisma.TelegramSettingsOmit;
+  telegramConversation?: Prisma.TelegramConversationOmit;
+  telegramMessage?: Prisma.TelegramMessageOmit;
 };
 
 /* Types for Logging */

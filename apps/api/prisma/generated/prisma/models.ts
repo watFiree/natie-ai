@@ -15,4 +15,7 @@ export type * from './models/Agent';
 export type * from './models/UserAgent';
 export type * from './models/UserAgentConversation';
 export type * from './models/Message';
+export type * from './models/TelegramSettings';
+export type * from './models/TelegramConversation';
+export type * from './models/TelegramMessage';
 export type * from './commonInputTypes';

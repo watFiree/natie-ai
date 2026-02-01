@@ -192,6 +192,10 @@ export type UserWhereInput = {
   > | null;
   emailSettings?: Prisma.EmailAgentSettingsListRelationFilter;
   userAgents?: Prisma.UserAgentListRelationFilter;
+  telegramSettings?: Prisma.XOR<
+    Prisma.TelegramSettingsNullableScalarRelationFilter,
+    Prisma.TelegramSettingsWhereInput
+  > | null;
 };
 
 export type UserOrderByWithRelationInput = {
@@ -204,6 +208,7 @@ export type UserOrderByWithRelationInput = {
   xAccount?: Prisma.XAccountOrderByWithRelationInput;
   emailSettings?: Prisma.EmailAgentSettingsOrderByRelationAggregateInput;
   userAgents?: Prisma.UserAgentOrderByRelationAggregateInput;
+  telegramSettings?: Prisma.TelegramSettingsOrderByWithRelationInput;
 };
 
 export type UserWhereUniqueInput = Prisma.AtLeast<
@@ -223,6 +228,10 @@ export type UserWhereUniqueInput = Prisma.AtLeast<
     > | null;
     emailSettings?: Prisma.EmailAgentSettingsListRelationFilter;
     userAgents?: Prisma.UserAgentListRelationFilter;
+    telegramSettings?: Prisma.XOR<
+      Prisma.TelegramSettingsNullableScalarRelationFilter,
+      Prisma.TelegramSettingsWhereInput
+    > | null;
   },
   'id' | 'workosUserId' | 'email'
 >;
@@ -263,6 +272,7 @@ export type UserCreateInput = {
   xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput;
   emailSettings?: Prisma.EmailAgentSettingsCreateNestedManyWithoutUserInput;
   userAgents?: Prisma.UserAgentCreateNestedManyWithoutUserInput;
+  telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput;
 };
 
 export type UserUncheckedCreateInput = {
@@ -275,6 +285,7 @@ export type UserUncheckedCreateInput = {
   xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput;
   emailSettings?: Prisma.EmailAgentSettingsUncheckedCreateNestedManyWithoutUserInput;
   userAgents?: Prisma.UserAgentUncheckedCreateNestedManyWithoutUserInput;
+  telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput;
 };
 
 export type UserUpdateInput = {
@@ -287,6 +298,7 @@ export type UserUpdateInput = {
   xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput;
   emailSettings?: Prisma.EmailAgentSettingsUpdateManyWithoutUserNestedInput;
   userAgents?: Prisma.UserAgentUpdateManyWithoutUserNestedInput;
+  telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput;
 };
 
 export type UserUncheckedUpdateInput = {
@@ -299,6 +311,7 @@ export type UserUncheckedUpdateInput = {
   xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput;
   emailSettings?: Prisma.EmailAgentSettingsUncheckedUpdateManyWithoutUserNestedInput;
   userAgents?: Prisma.UserAgentUncheckedUpdateManyWithoutUserNestedInput;
+  telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput;
 };
 
 export type UserCreateManyInput = {
@@ -466,6 +479,32 @@ export type UserUpdateOneRequiredWithoutUserAgentsNestedInput = {
   >;
 };
 
+export type UserCreateNestedOneWithoutTelegramSettingsInput = {
+  create?: Prisma.XOR<
+    Prisma.UserCreateWithoutTelegramSettingsInput,
+    Prisma.UserUncheckedCreateWithoutTelegramSettingsInput
+  >;
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTelegramSettingsInput;
+  connect?: Prisma.UserWhereUniqueInput;
+};
+
+export type UserUpdateOneRequiredWithoutTelegramSettingsNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.UserCreateWithoutTelegramSettingsInput,
+    Prisma.UserUncheckedCreateWithoutTelegramSettingsInput
+  >;
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTelegramSettingsInput;
+  upsert?: Prisma.UserUpsertWithoutTelegramSettingsInput;
+  connect?: Prisma.UserWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.UserUpdateToOneWithWhereWithoutTelegramSettingsInput,
+      Prisma.UserUpdateWithoutTelegramSettingsInput
+    >,
+    Prisma.UserUncheckedUpdateWithoutTelegramSettingsInput
+  >;
+};
+
 export type UserCreateWithoutGmailAccountsInput = {
   id?: string;
   workosUserId: string;
@@ -475,6 +514,7 @@ export type UserCreateWithoutGmailAccountsInput = {
   xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput;
   emailSettings?: Prisma.EmailAgentSettingsCreateNestedManyWithoutUserInput;
   userAgents?: Prisma.UserAgentCreateNestedManyWithoutUserInput;
+  telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput;
 };
 
 export type UserUncheckedCreateWithoutGmailAccountsInput = {
@@ -486,6 +526,7 @@ export type UserUncheckedCreateWithoutGmailAccountsInput = {
   xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput;
   emailSettings?: Prisma.EmailAgentSettingsUncheckedCreateNestedManyWithoutUserInput;
   userAgents?: Prisma.UserAgentUncheckedCreateNestedManyWithoutUserInput;
+  telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput;
 };
 
 export type UserCreateOrConnectWithoutGmailAccountsInput = {
@@ -525,6 +566,7 @@ export type UserUpdateWithoutGmailAccountsInput = {
   xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput;
   emailSettings?: Prisma.EmailAgentSettingsUpdateManyWithoutUserNestedInput;
   userAgents?: Prisma.UserAgentUpdateManyWithoutUserNestedInput;
+  telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutGmailAccountsInput = {
@@ -536,6 +578,7 @@ export type UserUncheckedUpdateWithoutGmailAccountsInput = {
   xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput;
   emailSettings?: Prisma.EmailAgentSettingsUncheckedUpdateManyWithoutUserNestedInput;
   userAgents?: Prisma.UserAgentUncheckedUpdateManyWithoutUserNestedInput;
+  telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput;
 };
 
 export type UserCreateWithoutXAccountInput = {
@@ -547,6 +590,7 @@ export type UserCreateWithoutXAccountInput = {
   gmailAccounts?: Prisma.GmailAccountCreateNestedManyWithoutUserInput;
   emailSettings?: Prisma.EmailAgentSettingsCreateNestedManyWithoutUserInput;
   userAgents?: Prisma.UserAgentCreateNestedManyWithoutUserInput;
+  telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput;
 };
 
 export type UserUncheckedCreateWithoutXAccountInput = {
@@ -558,6 +602,7 @@ export type UserUncheckedCreateWithoutXAccountInput = {
   gmailAccounts?: Prisma.GmailAccountUncheckedCreateNestedManyWithoutUserInput;
   emailSettings?: Prisma.EmailAgentSettingsUncheckedCreateNestedManyWithoutUserInput;
   userAgents?: Prisma.UserAgentUncheckedCreateNestedManyWithoutUserInput;
+  telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput;
 };
 
 export type UserCreateOrConnectWithoutXAccountInput = {
@@ -597,6 +642,7 @@ export type UserUpdateWithoutXAccountInput = {
   gmailAccounts?: Prisma.GmailAccountUpdateManyWithoutUserNestedInput;
   emailSettings?: Prisma.EmailAgentSettingsUpdateManyWithoutUserNestedInput;
   userAgents?: Prisma.UserAgentUpdateManyWithoutUserNestedInput;
+  telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutXAccountInput = {
@@ -608,6 +654,7 @@ export type UserUncheckedUpdateWithoutXAccountInput = {
   gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput;
   emailSettings?: Prisma.EmailAgentSettingsUncheckedUpdateManyWithoutUserNestedInput;
   userAgents?: Prisma.UserAgentUncheckedUpdateManyWithoutUserNestedInput;
+  telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput;
 };
 
 export type UserCreateWithoutEmailSettingsInput = {
@@ -619,6 +666,7 @@ export type UserCreateWithoutEmailSettingsInput = {
   gmailAccounts?: Prisma.GmailAccountCreateNestedManyWithoutUserInput;
   xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput;
   userAgents?: Prisma.UserAgentCreateNestedManyWithoutUserInput;
+  telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput;
 };
 
 export type UserUncheckedCreateWithoutEmailSettingsInput = {
@@ -630,6 +678,7 @@ export type UserUncheckedCreateWithoutEmailSettingsInput = {
   gmailAccounts?: Prisma.GmailAccountUncheckedCreateNestedManyWithoutUserInput;
   xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput;
   userAgents?: Prisma.UserAgentUncheckedCreateNestedManyWithoutUserInput;
+  telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput;
 };
 
 export type UserCreateOrConnectWithoutEmailSettingsInput = {
@@ -669,6 +718,7 @@ export type UserUpdateWithoutEmailSettingsInput = {
   gmailAccounts?: Prisma.GmailAccountUpdateManyWithoutUserNestedInput;
   xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput;
   userAgents?: Prisma.UserAgentUpdateManyWithoutUserNestedInput;
+  telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutEmailSettingsInput = {
@@ -680,6 +730,7 @@ export type UserUncheckedUpdateWithoutEmailSettingsInput = {
   gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput;
   xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput;
   userAgents?: Prisma.UserAgentUncheckedUpdateManyWithoutUserNestedInput;
+  telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput;
 };
 
 export type UserCreateWithoutUserAgentsInput = {
@@ -691,6 +742,7 @@ export type UserCreateWithoutUserAgentsInput = {
   gmailAccounts?: Prisma.GmailAccountCreateNestedManyWithoutUserInput;
   xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput;
   emailSettings?: Prisma.EmailAgentSettingsCreateNestedManyWithoutUserInput;
+  telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput;
 };
 
 export type UserUncheckedCreateWithoutUserAgentsInput = {
@@ -702,6 +754,7 @@ export type UserUncheckedCreateWithoutUserAgentsInput = {
   gmailAccounts?: Prisma.GmailAccountUncheckedCreateNestedManyWithoutUserInput;
   xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput;
   emailSettings?: Prisma.EmailAgentSettingsUncheckedCreateNestedManyWithoutUserInput;
+  telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput;
 };
 
 export type UserCreateOrConnectWithoutUserAgentsInput = {
@@ -741,6 +794,7 @@ export type UserUpdateWithoutUserAgentsInput = {
   gmailAccounts?: Prisma.GmailAccountUpdateManyWithoutUserNestedInput;
   xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput;
   emailSettings?: Prisma.EmailAgentSettingsUpdateManyWithoutUserNestedInput;
+  telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput;
 };
 
 export type UserUncheckedUpdateWithoutUserAgentsInput = {
@@ -752,6 +806,83 @@ export type UserUncheckedUpdateWithoutUserAgentsInput = {
   gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput;
   xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput;
   emailSettings?: Prisma.EmailAgentSettingsUncheckedUpdateManyWithoutUserNestedInput;
+  telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput;
+};
+
+export type UserCreateWithoutTelegramSettingsInput = {
+  id?: string;
+  workosUserId: string;
+  email: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  gmailAccounts?: Prisma.GmailAccountCreateNestedManyWithoutUserInput;
+  xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput;
+  emailSettings?: Prisma.EmailAgentSettingsCreateNestedManyWithoutUserInput;
+  userAgents?: Prisma.UserAgentCreateNestedManyWithoutUserInput;
+};
+
+export type UserUncheckedCreateWithoutTelegramSettingsInput = {
+  id?: string;
+  workosUserId: string;
+  email: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  gmailAccounts?: Prisma.GmailAccountUncheckedCreateNestedManyWithoutUserInput;
+  xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput;
+  emailSettings?: Prisma.EmailAgentSettingsUncheckedCreateNestedManyWithoutUserInput;
+  userAgents?: Prisma.UserAgentUncheckedCreateNestedManyWithoutUserInput;
+};
+
+export type UserCreateOrConnectWithoutTelegramSettingsInput = {
+  where: Prisma.UserWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.UserCreateWithoutTelegramSettingsInput,
+    Prisma.UserUncheckedCreateWithoutTelegramSettingsInput
+  >;
+};
+
+export type UserUpsertWithoutTelegramSettingsInput = {
+  update: Prisma.XOR<
+    Prisma.UserUpdateWithoutTelegramSettingsInput,
+    Prisma.UserUncheckedUpdateWithoutTelegramSettingsInput
+  >;
+  create: Prisma.XOR<
+    Prisma.UserCreateWithoutTelegramSettingsInput,
+    Prisma.UserUncheckedCreateWithoutTelegramSettingsInput
+  >;
+  where?: Prisma.UserWhereInput;
+};
+
+export type UserUpdateToOneWithWhereWithoutTelegramSettingsInput = {
+  where?: Prisma.UserWhereInput;
+  data: Prisma.XOR<
+    Prisma.UserUpdateWithoutTelegramSettingsInput,
+    Prisma.UserUncheckedUpdateWithoutTelegramSettingsInput
+  >;
+};
+
+export type UserUpdateWithoutTelegramSettingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  workosUserId?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  gmailAccounts?: Prisma.GmailAccountUpdateManyWithoutUserNestedInput;
+  xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput;
+  emailSettings?: Prisma.EmailAgentSettingsUpdateManyWithoutUserNestedInput;
+  userAgents?: Prisma.UserAgentUpdateManyWithoutUserNestedInput;
+};
+
+export type UserUncheckedUpdateWithoutTelegramSettingsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  workosUserId?: Prisma.StringFieldUpdateOperationsInput | string;
+  email?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput;
+  xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput;
+  emailSettings?: Prisma.EmailAgentSettingsUncheckedUpdateManyWithoutUserNestedInput;
+  userAgents?: Prisma.UserAgentUncheckedUpdateManyWithoutUserNestedInput;
 };
 
 /**
@@ -830,6 +961,7 @@ export type UserSelect<
     xAccount?: boolean | Prisma.User$xAccountArgs<ExtArgs>;
     emailSettings?: boolean | Prisma.User$emailSettingsArgs<ExtArgs>;
     userAgents?: boolean | Prisma.User$userAgentsArgs<ExtArgs>;
+    telegramSettings?: boolean | Prisma.User$telegramSettingsArgs<ExtArgs>;
     _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
   },
   ExtArgs['result']['user']
@@ -886,6 +1018,7 @@ export type UserInclude<
   xAccount?: boolean | Prisma.User$xAccountArgs<ExtArgs>;
   emailSettings?: boolean | Prisma.User$emailSettingsArgs<ExtArgs>;
   userAgents?: boolean | Prisma.User$userAgentsArgs<ExtArgs>;
+  telegramSettings?: boolean | Prisma.User$telegramSettingsArgs<ExtArgs>;
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>;
 };
 export type UserIncludeCreateManyAndReturn<
@@ -907,6 +1040,7 @@ export type $UserPayload<
     xAccount: Prisma.$XAccountPayload<ExtArgs> | null;
     emailSettings: Prisma.$EmailAgentSettingsPayload<ExtArgs>[];
     userAgents: Prisma.$UserAgentPayload<ExtArgs>[];
+    telegramSettings: Prisma.$TelegramSettingsPayload<ExtArgs> | null;
   };
   scalars: runtime.Types.Extensions.GetPayloadResult<
     {
@@ -1511,6 +1645,19 @@ export interface Prisma__UserClient<
       >
     | Null
   >;
+  telegramSettings<T extends Prisma.User$telegramSettingsArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.User$telegramSettingsArgs<ExtArgs>>
+  ): Prisma.Prisma__TelegramSettingsClient<
+    runtime.Types.Result.GetResult<
+      Prisma.$TelegramSettingsPayload<ExtArgs>,
+      T,
+      'findUniqueOrThrow',
+      GlobalOmitOptions
+    > | null,
+    null,
+    ExtArgs,
+    GlobalOmitOptions
+  >;
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2111,6 +2258,28 @@ export type User$userAgentsArgs<
   distinct?:
     | Prisma.UserAgentScalarFieldEnum
     | Prisma.UserAgentScalarFieldEnum[];
+};
+
+/**
+ * User.telegramSettings
+ */
+export type User$telegramSettingsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs =
+    runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the TelegramSettings
+   */
+  select?: Prisma.TelegramSettingsSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the TelegramSettings
+   */
+  omit?: Prisma.TelegramSettingsOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TelegramSettingsInclude<ExtArgs> | null;
+  where?: Prisma.TelegramSettingsWhereInput;
 };
 
 /**

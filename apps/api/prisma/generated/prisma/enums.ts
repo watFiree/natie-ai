@@ -8,6 +8,13 @@
  * 🟢 You can import this file directly.
  */
 
+export const AgentType = {
+  email: 'email',
+  x: 'x',
+} as const;
+
+export type AgentType = (typeof AgentType)[keyof typeof AgentType];
+
 export const LangChainMessageType = {
   human: 'human',
   ai: 'ai',

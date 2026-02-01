@@ -62,6 +62,9 @@ export const ModelName = {
   UserAgent: 'UserAgent',
   UserAgentConversation: 'UserAgentConversation',
   Message: 'Message',
+  TelegramSettings: 'TelegramSettings',
+  TelegramConversation: 'TelegramConversation',
+  TelegramMessage: 'TelegramMessage',
 } as const;
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName];
@@ -129,6 +132,7 @@ export type EmailAgentSettingsScalarFieldEnum =
 export const AgentScalarFieldEnum = {
   id: 'id',
   description: 'description',
+  type: 'type',
 } as const;
 
 export type AgentScalarFieldEnum =
@@ -174,6 +178,46 @@ export const MessageScalarFieldEnum = {
 
 export type MessageScalarFieldEnum =
   (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum];
+
+export const TelegramSettingsScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  telegramUserId: 'telegramUserId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type TelegramSettingsScalarFieldEnum =
+  (typeof TelegramSettingsScalarFieldEnum)[keyof typeof TelegramSettingsScalarFieldEnum];
+
+export const TelegramConversationScalarFieldEnum = {
+  id: 'id',
+  telegramSettingsId: 'telegramSettingsId',
+  title: 'title',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+} as const;
+
+export type TelegramConversationScalarFieldEnum =
+  (typeof TelegramConversationScalarFieldEnum)[keyof typeof TelegramConversationScalarFieldEnum];
+
+export const TelegramMessageScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  type: 'type',
+  agentType: 'agentType',
+  content: 'content',
+  name: 'name',
+  additionalKwargs: 'additionalKwargs',
+  responseMetadata: 'responseMetadata',
+  toolCallId: 'toolCallId',
+  toolName: 'toolName',
+  createdAt: 'createdAt',
+  seq: 'seq',
+} as const;
+
+export type TelegramMessageScalarFieldEnum =
+  (typeof TelegramMessageScalarFieldEnum)[keyof typeof TelegramMessageScalarFieldEnum];
 
 export const SortOrder = {
   asc: 'asc',
