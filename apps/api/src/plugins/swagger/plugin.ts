@@ -14,7 +14,7 @@ async function swaggerPlugin(fastify: FastifyInstance) {
       },
       servers: [
         {
-          url: 'http://localhost:3000',
+          url: process.env.PUBLIC_BASE_URL!,
         },
       ],
     },
