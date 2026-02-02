@@ -116,7 +116,6 @@ export class AgentRunner {
         }
 
         if (fullResponse) {
-          console.log('Saving AI message to DB', fullResponse);
           await this.saveAIMessage(options.conversationId, fullResponse);
         }
 

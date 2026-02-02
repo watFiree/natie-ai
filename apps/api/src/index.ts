@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import fastify from 'fastify';
 import cookie from '@fastify/cookie';
+import cors from '@fastify/cors';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import {
   serializerCompiler,
@@ -21,6 +22,10 @@ app.setSerializerCompiler(serializerCompiler);
 app.withTypeProvider<ZodTypeProvider>();
 
 await app.register(swaggerPlugin);
+await app.register(cors, {
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true,
+});
 
 app.register(cookie, {
   secret: process.env.WORKOS_COOKIE_PASSWORD,

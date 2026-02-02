@@ -30,7 +30,7 @@ export async function authHandler(req: FastifyRequest, reply: FastifyReply) {
     reply.setCookie('wos-session', refreshed.sealedSession ?? '', {
       path: '/',
       httpOnly: true,
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       secure: process.env.NODE_ENV === 'production',
     });
     req.user = await req.server.prisma.user.findUnique({

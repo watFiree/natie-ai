@@ -43,11 +43,11 @@ export const AuthRouter = async (fastify: FastifyInstance) => {
     reply.setCookie('wos-session', sealedSession ?? '', {
       path: '/',
       httpOnly: true,
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       secure: process.env.NODE_ENV === 'production',
     });
 
-    return reply.redirect('/');
+    return reply.redirect(process.env.FRONTEND_URL || 'http://localhost:5173');
   });
 
   fastify.get('/status', { preHandler: authHandler }, async (req) => {
