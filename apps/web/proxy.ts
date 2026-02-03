@@ -8,7 +8,7 @@ export async function proxy(request: NextRequest) {
     const cookieStore = await cookies();
 
     const cookiesList = cookieStore.getAll()
-    const cookieHeader = cookiesList.reduce((prev, cur) => prev + `;${cur.name}=${cur.value}`, '')
+    const cookieHeader = cookiesList.map(c => `${c.name}=${c.value}`).join('; ')
     const response = await getAuthStatus({
       headers: {
         Cookie: cookieHeader
