@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import fastify from 'fastify';
 import cookie from '@fastify/cookie';
+import cors from '@fastify/cors';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 import {
   serializerCompiler,
@@ -21,6 +22,10 @@ app.setSerializerCompiler(serializerCompiler);
 app.withTypeProvider<ZodTypeProvider>();
 
 await app.register(swaggerPlugin);
+await app.register(cors, {
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true,
+});
 
 app.register(cookie, {
   secret: process.env.WORKOS_COOKIE_PASSWORD,
@@ -38,9 +43,7 @@ app.listen({ port: 3000 }, async (err) => {
     console.error(err);
     process.exit(1);
   }
-  console.log(`
-  🚀 Server ready at: http://localhost:3000
-  ⭐️ See sample requests: https://github.com/prisma/prisma-examples/blob/latest/orm/fastify/README.md#using-the-rest-api`);
+  console.log(`🚀 Server ready at: http://localhost:3000`);
 
   if (process.env.TELEGRAM_TOKEN) {
     try {

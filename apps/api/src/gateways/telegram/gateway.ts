@@ -61,7 +61,6 @@ export class TelegramGateway {
   private setupListeners(): void {
     this.bot.on(messageFilter('text'), async (ctx) => {
       try {
-        console.log('text');
         await this.handleTextMessage(ctx);
       } catch (error) {
         console.error('Error handling Telegram message:', error);
