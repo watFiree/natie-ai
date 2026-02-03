@@ -30,7 +30,34 @@ async function swaggerPlugin(fastify: FastifyInstance) {
         Object.assign(response, schema.response);
         for (const key of Object.keys(response)) {
           const responseSchema = response[key];
-          response[key] = toJsonSchema(responseSchema);
+          // Check if already wrapped in content (manual OpenAPI format)
+          if (
+            typeof responseSchema === 'object' &&
+            responseSchema !== null &&
+            'content' in responseSchema
+          ) {
+            // Already wrapped, just convert the inner schema
+            const wrapped = responseSchema as {
+              description?: string;
+              content: Record<string, { schema: unknown }>;
+            };
+            for (const contentType of Object.keys(wrapped.content)) {
+              wrapped.content[contentType].schema = toJsonSchema(
+                wrapped.content[contentType].schema
+              );
+            }
+            response[key] = wrapped;
+          } else {
+            // Wrap in OpenAPI response format with content
+            response[key] = {
+              description: 'Success',
+              content: {
+                'application/json': {
+                  schema: toJsonSchema(responseSchema),
+                },
+              },
+            };
+          }
         }
         schema.response = response;
       }

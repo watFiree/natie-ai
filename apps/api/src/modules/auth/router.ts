@@ -1,6 +1,23 @@
 import { FastifyInstance } from 'fastify';
+import { z } from 'zod';
 import { workos } from './consts';
 import { authHandler } from './handler';
+
+const UserSchema = z.object({
+  id: z.string(),
+  workosUserId: z.string(),
+  email: z.string(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
+
+const StatusResponseSchema = z.object({
+  user: UserSchema.nullable(),
+});
+
+const ErrorResponseSchema = z.object({
+  error: z.string(),
+});
 
 export const AuthRouter = async (fastify: FastifyInstance) => {
   fastify.get('/login', async (_req, reply) => {
@@ -47,12 +64,29 @@ export const AuthRouter = async (fastify: FastifyInstance) => {
       secure: process.env.NODE_ENV === 'production',
     });
 
-    return reply.redirect(process.env.FRONTEND_URL || 'http://localhost:5173');
+    const baseUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+    return reply.redirect(`${baseUrl}/app`);
   });
 
-  fastify.get('/status', { preHandler: authHandler }, async (req) => {
+  fastify.get('/status', {
+    preHandler: authHandler,
+    schema: {
+      response: {
+        200: StatusResponseSchema,
+        401: ErrorResponseSchema,
+      },
+    },
+  }, async (req) => {
+    const user = req.user;
+    if (!user) {
+      return { user: null };
+    }
     return {
-      user: req.user,
+      user: {
+        ...user,
+        createdAt: user.createdAt.toISOString(),
+        updatedAt: user.updatedAt.toISOString(),
+      },
     };
   });
 

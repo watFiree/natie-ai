@@ -43,9 +43,7 @@ app.listen({ port: 3000 }, async (err) => {
     console.error(err);
     process.exit(1);
   }
-  console.log(`
-  🚀 Server ready at: http://localhost:3000
-  ⭐️ See sample requests: https://github.com/prisma/prisma-examples/blob/latest/orm/fastify/README.md#using-the-rest-api`);
+  console.log(`🚀 Server ready at: http://localhost:3000`);
 
   if (process.env.TELEGRAM_TOKEN) {
     try {

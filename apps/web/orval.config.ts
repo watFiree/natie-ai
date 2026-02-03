@@ -7,19 +7,14 @@ export default defineConfig({
     },
     output: {
       mode: 'tags-split',
-      target: './src/generated/api',
-      schemas: './src/generated/model',
-      client: 'react-query',
+      target: './lib/client/index.ts',
+      schemas: './lib/client/model',
+      client: 'fetch',
       override: {
-        mutator: {
-          path: './src/lib/axios-instance.ts',
-          name: 'customInstance',
-        },
-        query: {
-          useQuery: true,
-          useInfinite: true,
-          useInfiniteQueryParam: 'cursor',
-        },
+          mutator: {
+            path: './lib/custom-client.ts',
+            name: 'customInstance',
+          },
       },
     }
   },
