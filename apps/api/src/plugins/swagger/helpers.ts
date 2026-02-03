@@ -21,9 +21,7 @@ function convertNullable(schema: unknown): unknown {
       // Get the non-null schema
       const nonNullSchema = anyOf.find(
         (item, index) =>
-          index !== nullIndex &&
-          typeof item === 'object' &&
-          item !== null
+          index !== nullIndex && typeof item === 'object' && item !== null
       );
       if (nonNullSchema) {
         // Convert to nullable format
@@ -55,9 +53,7 @@ function convertNullable(schema: unknown): unknown {
     if (nullIndex !== -1) {
       const nonNullSchema = oneOf.find(
         (item, index) =>
-          index !== nullIndex &&
-          typeof item === 'object' &&
-          item !== null
+          index !== nullIndex && typeof item === 'object' && item !== null
       );
       if (nonNullSchema) {
         const converted = convertNullable(nonNullSchema) as Record<

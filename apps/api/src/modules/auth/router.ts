@@ -68,27 +68,31 @@ export const AuthRouter = async (fastify: FastifyInstance) => {
     return reply.redirect(`${baseUrl}/app`);
   });
 
-  fastify.get('/status', {
-    preHandler: authHandler,
-    schema: {
-      response: {
-        200: StatusResponseSchema,
-        401: ErrorResponseSchema,
+  fastify.get(
+    '/status',
+    {
+      preHandler: authHandler,
+      schema: {
+        response: {
+          200: StatusResponseSchema,
+          401: ErrorResponseSchema,
+        },
       },
     },
-  }, async (req) => {
-    const user = req.user;
-    if (!user) {
-      return { user: null };
+    async (req) => {
+      const user = req.user;
+      if (!user) {
+        return { user: null };
+      }
+      return {
+        user: {
+          ...user,
+          createdAt: user.createdAt.toISOString(),
+          updatedAt: user.updatedAt.toISOString(),
+        },
+      };
     }
-    return {
-      user: {
-        ...user,
-        createdAt: user.createdAt.toISOString(),
-        updatedAt: user.updatedAt.toISOString(),
-      },
-    };
-  });
+  );
 
   fastify.get('/logout', async (req, reply) => {
     const session = workos.userManagement.loadSealedSession({
