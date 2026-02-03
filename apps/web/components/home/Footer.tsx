@@ -15,13 +15,15 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <Image
-              src="/logo.jpeg"
-              alt="Natie AI"
-              width={32}
-              height={32}
-              className="w-8 h-8 rounded-lg object-cover"
-            />
+            <div className="w-8 h-8 overflow-hidden rounded-lg">
+              <Image
+                src="/logo.png"
+                alt="Natie AI"
+                width={32}
+                height={32}
+                className="object-cover scale-150"
+              />
+            </div>
             <span className="text-lg font-bold">Natie AI</span>
           </div>
           <div className="flex items-center gap-6">

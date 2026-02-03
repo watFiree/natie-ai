@@ -1,11 +1,11 @@
 "use client"
 
+import Image from "next/image"
 import * as React from "react"
 import {
   IconBrandTelegram,
   IconBrandX,
   IconHelp,
-  IconInnerShadowTop,
   IconMail,
   IconRobot,
   IconSearch,
@@ -81,9 +81,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
-            <div className="flex h-10 items-center gap-2 px-2">
-              <IconInnerShadowTop className="!size-5" />
-              <span className="text-base font-semibold">Natie AI</span>
+            <div className="flex h-12 items-center gap-3 px-2">
+              <div className="w-10 h-10 overflow-hidden rounded-md">
+                <Image src="/logo.png" alt="Natie AI" width={40} height={40} className="object-cover scale-150" />
+              </div>
+              <span className="text-lg font-semibold">Natie AI</span>
             </div>
           </SidebarMenuItem>
         </SidebarMenu>
