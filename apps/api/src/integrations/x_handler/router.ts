@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
-import { AgentRequestSchema, CreateXAgentSchema } from './schema';
+import { AgentRequestSchema } from './schema';
 import { authHandler } from '../../modules/auth/handler';
 import { createAgent } from './createAgent';
 import { createSystemPrompt } from './system';
@@ -9,42 +9,14 @@ import { AgentRunner } from '../common/runner';
 import { createClient } from './clientFactory';
 import { XAccountRepository } from '../../modules/x_account/repository';
 import { MessageRepository } from '../../modules/messages/repository';
+import { ChatRepository } from '../../modules/chat/repository';
 
 export const XAgentRouter = async (fastify: FastifyInstance) => {
   const typedFastify = fastify.withTypeProvider<ZodTypeProvider>();
   const messageRepo = new MessageRepository(fastify.prisma);
   const xAccountRepo = new XAccountRepository(fastify.prisma);
+  const chatRepo = new ChatRepository(fastify.prisma);
   const agentRunner = new AgentRunner({ prisma: fastify.prisma, messageRepo });
-
-  typedFastify.post(
-    '/create',
-    {
-      preHandler: authHandler,
-      schema: {
-        body: CreateXAgentSchema,
-      },
-    },
-    async (req, reply) => {
-      if (!req.user?.id) return reply.code(401).send({ error: 'Unauthorized' });
-
-      const { userAgentId } = req.body;
-
-      const userAgent = await fastify.prisma.userAgent.findUnique({
-        where: { id: userAgentId },
-      });
-      if (!userAgent) {
-        return reply.code(404).send({ error: 'User Agent not found' });
-      }
-
-      const conversation = await fastify.prisma.userAgentConversation.create({
-        data: {
-          userAgentId: userAgentId,
-        },
-      });
-
-      return reply.send(conversation);
-    }
-  );
 
   typedFastify.post(
     '/chat',
@@ -57,18 +29,9 @@ export const XAgentRouter = async (fastify: FastifyInstance) => {
     async (req, reply) => {
       if (!req.user?.id) return reply.code(401).send({ error: 'Unauthorized' });
 
-      const { message, type, agentConversationId } = req.body;
+      const { message, type } = req.body;
 
-      const conversation =
-        await fastify.prisma.userAgentConversation.findUnique({
-          where: {
-            id: agentConversationId,
-            userAgent: { userId: req.user.id },
-          },
-        });
-      if (!conversation) {
-        return reply.code(404).send({ error: 'Conversation not found' });
-      }
+      const conversation = await chatRepo.getOrCreate(req.user.id, 'x');
 
       const xAccount = await xAccountRepo.findByUserId(req.user.id);
 

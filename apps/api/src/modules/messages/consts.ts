@@ -1,4 +1,7 @@
-import { LangChainMessageType } from '../../../prisma/generated/prisma/client';
+import {
+  LangChainMessageType,
+  MessageChannel,
+} from '../../../prisma/generated/prisma/client';
 
 export type CreateMessageData = {
   conversationId: string;
@@ -6,4 +9,5 @@ export type CreateMessageData = {
   content: string;
   toolCallId?: string;
   toolName?: string;
+  channel?: MessageChannel;
 };

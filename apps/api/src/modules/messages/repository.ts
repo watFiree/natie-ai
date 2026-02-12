@@ -5,7 +5,8 @@ export class MessageRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
   async create(data: CreateMessageData): Promise<Message> {
-    const { conversationId, type, content, toolCallId, toolName } = data;
+    const { conversationId, type, content, toolCallId, toolName, channel } =
+      data;
 
     return this.prisma.message.create({
       data: {
@@ -14,6 +15,7 @@ export class MessageRepository {
         content: { text: content },
         toolCallId,
         toolName,
+        ...(channel && { channel }),
       },
     });
   }

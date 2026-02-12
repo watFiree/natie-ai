@@ -1,9 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
-import {
-  AgentRequestSchema,
-  CreateEmailAgentConversationSchema,
-} from './schema';
+import { AgentRequestSchema } from './schema';
 import { authHandler } from '../../modules/auth/handler';
 import { createAgent } from './createAgent';
 import { createSystemPrompt } from './system';
@@ -12,6 +9,7 @@ import { createOAuth2Client } from '../../modules/gmail/clientFactory';
 import { GmailAccountRepository } from '../../modules/gmail/repository';
 import { createTools } from './tools';
 import { MessageRepository } from '../../modules/messages/repository';
+import { ChatRepository } from '../../modules/chat/repository';
 import { AgentRunner } from '../common/runner';
 
 export const EmailAgentRouter = async (fastify: FastifyInstance) => {
@@ -22,37 +20,8 @@ export const EmailAgentRouter = async (fastify: FastifyInstance) => {
     createOAuth2Client(),
     gmailAccountRepo
   );
+  const chatRepo = new ChatRepository(fastify.prisma);
   const agentRunner = new AgentRunner({ prisma: fastify.prisma, messageRepo });
-
-  typedFastify.post(
-    '/create',
-    {
-      preHandler: authHandler,
-      schema: {
-        body: CreateEmailAgentConversationSchema,
-      },
-    },
-    async (req, reply) => {
-      if (!req.user?.id) return reply.code(401).send({ error: 'Unauthorized' });
-
-      const { userAgentId } = req.body;
-
-      const userAgent = await fastify.prisma.userAgent.findUnique({
-        where: { id: userAgentId, userId: req.user.id },
-      });
-      if (!userAgent) {
-        return reply.code(404).send({ error: 'User Agent not found' });
-      }
-
-      const conversation = await fastify.prisma.userAgentConversation.create({
-        data: {
-          userAgentId: userAgent.id,
-        },
-      });
-
-      return reply.send(conversation);
-    }
-  );
 
   typedFastify.post(
     '/chat',
@@ -65,20 +34,11 @@ export const EmailAgentRouter = async (fastify: FastifyInstance) => {
     async (req, reply) => {
       if (!req.user?.id) return reply.code(401).send({ error: 'Unauthorized' });
 
-      const { message, type, agentConversationId } = req.body;
+      const { message, type } = req.body;
 
-      const conversation =
-        await fastify.prisma.userAgentConversation.findUnique({
-          where: {
-            id: agentConversationId,
-            userAgent: { userId: req.user.id },
-          },
-        });
-      if (!conversation) {
-        return reply.code(404).send({ error: 'Conversation not found' });
-      }
+      const conversation = await chatRepo.getOrCreate(req.user.id, 'email');
 
-      const settings = await fastify.prisma.emailAgentSettings.findFirst({
+      const settings = await fastify.prisma.emailIntegrationSettings.findFirst({
         where: { userId: req.user.id },
       });
       const emailAccounts = await gmailAccountRepo.findByUserId(req.user.id);

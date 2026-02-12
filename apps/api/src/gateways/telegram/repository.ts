@@ -1,10 +1,7 @@
 import {
   PrismaClient,
-  TelegramMessage,
   TelegramSettings,
 } from '../../../prisma/generated/prisma/client';
-import { ExtendedAgentType } from '../../agents/delegate';
-import { CreateMessageData } from '../../modules/messages/consts';
 
 export type CreateTelegramSettingsData = {
   userId: string;
@@ -41,59 +38,6 @@ export class TelegramSettingsRepository {
   async delete(userId: string): Promise<TelegramSettings> {
     return this.prisma.telegramSettings.delete({
       where: { userId },
-    });
-  }
-}
-
-export interface CreateTelegramMessageData extends CreateMessageData {
-  agentType: ExtendedAgentType;
-}
-
-export class TelegramMessageRepository {
-  constructor(private readonly prisma: PrismaClient) {}
-
-  async create(data: CreateTelegramMessageData): Promise<TelegramMessage> {
-    const { conversationId, type, content, agentType, toolCallId, toolName } =
-      data;
-
-    return this.prisma.telegramMessage.create({
-      data: {
-        conversationId,
-        type,
-        content: { text: content },
-        agentType,
-        toolCallId,
-        toolName,
-      },
-    });
-  }
-
-  async findByConversationId(
-    conversationId: string,
-    limit?: number
-  ): Promise<TelegramMessage[]> {
-    return this.prisma.telegramMessage.findMany({
-      where: { conversationId },
-      orderBy: { createdAt: 'desc' },
-      take: limit,
-    });
-  }
-}
-
-export class TelegramConversationRepository {
-  constructor(private readonly prisma: PrismaClient) {}
-
-  async getOrCreate(telegramSettingsId: string): Promise<{ id: string }> {
-    const existing = await this.prisma.telegramConversation.findUnique({
-      where: { telegramSettingsId },
-    });
-
-    if (existing) {
-      return existing;
-    }
-
-    return this.prisma.telegramConversation.create({
-      data: { telegramSettingsId },
     });
   }
 }
