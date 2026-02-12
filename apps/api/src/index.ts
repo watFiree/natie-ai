@@ -16,11 +16,13 @@ import { EmailAgentRouter } from './integrations/email_handler/router';
 import { XAgentRouter } from './integrations/x_handler/router';
 import { NatieRouter } from './modules/natie/router';
 import { TelegramGateway } from './gateways/telegram/gateway';
+import { InMemoryAgentLockService } from './modules/agent_lock/service';
 
 const app = fastify({ logger: true });
 app.setValidatorCompiler(validatorCompiler);
 app.setSerializerCompiler(serializerCompiler);
 app.withTypeProvider<ZodTypeProvider>();
+app.decorate('agentLockService', new InMemoryAgentLockService());
 
 await app.register(swaggerPlugin);
 await app.register(cors, {
@@ -49,7 +51,7 @@ app.listen({ port: 3000 }, async (err) => {
 
   if (process.env.TELEGRAM_TOKEN) {
     try {
-      const gateway = new TelegramGateway(app);
+      const gateway = new TelegramGateway(app, app.agentLockService);
       gateway.start();
     } catch (error) {
       console.error('Failed to start Telegram gateway:', error);
