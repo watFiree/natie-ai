@@ -1,9 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
-import {
-  NatieChatRequestSchema,
-  CreateNatieConversationSchema,
-} from './schema';
+import { NatieChatRequestSchema } from './schema';
 import { authHandler } from '../auth/handler';
 import { NatieService } from './service';
 import { GmailOAuthService } from '../gmail/service';
