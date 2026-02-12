@@ -6,21 +6,21 @@ import {
   TelegramConversationRepository,
 } from './repository';
 import { TelegramAgentRunner } from './runner';
-import { createAgent as createEmailAgent } from '../../agents/email_handler/createAgent';
-import { createSystemPrompt as createEmailSystemPrompt } from '../../agents/email_handler/system';
-import { createTools as createEmailTools } from '../../agents/email_handler/tools';
-import { createAgent as createXAgent } from '../../agents/x_handler/createAgent';
-import { createSystemPrompt as createXSystemPrompt } from '../../agents/x_handler/system';
-import { createTools as createXTools } from '../../agents/x_handler/tools';
+import { createAgent as createEmailAgent } from '../../integrations/email_handler/createAgent';
+import { createSystemPrompt as createEmailSystemPrompt } from '../../integrations/email_handler/system';
+import { createTools as createEmailTools } from '../../integrations/email_handler/tools';
+import { createAgent as createXAgent } from '../../integrations/x_handler/createAgent';
+import { createSystemPrompt as createXSystemPrompt } from '../../integrations/x_handler/system';
+import { createTools as createXTools } from '../../integrations/x_handler/tools';
 import { GmailOAuthService } from '../../modules/gmail/service';
 import { createOAuth2Client } from '../../modules/gmail/clientFactory';
 import { GmailAccountRepository } from '../../modules/gmail/repository';
 import { XAccountRepository } from '../../modules/x_account/repository';
-import { createClient as createXClient } from '../../agents/x_handler/clientFactory';
-import { AgentDelegate, type AgentInfo } from '../../agents/delegate';
-import { createAgent as createChatAgent } from '../../agents/chat';
+import { createClient as createXClient } from '../../integrations/x_handler/clientFactory';
+import { AgentDelegate, type AgentInfo } from '../../integrations/delegate';
+import { createAgent as createChatAgent } from '../../integrations/chat';
 import type { FastifyInstance } from 'fastify';
-import type { ExtendedAgentType } from '../../agents/delegate';
+import type { ExtendedAgentType } from '../../integrations/delegate';
 import { ReactAgent } from 'langchain';
 
 export class TelegramGateway {

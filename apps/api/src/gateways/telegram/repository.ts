@@ -3,7 +3,7 @@ import {
   TelegramMessage,
   TelegramSettings,
 } from '../../../prisma/generated/prisma/client';
-import { ExtendedAgentType } from '../../agents/delegate';
+import { ExtendedAgentType } from '../../integrations/delegate';
 import { CreateMessageData } from '../../modules/messages/consts';
 
 export type CreateTelegramSettingsData = {

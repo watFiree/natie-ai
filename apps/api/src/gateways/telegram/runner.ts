@@ -2,10 +2,10 @@ import { HumanMessage, BaseMessage, AIMessage } from '@langchain/core/messages';
 import { ReactAgent } from 'langchain';
 import { Readable } from 'stream';
 import { TelegramMessageRepository } from './repository';
-import { mapInternalMessageToLangChain } from '../../agents/common/formatMessages';
+import { mapInternalMessageToLangChain } from '../../integrations/common/formatMessages';
 import { LangChainMessageType } from '../../../prisma/generated/prisma/client';
-import { AgentRunOptions } from '../../agents/common/runner/consts';
-import { ExtendedAgentType } from '../../agents/delegate/consts';
+import { AgentRunOptions } from '../../integrations/common/runner/consts';
+import { ExtendedAgentType } from '../../integrations/delegate/consts';
 
 export interface TelegramAgentContext {
   messageRepo: TelegramMessageRepository;

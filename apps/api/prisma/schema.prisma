@@ -15,9 +15,10 @@ model User {
   updatedAt        DateTime          @updatedAt
   gmailAccounts    GmailAccount[]
   xAccount         XAccount?
-  emailSettings    EmailAgentSettings[]
-  userAgents       UserAgent[]
+  emailSettings    EmailIntegrationSettings[]
+  userIntegrations UserIntegration[]
   telegramSettings TelegramSettings?
+  chats            UserChat[]
 }
 
 model GmailAccount {
@@ -44,7 +45,7 @@ model XAccount {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model EmailAgentSettings {
+model EmailIntegrationSettings {
   id            String   @id @default(cuid())
   userId        String
   labels        String[]
@@ -54,23 +55,23 @@ model EmailAgentSettings {
   @@index([userId])
 }
 
-enum AgentType {
+enum IntegrationType {
   email
   x
 }
 
-model Agent {
+model Integration {
   id            String    @id @default(cuid())
   description   String
-  type          AgentType
+  type          IntegrationType
 
-  userAgents  UserAgent[]
+  userIntegrations  UserIntegration[]
 }
 
-model UserAgent {
+model UserIntegration {
   id        String   @id @default(cuid())
   userId    String
-  agentId   String
+  integrationId   String
 
   displayName   String?
   isEnabled     Boolean  @default(true)
@@ -79,26 +80,38 @@ model UserAgent {
   updatedAt DateTime @updatedAt
 
   user User  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+  integration Integration @relation(fields: [integrationId], references: [id], onDelete: Cascade)
 
-  conversations UserAgentConversation[]
+  chats     UserChat[]
 
   @@index([userId])
-  @@index([agentId])
-  @@unique([userId, agentId])
+  @@index([integrationId])
+  @@unique([userId, integrationId])
 }
 
-model UserAgentConversation {
+enum ChatType {
+  natie
+  email
+  x
+  telegram
+}
+
+model UserChat {
   id          String   @id @default(cuid())
-  userAgentId String
+  userId      String
+  type        ChatType
+  userIntegrationId String?
   title       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  userAgent UserAgent @relation(fields: [userAgentId], references: [id], onDelete: Cascade)
-  messages  Message[]
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userIntegration UserIntegration? @relation(fields: [userIntegrationId], references: [id], onDelete: SetNull)
+  messages    Message[]
 
-  @@index([userAgentId])
+  @@index([userId])
+  @@index([userIntegrationId])
+  @@unique([userId, type])
 }
 
 enum LangChainMessageType {
@@ -106,6 +119,13 @@ enum LangChainMessageType {
   ai
   system
   tool
+}
+
+enum MessageChannel {
+  web
+  telegram
+  email
+  x
 }
 
 model Message {
@@ -123,11 +143,14 @@ model Message {
   toolCallId     String?             @map("tool_call_id")
   toolName       String?             @map("tool_name")
 
+  /// Channel the message came from
+  channel        MessageChannel      @default(web)
+
   /// Ordering
   createdAt      DateTime            @default(now())
   seq            Int?
 
-  conversation UserAgentConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversation UserChat @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   @@index([conversationId, createdAt])
   @@index([conversationId, seq])
@@ -141,48 +164,7 @@ model TelegramSettings {
   updatedAt      DateTime @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  conversation TelegramConversation?
 
   @@index([userId])
   @@index([telegramUserId])
-}
-
-model TelegramConversation {
-  id          String   @id @default(cuid())
-  telegramSettingsId String   @unique
-  title       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  telegramSettings TelegramSettings @relation(fields: [telegramSettingsId], references: [id], onDelete: Cascade)
-  messages  TelegramMessage[]
-
-  @@index([telegramSettingsId])
-}
-
-model TelegramMessage {
-  id             String              @id @default(cuid())
-  conversationId String
-  type           LangChainMessageType
-  agentType      String?             // 'email', 'x', 'chat', etc.
-
-  content        Json
-
-  name           String?             // optional "name" field on messages
-  additionalKwargs Json?             @map("additional_kwargs")
-  responseMetadata Json?             @map("response_metadata")
-
-  /// For ToolMessage / tool results
-  toolCallId     String?             @map("tool_call_id")
-  toolName       String?             @map("tool_name")
-
-  /// Ordering
-  createdAt      DateTime            @default(now())
-  seq            Int?
-
-  conversation TelegramConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-
-  @@index([conversationId, createdAt])
-  @@index([conversationId, seq])
-  @@index([agentType])
 }
