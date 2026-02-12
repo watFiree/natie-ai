@@ -1,15 +1,13 @@
 import { Telegraf, Context } from 'telegraf';
 import { message as messageFilter } from 'telegraf/filters';
 import { PrismaClient } from '../../../prisma/generated/prisma/client';
-import {
-  TelegramMessageRepository,
-  TelegramConversationRepository,
-} from './repository';
-import { TelegramAgentRunner } from './runner';
 import { GmailOAuthService } from '../../modules/gmail/service';
 import { createOAuth2Client } from '../../modules/gmail/clientFactory';
 import { GmailAccountRepository } from '../../modules/gmail/repository';
 import { XAccountRepository } from '../../modules/x_account/repository';
+import { MessageRepository } from '../../modules/messages/repository';
+import { ChatRepository } from '../../modules/chat/repository';
+import { AgentRunner } from '../../integrations/common/runner';
 import { NatieService } from '../../modules/natie/service';
 import type { FastifyInstance } from 'fastify';
 import { AIMessage } from '@langchain/core/messages';
@@ -17,9 +15,8 @@ import { AIMessage } from '@langchain/core/messages';
 export class TelegramGateway {
   private bot: Telegraf;
   private prisma: PrismaClient;
-  private telegramMessageRepo: TelegramMessageRepository;
-  private telegramConversationRepo: TelegramConversationRepository;
-  private telegramAgentRunner: TelegramAgentRunner;
+  private chatRepo: ChatRepository;
+  private agentRunner: AgentRunner;
   private natieService: NatieService;
 
   constructor(fastify: FastifyInstance) {
@@ -30,12 +27,11 @@ export class TelegramGateway {
 
     this.bot = new Telegraf(token);
     this.prisma = fastify.prisma;
-    this.telegramMessageRepo = new TelegramMessageRepository(this.prisma);
-    this.telegramConversationRepo = new TelegramConversationRepository(
-      this.prisma
-    );
-    this.telegramAgentRunner = new TelegramAgentRunner({
-      messageRepo: this.telegramMessageRepo,
+    this.chatRepo = new ChatRepository(this.prisma);
+    const messageRepo = new MessageRepository(this.prisma);
+    this.agentRunner = new AgentRunner({
+      prisma: this.prisma,
+      messageRepo,
     });
 
     const gmailAccountRepo = new GmailAccountRepository(this.prisma);
@@ -101,13 +97,15 @@ export class TelegramGateway {
     // Show typing indicator
     await ctx.sendChatAction('typing');
 
-    const conversation = await this.telegramConversationRepo.getOrCreate(
-      telegramSettings.id
+    const chat = await this.chatRepo.getOrCreate(
+      telegramSettings.userId,
+      'telegram',
+      'Telegram'
     );
 
     const response = await this.getResponse(
       telegramSettings.userId,
-      conversation.id,
+      chat.id,
       text
     );
 
@@ -184,11 +182,12 @@ export class TelegramGateway {
     try {
       const mainAgent = await this.natieService.createMainAgent(userId);
 
-      const result = await this.telegramAgentRunner.run(mainAgent, {
+      const result = await this.agentRunner.run(mainAgent, {
         conversationId,
         message,
-        agentType: 'natie',
+        type: 'invoke',
         abortController,
+        channel: 'telegram',
       });
 
       if ('messages' in result) {

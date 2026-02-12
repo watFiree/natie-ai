@@ -39,12 +39,14 @@ export class AgentRunner {
 
   async saveUserMessage(
     conversationId: string,
-    message: string
+    message: string,
+    channel?: AgentRunOptions['channel']
   ): Promise<void> {
     await this.context.messageRepo.create({
       conversationId,
       type: 'human',
       content: message,
+      channel,
     });
   }
 
@@ -52,7 +54,8 @@ export class AgentRunner {
     conversationId: string,
     content: string,
     toolCallId?: string,
-    toolName?: string
+    toolName?: string,
+    channel?: AgentRunOptions['channel']
   ): Promise<void> {
     await this.context.messageRepo.create({
       conversationId,
@@ -60,6 +63,7 @@ export class AgentRunner {
       content,
       toolCallId,
       toolName,
+      channel,
     });
   }
 
@@ -72,7 +76,7 @@ export class AgentRunner {
       options.message
     );
 
-    await this.saveUserMessage(options.conversationId, options.message);
+    await this.saveUserMessage(options.conversationId, options.message, options.channel);
 
     if (options.type === 'invoke') {
       const result = (await agent.invoke({ messages })) as {
@@ -83,7 +87,10 @@ export class AgentRunner {
       if (lastMessage instanceof AIMessage) {
         await this.saveAIMessage(
           options.conversationId,
-          String(lastMessage.content)
+          String(lastMessage.content),
+          undefined,
+          undefined,
+          options.channel
         );
       }
 
@@ -116,7 +123,7 @@ export class AgentRunner {
         }
 
         if (fullResponse) {
-          await this.saveAIMessage(options.conversationId, fullResponse);
+          await this.saveAIMessage(options.conversationId, fullResponse, undefined, undefined, options.channel);
         }
 
         yield `event: done\ndata: {}\n\n`;
