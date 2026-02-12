@@ -1,6 +1,6 @@
 import type { AgentType } from '../../../prisma/generated/prisma/client';
 
-export type ExtendedAgentType = AgentType | 'chat';
+export type ExtendedAgentType = AgentType | 'chat' | 'natie';
 
 export interface AgentInfo {
   id: string;
