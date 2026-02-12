@@ -11,6 +11,7 @@ import { createOAuth2Client } from '../gmail/clientFactory';
 import { GmailAccountRepository } from '../gmail/repository';
 import { XAccountRepository } from '../x_account/repository';
 import { MessageRepository } from '../messages/repository';
+import { ChatRepository } from '../chat/repository';
 import { AgentRunner } from '../../integrations/common/runner';
 
 export const NatieRouter = async (fastify: FastifyInstance) => {
@@ -22,6 +23,7 @@ export const NatieRouter = async (fastify: FastifyInstance) => {
     gmailAccountRepo
   );
   const xAccountRepo = new XAccountRepository(fastify.prisma);
+  const chatRepo = new ChatRepository(fastify.prisma);
   const agentRunner = new AgentRunner({ prisma: fastify.prisma, messageRepo });
   const natieService = new NatieService(
     fastify.prisma,
@@ -43,15 +45,7 @@ export const NatieRouter = async (fastify: FastifyInstance) => {
 
       const { message, type } = req.body;
 
-      const conversation = await fastify.prisma.userChat.findFirst({
-        where: {
-          userId: req.user.id,
-          type: 'natie',
-        },
-      });
-      if (!conversation) {
-        return reply.code(404).send({ error: 'Main Agent Chat not found' });
-      }
+      const conversation = await chatRepo.getOrCreate(req.user.id, 'natie');
 
       const mainAgent = await natieService.createMainAgent(req.user.id);
 
