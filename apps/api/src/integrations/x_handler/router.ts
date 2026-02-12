@@ -29,16 +29,18 @@ export const XAgentRouter = async (fastify: FastifyInstance) => {
 
       const { userAgentId } = req.body;
 
-      const userAgent = await fastify.prisma.userAgent.findUnique({
-        where: { id: userAgentId },
+      const userIntegration = await fastify.prisma.userIntegration.findUnique({
+        where: { id: userAgentId, userId: req.user.id },
       });
-      if (!userAgent) {
+      if (!userIntegration) {
         return reply.code(404).send({ error: 'User Agent not found' });
       }
 
-      const conversation = await fastify.prisma.userAgentConversation.create({
+      const conversation = await fastify.prisma.userChat.create({
         data: {
-          userAgentId: userAgentId,
+          userId: req.user.id,
+          type: 'x',
+          userIntegrationId: userIntegration.id,
         },
       });
 
@@ -57,13 +59,13 @@ export const XAgentRouter = async (fastify: FastifyInstance) => {
     async (req, reply) => {
       if (!req.user?.id) return reply.code(401).send({ error: 'Unauthorized' });
 
-      const { message, type, agentConversationId } = req.body;
+      const { message, type } = req.body;
 
       const conversation =
-        await fastify.prisma.userAgentConversation.findUnique({
+        await fastify.prisma.userChat.findFirst({
           where: {
-            id: agentConversationId,
-            userAgent: { userId: req.user.id },
+            userId: req.user.id,
+            type: 'x',
           },
         });
       if (!conversation) {

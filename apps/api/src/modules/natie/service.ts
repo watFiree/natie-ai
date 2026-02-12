@@ -29,7 +29,7 @@ export class NatieService {
     // Email subagent (if user has Gmail connected)
     const emailAccounts = await this.gmailAccountRepo.findByUserId(userId);
     if (emailAccounts.length > 0) {
-      const settings = await this.prisma.emailAgentSettings.findFirst({
+      const settings = await this.prisma.emailIntegrationSettings.findFirst({
         where: { userId },
       });
       const tokenProvider = (email: string) =>
