@@ -43,14 +43,6 @@ export function XAuthSettingsForm({
     const authToken = values.authToken.trim();
     const ct0 = values.ct0.trim();
 
-    if (!authToken || !ct0) {
-      setError('root', {
-        type: 'manual',
-        message: 'Both auth_token and ct0 are required.',
-      });
-      return;
-    }
-
     try {
       const response = await postXAccount({
         authToken,
