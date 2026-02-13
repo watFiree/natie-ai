@@ -91,6 +91,11 @@ export class AgentRunner {
   private normalizeChunkContent(content: unknown): string {
     if (typeof content === 'string') return content;
 
+    if (typeof content === 'object' && content !== null && 'text' in content) {
+      const text = (content as { text?: unknown }).text;
+      if (typeof text === 'string') return text;
+    }
+
     if (Array.isArray(content)) {
       return content
         .map((item) => {
