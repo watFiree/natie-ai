@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 
-import { getXAccount } from '@/lib/client/default/default';
+import { getXAccount } from '@/lib/api/default/default';
 
 import { XIntegrationShell } from './components/x-integration-shell';
 

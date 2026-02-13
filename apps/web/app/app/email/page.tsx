@@ -1,11 +1,8 @@
 import { cookies } from 'next/headers';
-
-import { buildApiUrl } from '@/lib/api-url';
-
+import { getGmailAccounts } from '@/lib/api/default/default';
 import { EmailIntegrationShell } from './components/email-integration-shell';
-import type { EmailAccount } from './types';
 
-async function getEmailAccounts(): Promise<EmailAccount[]> {
+async function getEmailAccounts() {
   const cookieStore = await cookies();
   const cookieHeader = cookieStore
     .getAll()
@@ -13,7 +10,7 @@ async function getEmailAccounts(): Promise<EmailAccount[]> {
     .join('; ');
 
   try {
-    const response = await fetch(buildApiUrl('/gmail-accounts'), {
+    const response = await getGmailAccounts({
       cache: 'no-store',
       headers: {
         Cookie: cookieHeader,
@@ -24,30 +21,9 @@ async function getEmailAccounts(): Promise<EmailAccount[]> {
       return [];
     }
 
-    const data = (await response.json()) as unknown;
-    if (!Array.isArray(data)) {
-      return [];
-    }
+    const data = response.data;
 
-    return data.flatMap((item) => {
-      if (
-        typeof item === 'object' &&
-        item !== null &&
-        'email' in item &&
-        'provider' in item &&
-        typeof item.email === 'string' &&
-        item.provider === 'gmail'
-      ) {
-        return [
-          {
-            email: item.email,
-            provider: 'gmail' as const,
-          },
-        ];
-      }
-
-      return [];
-    });
+    return data;
   } catch {
     return [];
   }

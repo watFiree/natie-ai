@@ -19,19 +19,13 @@ import {
   SheetTitle,
 } from '@/components/ui/sheet';
 import { buildApiUrl } from '@/lib/api-url';
+import { GetGmailAccounts200ItemProvider } from '@/lib/api/models';
 
-import type { EmailProvider } from '../types';
-
-type ProviderOption = {
-  value: EmailProvider;
-  label: string;
-};
-
-const PROVIDERS: ProviderOption[] = [
+const PROVIDERS = [
   {
-    value: 'gmail',
+    value: GetGmailAccounts200ItemProvider.gmail,
     label: 'Gmail',
-  },
+  } as const,
 ];
 
 type EmailIntegrationModalProps = {
@@ -43,9 +37,10 @@ export function EmailIntegrationModal({
   open,
   onOpenChange,
 }: EmailIntegrationModalProps) {
-  const [selectedProvider, setSelectedProvider] = useState<EmailProvider | ''>(
-    ''
-  );
+  const [selectedProvider, setSelectedProvider] =
+    useState<GetGmailAccounts200ItemProvider>(
+      GetGmailAccounts200ItemProvider.gmail
+    );
 
   const providerOption = useMemo(
     () => PROVIDERS.find((provider) => provider.value === selectedProvider),
@@ -53,19 +48,21 @@ export function EmailIntegrationModal({
   );
 
   const redirectUrl =
-    selectedProvider === 'gmail' ? buildApiUrl('/auth/google') : null;
+    selectedProvider === GetGmailAccounts200ItemProvider.gmail
+      ? buildApiUrl('/auth/google')
+      : undefined;
 
   const handleOpenChange = (nextOpen: boolean) => {
     onOpenChange(nextOpen);
 
     if (!nextOpen) {
-      setSelectedProvider('');
+      setSelectedProvider(GetGmailAccounts200ItemProvider.gmail);
     }
   };
 
   return (
     <Sheet open={open} onOpenChange={handleOpenChange}>
-      <SheetContent side="right" className="w-full sm:max-w-md">
+      <SheetContent side="right" className="w-full sm:max-w-lg">
         <SheetHeader>
           <SheetTitle>Add email integration</SheetTitle>
           <SheetDescription>
@@ -78,9 +75,11 @@ export function EmailIntegrationModal({
             <p className="text-sm font-medium">Provider</p>
             <Select
               value={selectedProvider}
-              onValueChange={(value) =>
-                setSelectedProvider(value as EmailProvider)
-              }
+              onValueChange={(value) => {
+                if (value === GetGmailAccounts200ItemProvider.gmail) {
+                  setSelectedProvider(GetGmailAccounts200ItemProvider.gmail);
+                }
+              }}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select provider" />
