@@ -11,6 +11,7 @@ import { AgentRunner } from '../../integrations/common/runner';
 import { NatieService } from '../../modules/natie/service';
 import type { FastifyInstance } from 'fastify';
 import { AIMessage } from '@langchain/core/messages';
+import { MODEL_NAME as NATIE_MODEL_NAME } from '../../modules/natie/model';
 import type { AgentLockService } from '../../modules/agent_lock/service';
 
 const ACTIVE_WEB_CONVERSATION_MESSAGE =
@@ -211,6 +212,8 @@ export class TelegramGateway {
         type: 'invoke',
         abortController,
         channel: 'telegram',
+        userId,
+        modelName: NATIE_MODEL_NAME,
       });
 
       if ('messages' in result) {

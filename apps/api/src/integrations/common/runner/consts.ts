@@ -15,4 +15,6 @@ export interface AgentRunOptions {
   type: 'stream' | 'invoke';
   abortController: AbortController;
   channel?: MessageChannel;
+  userId?: string;
+  modelName?: string;
 }

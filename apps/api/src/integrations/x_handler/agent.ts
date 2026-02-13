@@ -1,4 +1,4 @@
-import { HumanMessage } from '@langchain/core/messages';
+import { AIMessage, HumanMessage } from '@langchain/core/messages';
 import { tool } from 'langchain';
 import { z } from 'zod';
 import { createAgent } from './createAgent';
@@ -8,6 +8,7 @@ import type { XClientProvider } from './tools/consts';
 
 export interface XSubagentDeps {
   clientProvider: XClientProvider;
+  onAIMessage?: (message: AIMessage) => Promise<void>;
 }
 
 export function createXSubagentTool(deps: XSubagentDeps) {
@@ -20,7 +21,17 @@ export function createXSubagentTool(deps: XSubagentDeps) {
       const result = await agent.invoke({
         messages: [new HumanMessage(query)],
       });
-      return String(result.messages.at(-1)?.content ?? '');
+
+      const lastMessage = result.messages.at(-1);
+      if (lastMessage instanceof AIMessage && deps.onAIMessage) {
+        try {
+          await deps.onAIMessage(lastMessage);
+        } catch (error) {
+          console.error('Failed to track X subagent token usage:', error);
+        }
+      }
+
+      return String(lastMessage?.content ?? '');
     },
     {
       name: 'x_agent',

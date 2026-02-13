@@ -10,6 +10,7 @@ import { XAccountRepository } from '../x_account/repository';
 import { MessageRepository } from '../messages/repository';
 import { ChatRepository } from '../chat/repository';
 import { AgentRunner } from '../../integrations/common/runner';
+import { MODEL_NAME as NATIE_MODEL_NAME } from './model';
 import { Readable } from 'stream';
 
 const ACTIVE_CONVERSATION_ERROR_MESSAGE =
@@ -67,6 +68,8 @@ export const NatieRouter = async (fastify: FastifyInstance) => {
           type,
           abortController,
           channel: 'web',
+          userId,
+          modelName: NATIE_MODEL_NAME,
         });
 
         if (type === 'invoke') {

@@ -59,6 +59,8 @@ export const ModelName = {
   UserIntegration: 'UserIntegration',
   UserChat: 'UserChat',
   Message: 'Message',
+  ModelPricing: 'ModelPricing',
+  UserModelTokenUsage: 'UserModelTokenUsage',
   TelegramSettings: 'TelegramSettings'
 } as const
 
@@ -175,6 +177,35 @@ export const MessageScalarFieldEnum = {
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
+export const ModelPricingScalarFieldEnum = {
+  id: 'id',
+  model: 'model',
+  inputPricePerMillionMicros: 'inputPricePerMillionMicros',
+  outputPricePerMillionMicros: 'outputPricePerMillionMicros',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ModelPricingScalarFieldEnum = (typeof ModelPricingScalarFieldEnum)[keyof typeof ModelPricingScalarFieldEnum]
+
+
+export const UserModelTokenUsageScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  model: 'model',
+  inputTokens: 'inputTokens',
+  outputTokens: 'outputTokens',
+  totalTokens: 'totalTokens',
+  inputCostMicros: 'inputCostMicros',
+  outputCostMicros: 'outputCostMicros',
+  totalCostMicros: 'totalCostMicros',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserModelTokenUsageScalarFieldEnum = (typeof UserModelTokenUsageScalarFieldEnum)[keyof typeof UserModelTokenUsageScalarFieldEnum]
 
 
 export const TelegramSettingsScalarFieldEnum = {
