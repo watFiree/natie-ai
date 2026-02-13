@@ -58,6 +58,16 @@ export type UserChat = Prisma.UserChatModel
  */
 export type Message = Prisma.MessageModel
 /**
+ * Model ModelPricing
+ * 
+ */
+export type ModelPricing = Prisma.ModelPricingModel
+/**
+ * Model UserModelTokenUsage
+ * 
+ */
+export type UserModelTokenUsage = Prisma.UserModelTokenUsageModel
+/**
  * Model TelegramSettings
  * 
  */

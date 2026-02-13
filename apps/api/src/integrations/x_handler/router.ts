@@ -10,6 +10,7 @@ import { createClient } from './clientFactory';
 import { XAccountRepository } from '../../modules/x_account/repository';
 import { MessageRepository } from '../../modules/messages/repository';
 import { ChatRepository } from '../../modules/chat/repository';
+import { MODEL_NAME as X_MODEL_NAME } from './model';
 
 export const XAgentRouter = async (fastify: FastifyInstance) => {
   const typedFastify = fastify.withTypeProvider<ZodTypeProvider>();
@@ -57,6 +58,8 @@ export const XAgentRouter = async (fastify: FastifyInstance) => {
         message,
         type,
         abortController,
+        userId: req.user.id,
+        modelName: X_MODEL_NAME,
       });
 
       if (type === 'invoke') {

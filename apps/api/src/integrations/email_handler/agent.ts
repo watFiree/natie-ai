@@ -1,4 +1,4 @@
-import { HumanMessage } from '@langchain/core/messages';
+import { AIMessage, HumanMessage } from '@langchain/core/messages';
 import { tool } from 'langchain';
 import { z } from 'zod';
 import { createAgent } from './createAgent';
@@ -10,6 +10,7 @@ export interface EmailSubagentDeps {
   tokenProvider: TokenProvider;
   labels: string[];
   emailAccounts: string[];
+  onAIMessage?: (message: AIMessage) => Promise<void>;
 }
 
 export function createEmailSubagentTool(deps: EmailSubagentDeps) {
@@ -22,7 +23,17 @@ export function createEmailSubagentTool(deps: EmailSubagentDeps) {
       const result = await agent.invoke({
         messages: [new HumanMessage(query)],
       });
-      return String(result.messages.at(-1)?.content ?? '');
+
+      const lastMessage = result.messages.at(-1);
+      if (lastMessage instanceof AIMessage && deps.onAIMessage) {
+        try {
+          await deps.onAIMessage(lastMessage);
+        } catch (error) {
+          console.error('Failed to track email subagent token usage:', error);
+        }
+      }
+
+      return String(lastMessage?.content ?? '');
     },
     {
       name: 'email_agent',

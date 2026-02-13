@@ -19,6 +19,7 @@ model User {
   userIntegrations UserIntegration[]
   telegramSettings TelegramSettings?
   chats            UserChat[]
+  tokenUsages      UserModelTokenUsage[]
 }
 
 model GmailAccount {
@@ -154,6 +155,35 @@ model Message {
 
   @@index([conversationId, createdAt])
   @@index([conversationId, seq])
+}
+
+model ModelPricing {
+  id                         String   @id @default(cuid())
+  model                      String   @unique
+  inputPricePerMillionMicros Int      @default(0)
+  outputPricePerMillionMicros Int     @default(0)
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+}
+
+model UserModelTokenUsage {
+  id               String   @id @default(cuid())
+  userId           String
+  model            String
+  inputTokens      BigInt   @default(0)
+  outputTokens     BigInt   @default(0)
+  totalTokens      BigInt   @default(0)
+  inputCostMicros  BigInt   @default(0)
+  outputCostMicros BigInt   @default(0)
+  totalCostMicros  BigInt   @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([model])
+  @@unique([userId, model])
 }
 
 model TelegramSettings {

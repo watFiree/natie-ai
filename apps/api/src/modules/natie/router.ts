@@ -10,6 +10,7 @@ import { XAccountRepository } from '../x_account/repository';
 import { MessageRepository } from '../messages/repository';
 import { ChatRepository } from '../chat/repository';
 import { AgentRunner } from '../../integrations/common/runner';
+import { MODEL_NAME as NATIE_MODEL_NAME } from './model';
 
 export const NatieRouter = async (fastify: FastifyInstance) => {
   const typedFastify = fastify.withTypeProvider<ZodTypeProvider>();
@@ -54,6 +55,8 @@ export const NatieRouter = async (fastify: FastifyInstance) => {
         message,
         type,
         abortController,
+        userId: req.user.id,
+        modelName: NATIE_MODEL_NAME,
       });
 
       if (type === 'invoke') {

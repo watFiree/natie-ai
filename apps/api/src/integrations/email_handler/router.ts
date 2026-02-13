@@ -11,6 +11,7 @@ import { createTools } from './tools';
 import { MessageRepository } from '../../modules/messages/repository';
 import { ChatRepository } from '../../modules/chat/repository';
 import { AgentRunner } from '../common/runner';
+import { MODEL_NAME as EMAIL_MODEL_NAME } from './model';
 
 export const EmailAgentRouter = async (fastify: FastifyInstance) => {
   const typedFastify = fastify.withTypeProvider<ZodTypeProvider>();
@@ -61,6 +62,8 @@ export const EmailAgentRouter = async (fastify: FastifyInstance) => {
         message,
         type,
         abortController,
+        userId: req.user.id,
+        modelName: EMAIL_MODEL_NAME,
       });
 
       if (type === 'invoke') {
