@@ -388,6 +388,7 @@ export const ModelName = {
   GmailAccount: 'GmailAccount',
   XAccount: 'XAccount',
   EmailIntegrationSettings: 'EmailIntegrationSettings',
+  TickTickAccount: 'TickTickAccount',
   Integration: 'Integration',
   UserIntegration: 'UserIntegration',
   UserChat: 'UserChat',
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "gmailAccount" | "xAccount" | "emailIntegrationSettings" | "integration" | "userIntegration" | "userChat" | "message" | "telegramSettings"
+    modelProps: "user" | "gmailAccount" | "xAccount" | "emailIntegrationSettings" | "tickTickAccount" | "integration" | "userIntegration" | "userChat" | "message" | "telegramSettings"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -705,6 +706,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.EmailIntegrationSettingsCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.EmailIntegrationSettingsCountAggregateOutputType> | number
+        }
+      }
+    }
+    TickTickAccount: {
+      payload: Prisma.$TickTickAccountPayload<ExtArgs>
+      fields: Prisma.TickTickAccountFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TickTickAccountFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TickTickAccountPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TickTickAccountFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TickTickAccountPayload>
+        }
+        findFirst: {
+          args: Prisma.TickTickAccountFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TickTickAccountPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TickTickAccountFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TickTickAccountPayload>
+        }
+        findMany: {
+          args: Prisma.TickTickAccountFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TickTickAccountPayload>[]
+        }
+        create: {
+          args: Prisma.TickTickAccountCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TickTickAccountPayload>
+        }
+        createMany: {
+          args: Prisma.TickTickAccountCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TickTickAccountCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TickTickAccountPayload>[]
+        }
+        delete: {
+          args: Prisma.TickTickAccountDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TickTickAccountPayload>
+        }
+        update: {
+          args: Prisma.TickTickAccountUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TickTickAccountPayload>
+        }
+        deleteMany: {
+          args: Prisma.TickTickAccountDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TickTickAccountUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TickTickAccountUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TickTickAccountPayload>[]
+        }
+        upsert: {
+          args: Prisma.TickTickAccountUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TickTickAccountPayload>
+        }
+        aggregate: {
+          args: Prisma.TickTickAccountAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTickTickAccount>
+        }
+        groupBy: {
+          args: Prisma.TickTickAccountGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TickTickAccountGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TickTickAccountCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TickTickAccountCountAggregateOutputType> | number
         }
       }
     }
@@ -1163,6 +1238,20 @@ export const EmailIntegrationSettingsScalarFieldEnum = {
 export type EmailIntegrationSettingsScalarFieldEnum = (typeof EmailIntegrationSettingsScalarFieldEnum)[keyof typeof EmailIntegrationSettingsScalarFieldEnum]
 
 
+export const TickTickAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  expiresAt: 'expiresAt',
+  scope: 'scope',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TickTickAccountScalarFieldEnum = (typeof TickTickAccountScalarFieldEnum)[keyof typeof TickTickAccountScalarFieldEnum]
+
+
 export const IntegrationScalarFieldEnum = {
   id: 'id',
   description: 'description',
@@ -1526,6 +1615,7 @@ export type GlobalOmitConfig = {
   gmailAccount?: Prisma.GmailAccountOmit
   xAccount?: Prisma.XAccountOmit
   emailIntegrationSettings?: Prisma.EmailIntegrationSettingsOmit
+  tickTickAccount?: Prisma.TickTickAccountOmit
   integration?: Prisma.IntegrationOmit
   userIntegration?: Prisma.UserIntegrationOmit
   userChat?: Prisma.UserChatOmit

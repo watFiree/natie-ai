@@ -38,6 +38,11 @@ export type XAccount = Prisma.XAccountModel
  */
 export type EmailIntegrationSettings = Prisma.EmailIntegrationSettingsModel
 /**
+ * Model TickTickAccount
+ * 
+ */
+export type TickTickAccount = Prisma.TickTickAccountModel
+/**
  * Model Integration
  * 
  */

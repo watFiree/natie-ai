@@ -10,10 +10,12 @@ import {
 import swaggerPlugin from './plugins/swagger/plugin';
 import { GmailRouter } from './modules/gmail/router';
 import { XAccountRouter } from './modules/x_account/router';
+import { TickTickRouter } from './modules/ticktick/router';
 import { dbPlugin } from './modules/db/plugin';
 import { AuthRouter } from './modules/auth/router';
 import { EmailAgentRouter } from './integrations/email_handler/router';
 import { XAgentRouter } from './integrations/x_handler/router';
+import { TickTickAgentRouter } from './integrations/ticktick_handler/router';
 import { NatieRouter } from './modules/natie/router';
 import { TelegramGateway } from './gateways/telegram/gateway';
 import { InMemoryAgentLockService } from './modules/agent_lock/service';
@@ -38,8 +40,10 @@ app.register(dbPlugin);
 app.register(AuthRouter, { prefix: '/auth' });
 app.register(GmailRouter);
 app.register(XAccountRouter, { prefix: '/x-account' });
+app.register(TickTickRouter);
 app.register(EmailAgentRouter, { prefix: '/email' });
 app.register(XAgentRouter, { prefix: '/x' });
+app.register(TickTickAgentRouter, { prefix: '/ticktick' });
 app.register(NatieRouter, { prefix: '/natie' });
 
 app.listen({ port: 3000 }, async (err) => {
