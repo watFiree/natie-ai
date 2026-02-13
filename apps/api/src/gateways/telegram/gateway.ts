@@ -15,6 +15,10 @@ import type { AgentLockService } from '../../modules/agent_lock/service';
 
 const ACTIVE_WEB_CONVERSATION_MESSAGE =
   'You have an active conversation in the web app. Please complete it before sending more messages here.';
+const ACTIVE_TELEGRAM_CONVERSATION_MESSAGE =
+  'I am still processing your previous message. Please wait for it to finish before sending another one.';
+const ACTIVE_CONVERSATION_MESSAGE =
+  'Another conversation is in progress. Please wait for it to complete.';
 
 export class TelegramGateway {
   private bot: Telegraf;
@@ -186,7 +190,16 @@ export class TelegramGateway {
     const abortController = new AbortController();
     const isLockAcquired = await this.agentLockService.acquire(userId, 'telegram');
     if (!isLockAcquired) {
-      return ACTIVE_WEB_CONVERSATION_MESSAGE;
+      const activeChannel = await this.agentLockService.getActiveChannel(userId);
+      if (activeChannel === 'web') {
+        return ACTIVE_WEB_CONVERSATION_MESSAGE;
+      }
+
+      if (activeChannel === 'telegram') {
+        return ACTIVE_TELEGRAM_CONVERSATION_MESSAGE;
+      }
+
+      return ACTIVE_CONVERSATION_MESSAGE;
     }
 
     try {

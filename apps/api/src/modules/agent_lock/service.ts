@@ -3,50 +3,32 @@ export type AgentRunChannel = 'telegram' | 'web';
 export interface AgentLockService {
   acquire(userId: string, channel: AgentRunChannel): Promise<boolean>;
   release(userId: string): Promise<void>;
+  getActiveChannel(userId: string): Promise<AgentRunChannel | null>;
 }
-
-type LockEntry = {
-  channel: AgentRunChannel;
-  count: number;
-};
 
 /**
  * In-memory per-user lock for single-process deployments.
  *
- * Re-entrant acquisition is allowed for the same channel so rapid back-to-back
- * messages in one channel do not deadlock each other, while the other channel
- * stays blocked until all active runs complete.
+ * Only one active run is allowed per user across all channels. While a run is
+ * in progress, any additional request from that user is rejected until release.
  */
 export class InMemoryAgentLockService implements AgentLockService {
-  private readonly locks = new Map<string, LockEntry>();
+  private readonly locks = new Map<string, AgentRunChannel>();
 
   async acquire(userId: string, channel: AgentRunChannel): Promise<boolean> {
-    const current = this.locks.get(userId);
-
-    if (!current) {
-      this.locks.set(userId, { channel, count: 1 });
-      return true;
-    }
-
-    if (current.channel !== channel) {
+    if (this.locks.has(userId)) {
       return false;
     }
 
-    current.count += 1;
-    this.locks.set(userId, current);
+    this.locks.set(userId, channel);
     return true;
   }
 
   async release(userId: string): Promise<void> {
-    const current = this.locks.get(userId);
-    if (!current) return;
+    this.locks.delete(userId);
+  }
 
-    current.count -= 1;
-    if (current.count <= 0) {
-      this.locks.delete(userId);
-      return;
-    }
-
-    this.locks.set(userId, current);
+  async getActiveChannel(userId: string): Promise<AgentRunChannel | null> {
+    return this.locks.get(userId) ?? null;
   }
 }
