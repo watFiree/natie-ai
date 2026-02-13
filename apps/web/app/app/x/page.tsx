@@ -1,16 +1,32 @@
-export default function Page() {
-  return (
-    <div className="flex flex-1 flex-col">
-      <div className="@container/main flex flex-1 flex-col gap-2">
-        <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-          <div className="px-4 lg:px-6">
-            <h1 className="text-2xl font-bold mb-4">X (Twitter) Integration</h1>
-            <p className="text-muted-foreground">
-              Connect your X account and chat with Natie about your tweets and timeline.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+import { cookies } from 'next/headers';
+
+import { getXAccount } from '@/lib/client/default/default';
+
+import { XIntegrationShell } from './components/x-integration-shell';
+
+async function getIsXConfigured() {
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore
+    .getAll()
+    .map((cookie) => `${cookie.name}=${cookie.value}`)
+    .join('; ');
+
+  try {
+    const response = await getXAccount({
+      cache: 'no-store',
+      headers: {
+        Cookie: cookieHeader,
+      },
+    });
+
+    return response.status === 200;
+  } catch {
+    return false;
+  }
+}
+
+export default async function Page() {
+  const isXConfigured = await getIsXConfigured();
+
+  return <XIntegrationShell initialIsConfigured={isXConfigured} />;
 }
