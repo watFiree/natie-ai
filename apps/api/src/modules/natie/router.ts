@@ -10,6 +10,10 @@ import { XAccountRepository } from '../x_account/repository';
 import { MessageRepository } from '../messages/repository';
 import { ChatRepository } from '../chat/repository';
 import { AgentRunner } from '../../integrations/common/runner';
+import { Readable } from 'stream';
+
+const ACTIVE_CONVERSATION_ERROR_MESSAGE =
+  'Another conversation is in progress. Please wait for it to complete.';
 
 export const NatieRouter = async (fastify: FastifyInstance) => {
   const typedFastify = fastify.withTypeProvider<ZodTypeProvider>();
@@ -39,33 +43,71 @@ export const NatieRouter = async (fastify: FastifyInstance) => {
     },
     async (req, reply) => {
       if (!req.user?.id) return reply.code(401).send({ error: 'Unauthorized' });
+      const userId = req.user.id;
 
       const { message, type } = req.body;
+      const isLockAcquired = await fastify.agentLockService.acquire(userId, 'web');
+      if (!isLockAcquired) {
+        return reply.code(429).send({ error: ACTIVE_CONVERSATION_ERROR_MESSAGE });
+      }
 
-      const conversation = await chatRepo.getOrCreate(req.user.id, 'natie');
+      let shouldReleaseLockInFinally = true;
 
-      const mainAgent = await natieService.createMainAgent(req.user.id);
+      try {
+        const conversation = await chatRepo.getOrCreate(userId, 'natie');
 
-      const abortController = new AbortController();
-      req.raw.on('close', () => abortController.abort());
+        const mainAgent = await natieService.createMainAgent(userId);
 
-      const result = await agentRunner.run(mainAgent, {
-        conversationId: conversation.id,
-        message,
-        type,
-        abortController,
-      });
+        const abortController = new AbortController();
+        req.raw.on('close', () => abortController.abort());
 
-      if (type === 'invoke') {
-        return reply.send(result);
-      } else {
+        const result = await agentRunner.run(mainAgent, {
+          conversationId: conversation.id,
+          message,
+          type,
+          abortController,
+          channel: 'web',
+        });
+
+        if (type === 'invoke') {
+          return reply.send(result);
+        }
+
+        let isStreamLockReleased = false;
+        const releaseLock = async (): Promise<void> => {
+          if (isStreamLockReleased) return;
+          isStreamLockReleased = true;
+          await fastify.agentLockService.release(userId);
+        };
+
+        const streamResult = result as Readable;
+        streamResult.once('end', () => {
+          void releaseLock();
+        });
+        streamResult.once('close', () => {
+          void releaseLock();
+        });
+        streamResult.once('error', () => {
+          void releaseLock();
+        });
+        shouldReleaseLockInFinally = false;
+
         reply
           .header('Content-Type', 'text/event-stream; charset=utf-8')
           .header('Cache-Control', 'no-cache, no-transform')
           .header('Connection', 'keep-alive')
           .header('X-Accel-Buffering', 'no');
 
-        return reply.send(result);
+        try {
+          return reply.send(streamResult);
+        } catch (error) {
+          await releaseLock();
+          throw error;
+        }
+      } finally {
+        if (shouldReleaseLockInFinally) {
+          await fastify.agentLockService.release(userId);
+        }
       }
     }
   );
