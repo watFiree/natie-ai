@@ -15,6 +15,7 @@ model User {
   updatedAt        DateTime          @updatedAt
   gmailAccounts    GmailAccount[]
   xAccount         XAccount?
+  ticktickAccount  TickTickAccount?
   emailSettings    EmailIntegrationSettings[]
   userIntegrations UserIntegration[]
   telegramSettings TelegramSettings?
@@ -55,9 +56,25 @@ model EmailIntegrationSettings {
   @@index([userId])
 }
 
+model TickTickAccount {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  accessToken   Bytes
+  refreshToken  Bytes
+  expiresAt     DateTime?
+  scope         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
 enum IntegrationType {
   email
   x
+  ticktick
 }
 
 model Integration {
@@ -94,6 +111,7 @@ enum ChatType {
   email
   x
   telegram
+  ticktick
 }
 
 model UserChat {

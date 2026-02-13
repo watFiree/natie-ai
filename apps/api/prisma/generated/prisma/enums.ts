@@ -11,7 +11,8 @@
 
 export const IntegrationType = {
   email: 'email',
-  x: 'x'
+  x: 'x',
+  ticktick: 'ticktick'
 } as const
 
 export type IntegrationType = (typeof IntegrationType)[keyof typeof IntegrationType]
@@ -21,7 +22,8 @@ export const ChatType = {
   natie: 'natie',
   email: 'email',
   x: 'x',
-  telegram: 'telegram'
+  telegram: 'telegram',
+  ticktick: 'ticktick'
 } as const
 
 export type ChatType = (typeof ChatType)[keyof typeof ChatType]

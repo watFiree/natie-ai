@@ -184,6 +184,7 @@ export type UserWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   gmailAccounts?: Prisma.GmailAccountListRelationFilter
   xAccount?: Prisma.XOR<Prisma.XAccountNullableScalarRelationFilter, Prisma.XAccountWhereInput> | null
+  ticktickAccount?: Prisma.XOR<Prisma.TickTickAccountNullableScalarRelationFilter, Prisma.TickTickAccountWhereInput> | null
   emailSettings?: Prisma.EmailIntegrationSettingsListRelationFilter
   userIntegrations?: Prisma.UserIntegrationListRelationFilter
   telegramSettings?: Prisma.XOR<Prisma.TelegramSettingsNullableScalarRelationFilter, Prisma.TelegramSettingsWhereInput> | null
@@ -198,6 +199,7 @@ export type UserOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   gmailAccounts?: Prisma.GmailAccountOrderByRelationAggregateInput
   xAccount?: Prisma.XAccountOrderByWithRelationInput
+  ticktickAccount?: Prisma.TickTickAccountOrderByWithRelationInput
   emailSettings?: Prisma.EmailIntegrationSettingsOrderByRelationAggregateInput
   userIntegrations?: Prisma.UserIntegrationOrderByRelationAggregateInput
   telegramSettings?: Prisma.TelegramSettingsOrderByWithRelationInput
@@ -215,6 +217,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"User"> | Date | string
   gmailAccounts?: Prisma.GmailAccountListRelationFilter
   xAccount?: Prisma.XOR<Prisma.XAccountNullableScalarRelationFilter, Prisma.XAccountWhereInput> | null
+  ticktickAccount?: Prisma.XOR<Prisma.TickTickAccountNullableScalarRelationFilter, Prisma.TickTickAccountWhereInput> | null
   emailSettings?: Prisma.EmailIntegrationSettingsListRelationFilter
   userIntegrations?: Prisma.UserIntegrationListRelationFilter
   telegramSettings?: Prisma.XOR<Prisma.TelegramSettingsNullableScalarRelationFilter, Prisma.TelegramSettingsWhereInput> | null
@@ -251,6 +254,7 @@ export type UserCreateInput = {
   updatedAt?: Date | string
   gmailAccounts?: Prisma.GmailAccountCreateNestedManyWithoutUserInput
   xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput
+  ticktickAccount?: Prisma.TickTickAccountCreateNestedOneWithoutUserInput
   emailSettings?: Prisma.EmailIntegrationSettingsCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationCreateNestedManyWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput
@@ -265,6 +269,7 @@ export type UserUncheckedCreateInput = {
   updatedAt?: Date | string
   gmailAccounts?: Prisma.GmailAccountUncheckedCreateNestedManyWithoutUserInput
   xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput
+  ticktickAccount?: Prisma.TickTickAccountUncheckedCreateNestedOneWithoutUserInput
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationUncheckedCreateNestedManyWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput
@@ -279,6 +284,7 @@ export type UserUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gmailAccounts?: Prisma.GmailAccountUpdateManyWithoutUserNestedInput
   xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput
+  ticktickAccount?: Prisma.TickTickAccountUpdateOneWithoutUserNestedInput
   emailSettings?: Prisma.EmailIntegrationSettingsUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUpdateManyWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput
@@ -293,6 +299,7 @@ export type UserUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput
   xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput
+  ticktickAccount?: Prisma.TickTickAccountUncheckedUpdateOneWithoutUserNestedInput
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUncheckedUpdateManyWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput
@@ -402,6 +409,20 @@ export type UserUpdateOneRequiredWithoutEmailSettingsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutEmailSettingsInput, Prisma.UserUpdateWithoutEmailSettingsInput>, Prisma.UserUncheckedUpdateWithoutEmailSettingsInput>
 }
 
+export type UserCreateNestedOneWithoutTicktickAccountInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTicktickAccountInput, Prisma.UserUncheckedCreateWithoutTicktickAccountInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTicktickAccountInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutTicktickAccountNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTicktickAccountInput, Prisma.UserUncheckedCreateWithoutTicktickAccountInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTicktickAccountInput
+  upsert?: Prisma.UserUpsertWithoutTicktickAccountInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTicktickAccountInput, Prisma.UserUpdateWithoutTicktickAccountInput>, Prisma.UserUncheckedUpdateWithoutTicktickAccountInput>
+}
+
 export type UserCreateNestedOneWithoutUserIntegrationsInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutUserIntegrationsInput, Prisma.UserUncheckedCreateWithoutUserIntegrationsInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutUserIntegrationsInput
@@ -451,6 +472,7 @@ export type UserCreateWithoutGmailAccountsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput
+  ticktickAccount?: Prisma.TickTickAccountCreateNestedOneWithoutUserInput
   emailSettings?: Prisma.EmailIntegrationSettingsCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationCreateNestedManyWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput
@@ -464,6 +486,7 @@ export type UserUncheckedCreateWithoutGmailAccountsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput
+  ticktickAccount?: Prisma.TickTickAccountUncheckedCreateNestedOneWithoutUserInput
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationUncheckedCreateNestedManyWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput
@@ -493,6 +516,7 @@ export type UserUpdateWithoutGmailAccountsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput
+  ticktickAccount?: Prisma.TickTickAccountUpdateOneWithoutUserNestedInput
   emailSettings?: Prisma.EmailIntegrationSettingsUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUpdateManyWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput
@@ -506,6 +530,7 @@ export type UserUncheckedUpdateWithoutGmailAccountsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput
+  ticktickAccount?: Prisma.TickTickAccountUncheckedUpdateOneWithoutUserNestedInput
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUncheckedUpdateManyWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput
@@ -519,6 +544,7 @@ export type UserCreateWithoutXAccountInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   gmailAccounts?: Prisma.GmailAccountCreateNestedManyWithoutUserInput
+  ticktickAccount?: Prisma.TickTickAccountCreateNestedOneWithoutUserInput
   emailSettings?: Prisma.EmailIntegrationSettingsCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationCreateNestedManyWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput
@@ -532,6 +558,7 @@ export type UserUncheckedCreateWithoutXAccountInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   gmailAccounts?: Prisma.GmailAccountUncheckedCreateNestedManyWithoutUserInput
+  ticktickAccount?: Prisma.TickTickAccountUncheckedCreateNestedOneWithoutUserInput
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationUncheckedCreateNestedManyWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput
@@ -561,6 +588,7 @@ export type UserUpdateWithoutXAccountInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gmailAccounts?: Prisma.GmailAccountUpdateManyWithoutUserNestedInput
+  ticktickAccount?: Prisma.TickTickAccountUpdateOneWithoutUserNestedInput
   emailSettings?: Prisma.EmailIntegrationSettingsUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUpdateManyWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput
@@ -574,6 +602,7 @@ export type UserUncheckedUpdateWithoutXAccountInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput
+  ticktickAccount?: Prisma.TickTickAccountUncheckedUpdateOneWithoutUserNestedInput
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUncheckedUpdateManyWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput
@@ -588,6 +617,7 @@ export type UserCreateWithoutEmailSettingsInput = {
   updatedAt?: Date | string
   gmailAccounts?: Prisma.GmailAccountCreateNestedManyWithoutUserInput
   xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput
+  ticktickAccount?: Prisma.TickTickAccountCreateNestedOneWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationCreateNestedManyWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatCreateNestedManyWithoutUserInput
@@ -601,6 +631,7 @@ export type UserUncheckedCreateWithoutEmailSettingsInput = {
   updatedAt?: Date | string
   gmailAccounts?: Prisma.GmailAccountUncheckedCreateNestedManyWithoutUserInput
   xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput
+  ticktickAccount?: Prisma.TickTickAccountUncheckedCreateNestedOneWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationUncheckedCreateNestedManyWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatUncheckedCreateNestedManyWithoutUserInput
@@ -630,6 +661,7 @@ export type UserUpdateWithoutEmailSettingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gmailAccounts?: Prisma.GmailAccountUpdateManyWithoutUserNestedInput
   xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput
+  ticktickAccount?: Prisma.TickTickAccountUpdateOneWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUpdateManyWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUpdateManyWithoutUserNestedInput
@@ -643,6 +675,79 @@ export type UserUncheckedUpdateWithoutEmailSettingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput
   xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput
+  ticktickAccount?: Prisma.TickTickAccountUncheckedUpdateOneWithoutUserNestedInput
+  userIntegrations?: Prisma.UserIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput
+  chats?: Prisma.UserChatUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutTicktickAccountInput = {
+  id?: string
+  workosUserId: string
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  gmailAccounts?: Prisma.GmailAccountCreateNestedManyWithoutUserInput
+  xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput
+  emailSettings?: Prisma.EmailIntegrationSettingsCreateNestedManyWithoutUserInput
+  userIntegrations?: Prisma.UserIntegrationCreateNestedManyWithoutUserInput
+  telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput
+  chats?: Prisma.UserChatCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutTicktickAccountInput = {
+  id?: string
+  workosUserId: string
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  gmailAccounts?: Prisma.GmailAccountUncheckedCreateNestedManyWithoutUserInput
+  xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput
+  emailSettings?: Prisma.EmailIntegrationSettingsUncheckedCreateNestedManyWithoutUserInput
+  userIntegrations?: Prisma.UserIntegrationUncheckedCreateNestedManyWithoutUserInput
+  telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput
+  chats?: Prisma.UserChatUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutTicktickAccountInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTicktickAccountInput, Prisma.UserUncheckedCreateWithoutTicktickAccountInput>
+}
+
+export type UserUpsertWithoutTicktickAccountInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTicktickAccountInput, Prisma.UserUncheckedUpdateWithoutTicktickAccountInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTicktickAccountInput, Prisma.UserUncheckedCreateWithoutTicktickAccountInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTicktickAccountInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTicktickAccountInput, Prisma.UserUncheckedUpdateWithoutTicktickAccountInput>
+}
+
+export type UserUpdateWithoutTicktickAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workosUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gmailAccounts?: Prisma.GmailAccountUpdateManyWithoutUserNestedInput
+  xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput
+  emailSettings?: Prisma.EmailIntegrationSettingsUpdateManyWithoutUserNestedInput
+  userIntegrations?: Prisma.UserIntegrationUpdateManyWithoutUserNestedInput
+  telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput
+  chats?: Prisma.UserChatUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTicktickAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workosUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput
+  xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput
+  emailSettings?: Prisma.EmailIntegrationSettingsUncheckedUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUncheckedUpdateManyWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUncheckedUpdateManyWithoutUserNestedInput
@@ -656,6 +761,7 @@ export type UserCreateWithoutUserIntegrationsInput = {
   updatedAt?: Date | string
   gmailAccounts?: Prisma.GmailAccountCreateNestedManyWithoutUserInput
   xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput
+  ticktickAccount?: Prisma.TickTickAccountCreateNestedOneWithoutUserInput
   emailSettings?: Prisma.EmailIntegrationSettingsCreateNestedManyWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatCreateNestedManyWithoutUserInput
@@ -669,6 +775,7 @@ export type UserUncheckedCreateWithoutUserIntegrationsInput = {
   updatedAt?: Date | string
   gmailAccounts?: Prisma.GmailAccountUncheckedCreateNestedManyWithoutUserInput
   xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput
+  ticktickAccount?: Prisma.TickTickAccountUncheckedCreateNestedOneWithoutUserInput
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedCreateNestedManyWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatUncheckedCreateNestedManyWithoutUserInput
@@ -698,6 +805,7 @@ export type UserUpdateWithoutUserIntegrationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gmailAccounts?: Prisma.GmailAccountUpdateManyWithoutUserNestedInput
   xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput
+  ticktickAccount?: Prisma.TickTickAccountUpdateOneWithoutUserNestedInput
   emailSettings?: Prisma.EmailIntegrationSettingsUpdateManyWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUpdateManyWithoutUserNestedInput
@@ -711,6 +819,7 @@ export type UserUncheckedUpdateWithoutUserIntegrationsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput
   xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput
+  ticktickAccount?: Prisma.TickTickAccountUncheckedUpdateOneWithoutUserNestedInput
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedUpdateManyWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUncheckedUpdateManyWithoutUserNestedInput
@@ -724,6 +833,7 @@ export type UserCreateWithoutChatsInput = {
   updatedAt?: Date | string
   gmailAccounts?: Prisma.GmailAccountCreateNestedManyWithoutUserInput
   xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput
+  ticktickAccount?: Prisma.TickTickAccountCreateNestedOneWithoutUserInput
   emailSettings?: Prisma.EmailIntegrationSettingsCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationCreateNestedManyWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput
@@ -737,6 +847,7 @@ export type UserUncheckedCreateWithoutChatsInput = {
   updatedAt?: Date | string
   gmailAccounts?: Prisma.GmailAccountUncheckedCreateNestedManyWithoutUserInput
   xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput
+  ticktickAccount?: Prisma.TickTickAccountUncheckedCreateNestedOneWithoutUserInput
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationUncheckedCreateNestedManyWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput
@@ -766,6 +877,7 @@ export type UserUpdateWithoutChatsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gmailAccounts?: Prisma.GmailAccountUpdateManyWithoutUserNestedInput
   xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput
+  ticktickAccount?: Prisma.TickTickAccountUpdateOneWithoutUserNestedInput
   emailSettings?: Prisma.EmailIntegrationSettingsUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUpdateManyWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput
@@ -779,6 +891,7 @@ export type UserUncheckedUpdateWithoutChatsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput
   xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput
+  ticktickAccount?: Prisma.TickTickAccountUncheckedUpdateOneWithoutUserNestedInput
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUncheckedUpdateManyWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput
@@ -792,6 +905,7 @@ export type UserCreateWithoutTelegramSettingsInput = {
   updatedAt?: Date | string
   gmailAccounts?: Prisma.GmailAccountCreateNestedManyWithoutUserInput
   xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput
+  ticktickAccount?: Prisma.TickTickAccountCreateNestedOneWithoutUserInput
   emailSettings?: Prisma.EmailIntegrationSettingsCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationCreateNestedManyWithoutUserInput
   chats?: Prisma.UserChatCreateNestedManyWithoutUserInput
@@ -805,6 +919,7 @@ export type UserUncheckedCreateWithoutTelegramSettingsInput = {
   updatedAt?: Date | string
   gmailAccounts?: Prisma.GmailAccountUncheckedCreateNestedManyWithoutUserInput
   xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput
+  ticktickAccount?: Prisma.TickTickAccountUncheckedCreateNestedOneWithoutUserInput
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationUncheckedCreateNestedManyWithoutUserInput
   chats?: Prisma.UserChatUncheckedCreateNestedManyWithoutUserInput
@@ -834,6 +949,7 @@ export type UserUpdateWithoutTelegramSettingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gmailAccounts?: Prisma.GmailAccountUpdateManyWithoutUserNestedInput
   xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput
+  ticktickAccount?: Prisma.TickTickAccountUpdateOneWithoutUserNestedInput
   emailSettings?: Prisma.EmailIntegrationSettingsUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUpdateManyWithoutUserNestedInput
   chats?: Prisma.UserChatUpdateManyWithoutUserNestedInput
@@ -847,6 +963,7 @@ export type UserUncheckedUpdateWithoutTelegramSettingsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput
   xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput
+  ticktickAccount?: Prisma.TickTickAccountUncheckedUpdateOneWithoutUserNestedInput
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUncheckedUpdateManyWithoutUserNestedInput
   chats?: Prisma.UserChatUncheckedUpdateManyWithoutUserNestedInput
@@ -918,6 +1035,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   updatedAt?: boolean
   gmailAccounts?: boolean | Prisma.User$gmailAccountsArgs<ExtArgs>
   xAccount?: boolean | Prisma.User$xAccountArgs<ExtArgs>
+  ticktickAccount?: boolean | Prisma.User$ticktickAccountArgs<ExtArgs>
   emailSettings?: boolean | Prisma.User$emailSettingsArgs<ExtArgs>
   userIntegrations?: boolean | Prisma.User$userIntegrationsArgs<ExtArgs>
   telegramSettings?: boolean | Prisma.User$telegramSettingsArgs<ExtArgs>
@@ -953,6 +1071,7 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   gmailAccounts?: boolean | Prisma.User$gmailAccountsArgs<ExtArgs>
   xAccount?: boolean | Prisma.User$xAccountArgs<ExtArgs>
+  ticktickAccount?: boolean | Prisma.User$ticktickAccountArgs<ExtArgs>
   emailSettings?: boolean | Prisma.User$emailSettingsArgs<ExtArgs>
   userIntegrations?: boolean | Prisma.User$userIntegrationsArgs<ExtArgs>
   telegramSettings?: boolean | Prisma.User$telegramSettingsArgs<ExtArgs>
@@ -967,6 +1086,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     gmailAccounts: Prisma.$GmailAccountPayload<ExtArgs>[]
     xAccount: Prisma.$XAccountPayload<ExtArgs> | null
+    ticktickAccount: Prisma.$TickTickAccountPayload<ExtArgs> | null
     emailSettings: Prisma.$EmailIntegrationSettingsPayload<ExtArgs>[]
     userIntegrations: Prisma.$UserIntegrationPayload<ExtArgs>[]
     telegramSettings: Prisma.$TelegramSettingsPayload<ExtArgs> | null
@@ -1374,6 +1494,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   gmailAccounts<T extends Prisma.User$gmailAccountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$gmailAccountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GmailAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   xAccount<T extends Prisma.User$xAccountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$xAccountArgs<ExtArgs>>): Prisma.Prisma__XAccountClient<runtime.Types.Result.GetResult<Prisma.$XAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  ticktickAccount<T extends Prisma.User$ticktickAccountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ticktickAccountArgs<ExtArgs>>): Prisma.Prisma__TickTickAccountClient<runtime.Types.Result.GetResult<Prisma.$TickTickAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   emailSettings<T extends Prisma.User$emailSettingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$emailSettingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmailIntegrationSettingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   userIntegrations<T extends Prisma.User$userIntegrationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userIntegrationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserIntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   telegramSettings<T extends Prisma.User$telegramSettingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$telegramSettingsArgs<ExtArgs>>): Prisma.Prisma__TelegramSettingsClient<runtime.Types.Result.GetResult<Prisma.$TelegramSettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
@@ -1840,6 +1961,25 @@ export type User$xAccountArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   include?: Prisma.XAccountInclude<ExtArgs> | null
   where?: Prisma.XAccountWhereInput
+}
+
+/**
+ * User.ticktickAccount
+ */
+export type User$ticktickAccountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TickTickAccount
+   */
+  select?: Prisma.TickTickAccountSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TickTickAccount
+   */
+  omit?: Prisma.TickTickAccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TickTickAccountInclude<ExtArgs> | null
+  where?: Prisma.TickTickAccountWhereInput
 }
 
 /**

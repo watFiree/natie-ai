@@ -55,6 +55,7 @@ export const ModelName = {
   GmailAccount: 'GmailAccount',
   XAccount: 'XAccount',
   EmailIntegrationSettings: 'EmailIntegrationSettings',
+  TickTickAccount: 'TickTickAccount',
   Integration: 'Integration',
   UserIntegration: 'UserIntegration',
   UserChat: 'UserChat',
@@ -122,6 +123,20 @@ export const EmailIntegrationSettingsScalarFieldEnum = {
 } as const
 
 export type EmailIntegrationSettingsScalarFieldEnum = (typeof EmailIntegrationSettingsScalarFieldEnum)[keyof typeof EmailIntegrationSettingsScalarFieldEnum]
+
+
+export const TickTickAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  expiresAt: 'expiresAt',
+  scope: 'scope',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TickTickAccountScalarFieldEnum = (typeof TickTickAccountScalarFieldEnum)[keyof typeof TickTickAccountScalarFieldEnum]
 
 
 export const IntegrationScalarFieldEnum = {

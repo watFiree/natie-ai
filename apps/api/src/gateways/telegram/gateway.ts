@@ -5,6 +5,8 @@ import { GmailOAuthService } from '../../modules/gmail/service';
 import { createOAuth2Client } from '../../modules/gmail/clientFactory';
 import { GmailAccountRepository } from '../../modules/gmail/repository';
 import { XAccountRepository } from '../../modules/x_account/repository';
+import { TickTickAccountRepository } from '../../modules/ticktick/repository';
+import { TickTickOAuthService } from '../../modules/ticktick/service';
 import { MessageRepository } from '../../modules/messages/repository';
 import { ChatRepository } from '../../modules/chat/repository';
 import { AgentRunner } from '../../integrations/common/runner';
@@ -50,12 +52,21 @@ export class TelegramGateway {
       gmailAccountRepo
     );
     const xAccountRepo = new XAccountRepository(this.prisma);
+    const ticktickAccountRepo = new TickTickAccountRepository(this.prisma);
+    const ticktickService = new TickTickOAuthService(
+      process.env.TICKTICK_CLIENT_ID!,
+      process.env.TICKTICK_CLIENT_SECRET!,
+      process.env.TICKTICK_REDIRECT_URI!,
+      ticktickAccountRepo
+    );
 
     this.natieService = new NatieService(
       this.prisma,
       gmailService,
       gmailAccountRepo,
-      xAccountRepo
+      xAccountRepo,
+      ticktickService,
+      ticktickAccountRepo
     );
   }
 

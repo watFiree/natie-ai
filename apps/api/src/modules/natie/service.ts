@@ -8,10 +8,16 @@ import {
   createXSubagentTool,
   type XSubagentDeps,
 } from '../../integrations/x_handler/agent';
+import {
+  createTickTickSubagentTool,
+  type TickTickSubagentDeps,
+} from '../../integrations/ticktick_handler/agent';
 import { createClient as createXClient } from '../../integrations/x_handler/clientFactory';
 import type { GmailOAuthService } from '../gmail/service';
 import type { GmailAccountRepository } from '../gmail/repository';
 import type { XAccountRepository } from '../../modules/x_account/repository';
+import type { TickTickAccountRepository } from '../ticktick/repository';
+import type { TickTickOAuthService } from '../ticktick/service';
 import { model } from './model';
 import { SUPERVISOR_SYSTEM_PROMPT } from './system';
 
@@ -20,7 +26,9 @@ export class NatieService {
     private prisma: PrismaClient,
     private gmailService: GmailOAuthService,
     private gmailAccountRepo: GmailAccountRepository,
-    private xAccountRepo: XAccountRepository
+    private xAccountRepo: XAccountRepository,
+    private ticktickService: TickTickOAuthService,
+    private ticktickAccountRepo: TickTickAccountRepository
   ) {}
 
   async createMainAgent(userId: string): Promise<ReactAgent> {
@@ -54,6 +62,18 @@ export class NatieService {
 
       const xDeps: XSubagentDeps = { clientProvider };
       subagentTools.push(createXSubagentTool(xDeps));
+    }
+
+    // TickTick subagent (if user has TickTick connected)
+    const ticktickAccount = await this.ticktickAccountRepo.findByUserId(userId);
+    if (ticktickAccount) {
+      const ticktickTokenProvider = () =>
+        this.ticktickService.getEnsuredAccessToken(userId);
+
+      const ticktickDeps: TickTickSubagentDeps = {
+        tokenProvider: ticktickTokenProvider,
+      };
+      subagentTools.push(createTickTickSubagentTool(ticktickDeps));
     }
 
     console.log(subagentTools);

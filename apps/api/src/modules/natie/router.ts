@@ -7,6 +7,8 @@ import { GmailOAuthService } from '../gmail/service';
 import { createOAuth2Client } from '../gmail/clientFactory';
 import { GmailAccountRepository } from '../gmail/repository';
 import { XAccountRepository } from '../x_account/repository';
+import { TickTickAccountRepository } from '../ticktick/repository';
+import { TickTickOAuthService } from '../ticktick/service';
 import { MessageRepository } from '../messages/repository';
 import { ChatRepository } from '../chat/repository';
 import { AgentRunner } from '../../integrations/common/runner';
@@ -24,13 +26,22 @@ export const NatieRouter = async (fastify: FastifyInstance) => {
     gmailAccountRepo
   );
   const xAccountRepo = new XAccountRepository(fastify.prisma);
+  const ticktickAccountRepo = new TickTickAccountRepository(fastify.prisma);
+  const ticktickService = new TickTickOAuthService(
+    process.env.TICKTICK_CLIENT_ID!,
+    process.env.TICKTICK_CLIENT_SECRET!,
+    process.env.TICKTICK_REDIRECT_URI!,
+    ticktickAccountRepo
+  );
   const chatRepo = new ChatRepository(fastify.prisma);
   const agentRunner = new AgentRunner({ prisma: fastify.prisma, messageRepo });
   const natieService = new NatieService(
     fastify.prisma,
     gmailService,
     gmailAccountRepo,
-    xAccountRepo
+    xAccountRepo,
+    ticktickService,
+    ticktickAccountRepo
   );
 
   typedFastify.post(

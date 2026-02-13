@@ -465,10 +465,6 @@ export type UserIntegrationUncheckedUpdateManyWithoutIntegrationNestedInput = {
   deleteMany?: Prisma.UserIntegrationScalarWhereInput | Prisma.UserIntegrationScalarWhereInput[]
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
-}
-
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
