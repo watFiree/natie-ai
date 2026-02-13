@@ -1,3 +1,5 @@
+import { buildApiUrl } from './api-url';
+
 const getBody = <T>(c: Response | Request): Promise<T> => {
     const contentType = c.headers.get('content-type');
   
@@ -13,12 +15,7 @@ const getBody = <T>(c: Response | Request): Promise<T> => {
   };
   
   const getUrl = (url: string): string => {
-    const baseUrl =
-      process.env.NODE_ENV === 'production'
-        ? 'productionBaseUrl'
-        : 'http://localhost:3000';
-  
-    const requestUrl = new URL(`${baseUrl}${url}`);
+    const requestUrl = new URL(buildApiUrl(url));
   
     return requestUrl.toString();
   };
