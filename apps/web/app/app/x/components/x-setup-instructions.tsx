@@ -1,23 +1,23 @@
-import { IconExternalLink } from "@tabler/icons-react"
+import { IconExternalLink } from '@tabler/icons-react';
 
 const X_COOKIE_VIDEO_EMBED_URL =
-  "https://www.youtube.com/embed?listType=search&list=how+to+extract+auth_token+ct0+cookie+x.com"
+  'https://www.youtube.com/embed?listType=search&list=how+to+extract+auth_token+ct0+cookie+x.com';
 const X_COOKIE_VIDEO_RESULTS_URL =
-  "https://www.youtube.com/results?search_query=how+to+extract+auth_token+ct0+cookie+x.com"
+  'https://www.youtube.com/results?search_query=how+to+extract+auth_token+ct0+cookie+x.com';
 
 const SETUP_STEPS = [
-  "Log in to x.com in your desktop browser.",
-  "Open Developer Tools, then go to Application (or Storage) > Cookies > https://x.com.",
-  "Copy the value of the auth_token cookie and paste it into the auth_token field.",
-  "Copy the value of the ct0 cookie and paste it into the ct0 field.",
-  "Save credentials and return to the X chat view.",
-]
+  'Log in to x.com in your desktop browser.',
+  'Open Developer Tools, then go to Application (or Storage) > Cookies > https://x.com.',
+  'Copy the value of the auth_token cookie and paste it into the auth_token field.',
+  'Copy the value of the ct0 cookie and paste it into the ct0 field.',
+  'Save credentials and chat with Natie about X.',
+];
 
 export function XSetupInstructions() {
   return (
     <div className="space-y-5 text-sm">
       <p className="text-muted-foreground">
-        X integration requires two cookie values from your active{" "}
+        X integration requires two cookie values from your active{' '}
         <a
           href="https://x.com"
           target="_blank"
@@ -66,5 +66,5 @@ export function XSetupInstructions() {
         </a>
       </div>
     </div>
-  )
+  );
 }

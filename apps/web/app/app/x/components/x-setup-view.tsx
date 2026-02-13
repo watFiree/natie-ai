@@ -1,15 +1,15 @@
-"use client"
+'use client';
 
-import { useState } from "react"
+import { useState } from 'react';
 
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from '@/components/ui/card';
 import {
   Sheet,
   SheetContent,
@@ -17,23 +17,23 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
+} from '@/components/ui/sheet';
 
-import { XAuthSettingsForm } from "./x-auth-settings-form"
-import { XSetupInstructions } from "./x-setup-instructions"
+import { XAuthSettingsForm } from './x-auth-settings-form';
+import { XSetupInstructions } from './x-setup-instructions';
 
 type XSetupViewProps = {
-  isConfigured: boolean
-  onCredentialsSaved: () => void
-  onBackToChat?: () => void
-}
+  isConfigured: boolean;
+  onCredentialsSaved: () => void;
+  onBackToChat?: () => void;
+};
 
 export function XSetupView({
   isConfigured,
   onCredentialsSaved,
   onBackToChat,
 }: XSetupViewProps) {
-  const [isInstructionsOpen, setIsInstructionsOpen] = useState(false)
+  const [isInstructionsOpen, setIsInstructionsOpen] = useState(false);
 
   return (
     <div className="grid gap-4 xl:grid-cols-[1.3fr_1fr]">
@@ -51,7 +51,7 @@ export function XSetupView({
 
       <Card>
         <CardHeader className="gap-3">
-          <div className="flex items-start justify-between gap-3">
+          <div className="flex flex-col items-start justify-between gap-3">
             <div className="space-y-1">
               <CardTitle>Authentication settings</CardTitle>
               <CardDescription>
@@ -59,12 +59,15 @@ export function XSetupView({
               </CardDescription>
             </div>
 
-            <Sheet open={isInstructionsOpen} onOpenChange={setIsInstructionsOpen}>
+            <Sheet
+              open={isInstructionsOpen}
+              onOpenChange={setIsInstructionsOpen}
+            >
               <SheetTrigger asChild>
                 <Button
                   type="button"
                   variant="outline"
-                  size="sm"
+                  size="lg"
                   className="xl:hidden"
                 >
                   View instructions
@@ -97,5 +100,5 @@ export function XSetupView({
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

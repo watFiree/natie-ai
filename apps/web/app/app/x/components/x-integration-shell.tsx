@@ -1,23 +1,22 @@
-"use client"
+'use client';
 
-import { useState } from "react"
+import { useState } from 'react';
 
-import { XChatView } from "./x-chat-view"
-import { XSetupView } from "./x-setup-view"
+import { XChatView } from './x-chat-view';
+import { XSetupView } from './x-setup-view';
 
 type XIntegrationShellProps = {
-  initialIsConfigured: boolean
-}
+  initialIsConfigured: boolean;
+};
 
 export function XIntegrationShell({
   initialIsConfigured,
 }: XIntegrationShellProps) {
-  const [isConfigured, setIsConfigured] = useState(initialIsConfigured)
-  const [showAuthSettings, setShowAuthSettings] = useState(
-    !initialIsConfigured
-  )
+  const [isConfigured, setIsConfigured] = useState(initialIsConfigured);
+  const [showAuthSettings, setShowAuthSettings] =
+    useState(!initialIsConfigured);
 
-  const isSetupVisible = !isConfigured || showAuthSettings
+  const isSetupVisible = !isConfigured || showAuthSettings;
 
   return (
     <div className="flex flex-1 flex-col">
@@ -30,31 +29,26 @@ export function XIntegrationShell({
               timelines.
             </p>
           </div>
-
-          {isSetupVisible && (
-            <div className="px-4 lg:px-6">
+          <div className="px-4 lg:px-6">
+            {isSetupVisible ? (
               <XSetupView
                 isConfigured={isConfigured}
                 onCredentialsSaved={() => {
-                  setIsConfigured(true)
-                  setShowAuthSettings(false)
+                  setIsConfigured(true);
+                  setShowAuthSettings(false);
                 }}
                 onBackToChat={
-                  isConfigured
-                    ? () => setShowAuthSettings(false)
-                    : undefined
+                  isConfigured ? () => setShowAuthSettings(false) : undefined
                 }
               />
-            </div>
-          )}
-
-          {!isSetupVisible && (
-            <div className="px-4 lg:px-6">
-              <XChatView onChangeAuthSettings={() => setShowAuthSettings(true)} />
-            </div>
-          )}
+            ) : (
+              <XChatView
+                onChangeAuthSettings={() => setShowAuthSettings(true)}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
-  )
+  );
 }

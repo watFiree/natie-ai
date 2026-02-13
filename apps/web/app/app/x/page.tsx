@@ -1,36 +1,32 @@
-import { cookies } from "next/headers"
+import { cookies } from 'next/headers';
 
-import { getXAccount } from "@/lib/client/default/default"
+import { getXAccount } from '@/lib/client/default/default';
 
-import { XIntegrationShell } from "./components/x-integration-shell"
-
-type ApiResponseLike = {
-  status: number
-}
+import { XIntegrationShell } from './components/x-integration-shell';
 
 async function getIsXConfigured() {
-  const cookieStore = await cookies()
+  const cookieStore = await cookies();
   const cookieHeader = cookieStore
     .getAll()
     .map((cookie) => `${cookie.name}=${cookie.value}`)
-    .join("; ")
+    .join('; ');
 
   try {
-    const response = (await getXAccount({
-      cache: "no-store",
+    const response = await getXAccount({
+      cache: 'no-store',
       headers: {
         Cookie: cookieHeader,
       },
-    })) as ApiResponseLike
+    });
 
-    return response.status === 200
+    return response.status === 200;
   } catch {
-    return false
+    return false;
   }
 }
 
 export default async function Page() {
-  const isXConfigured = await getIsXConfigured()
+  const isXConfigured = await getIsXConfigured();
 
-  return <XIntegrationShell initialIsConfigured={isXConfigured} />
+  return <XIntegrationShell initialIsConfigured={isXConfigured} />;
 }

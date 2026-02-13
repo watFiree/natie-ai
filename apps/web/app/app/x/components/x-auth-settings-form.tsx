@@ -1,26 +1,22 @@
-"use client"
+'use client';
 
-import { useForm } from "react-hook-form"
+import { useForm } from 'react-hook-form';
 
-import { postXAccount } from "@/lib/client/default/default"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { postXAccount } from '@/lib/client/default/default';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 type XAuthSettingsFormProps = {
-  isConfigured: boolean
-  onCredentialsSaved: () => void
-  onBackToChat?: () => void
-}
+  isConfigured: boolean;
+  onCredentialsSaved: () => void;
+  onBackToChat?: () => void;
+};
 
 type XAuthSettingsFormValues = {
-  authToken: string
-  ct0: string
-}
-
-type ApiResponseLike = {
-  status: number
-}
+  authToken: string;
+  ct0: string;
+};
 
 export function XAuthSettingsForm({
   isConfigured,
@@ -36,48 +32,48 @@ export function XAuthSettingsForm({
     formState: { errors, isSubmitting },
   } = useForm<XAuthSettingsFormValues>({
     defaultValues: {
-      authToken: "",
-      ct0: "",
+      authToken: '',
+      ct0: '',
     },
-  })
+  });
 
   const onSubmit = handleSubmit(async (values) => {
-    clearErrors("root")
+    clearErrors('root');
 
-    const authToken = values.authToken.trim()
-    const ct0 = values.ct0.trim()
+    const authToken = values.authToken.trim();
+    const ct0 = values.ct0.trim();
 
     if (!authToken || !ct0) {
-      setError("root", {
-        type: "manual",
-        message: "Both auth_token and ct0 are required.",
-      })
-      return
+      setError('root', {
+        type: 'manual',
+        message: 'Both auth_token and ct0 are required.',
+      });
+      return;
     }
 
     try {
-      const response = (await postXAccount({
+      const response = await postXAccount({
         authToken,
         ct0,
-      })) as ApiResponseLike
+      });
 
       if (response.status !== 200) {
-        setError("root", {
-          type: "manual",
-          message: "Could not save X credentials. Please try again.",
-        })
-        return
+        setError('root', {
+          type: 'manual',
+          message: 'Could not save X credentials. Please try again.',
+        });
+        return;
       }
 
-      reset()
-      onCredentialsSaved()
+      reset();
+      onCredentialsSaved();
     } catch {
-      setError("root", {
-        type: "manual",
-        message: "Could not save X credentials. Please try again.",
-      })
+      setError('root', {
+        type: 'manual',
+        message: 'Could not save X credentials. Please try again.',
+      });
     }
-  })
+  });
 
   return (
     <form onSubmit={onSubmit} className="space-y-4">
@@ -90,10 +86,10 @@ export function XAuthSettingsForm({
           autoComplete="off"
           autoCorrect="off"
           spellCheck={false}
-          {...register("authToken", {
-            required: "auth_token is required.",
+          {...register('authToken', {
+            required: 'auth_token is required.',
             validate: (value) =>
-              value.trim().length > 0 || "auth_token is required.",
+              value.trim().length > 0 || 'auth_token is required.',
           })}
         />
         {errors.authToken?.message && (
@@ -110,9 +106,9 @@ export function XAuthSettingsForm({
           autoComplete="off"
           autoCorrect="off"
           spellCheck={false}
-          {...register("ct0", {
-            required: "ct0 is required.",
-            validate: (value) => value.trim().length > 0 || "ct0 is required.",
+          {...register('ct0', {
+            required: 'ct0 is required.',
+            validate: (value) => value.trim().length > 0 || 'ct0 is required.',
           })}
         />
         {errors.ct0?.message && (
@@ -127,10 +123,10 @@ export function XAuthSettingsForm({
       <div className="flex flex-wrap gap-2">
         <Button type="submit" disabled={isSubmitting}>
           {isSubmitting
-            ? "Saving..."
+            ? 'Saving...'
             : isConfigured
-              ? "Update credentials"
-              : "Save credentials"}
+              ? 'Update credentials'
+              : 'Save credentials'}
         </Button>
 
         {isConfigured && onBackToChat && (
@@ -145,5 +141,5 @@ export function XAuthSettingsForm({
         )}
       </div>
     </form>
-  )
+  );
 }
