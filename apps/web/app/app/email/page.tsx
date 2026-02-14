@@ -1,6 +1,8 @@
+import { Suspense } from 'react';
 import { cookies } from 'next/headers';
 import { getGmailAccounts } from '@/lib/api/default/default';
 import { EmailIntegrationShell } from './components/email-integration-shell';
+import { EmailToastHandler } from './components/email-toast-handler';
 
 async function getEmailAccounts() {
   const cookieStore = await cookies();
@@ -32,5 +34,12 @@ async function getEmailAccounts() {
 export default async function Page() {
   const initialAccounts = await getEmailAccounts();
 
-  return <EmailIntegrationShell initialAccounts={initialAccounts} />;
+  return (
+    <>
+      <Suspense>
+        <EmailToastHandler />
+      </Suspense>
+      <EmailIntegrationShell initialAccounts={initialAccounts} />
+    </>
+  );
 }

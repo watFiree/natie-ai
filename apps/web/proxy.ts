@@ -18,12 +18,12 @@ export async function proxy(request: NextRequest) {
     });
 
     if (response.status === 401) {
-      return NextResponse.redirect(new URL('/auth/login', request.url));
+      return NextResponse.redirect(new URL('/', request.url));
     }
 
     return NextResponse.next();
   } catch (error) {
-    return NextResponse.redirect(new URL('/auth/login', request.url));
+    return NextResponse.redirect(new URL('/', request.url));
   }
 }
 

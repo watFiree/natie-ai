@@ -1,6 +1,7 @@
 'use client';
 
 import { IconBrandGoogle } from '@tabler/icons-react';
+import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -31,17 +32,24 @@ export function GmailAccountCard({
   account: GetGmailAccounts200Item;
 }) {
   const { mutate } = useGetGmailAccounts();
-  const {
-    trigger,
-    isMutating: isDeleting,
-    error: deleteError,
-  } = useDeleteGmailAccounts({ email: account.email });
+  const { trigger, isMutating: isDeleting } = useDeleteGmailAccounts({
+    email: account.email,
+  });
 
   const handleDelete = async () => {
-    const result = await trigger();
+    try {
+      const result = await trigger();
 
-    if (result?.status === 200) {
-      await mutate();
+      if (result?.status === 200) {
+        await mutate();
+        toast.success('Account removed', {
+          description: `${account.email} has been disconnected.`,
+        });
+      }
+    } catch {
+      toast.error('Deletion failed', {
+        description: `Could not remove ${account.email}. Please try again.`,
+      });
     }
   };
 
@@ -68,12 +76,6 @@ export function GmailAccountCard({
           {isDeleting ? 'Deleting...' : 'Delete'}
         </Button>
       </CardContent>
-
-      {deleteError && (
-        <p className="text-destructive px-4 pb-3 text-sm" role="alert">
-          {deleteError.error}
-        </p>
-      )}
     </Card>
   );
 }
