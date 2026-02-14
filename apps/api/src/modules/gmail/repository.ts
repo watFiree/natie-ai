@@ -15,7 +15,7 @@ export class GmailAccountRepository {
     const { userId, email, tokens } = data;
 
     return this.prisma.gmailAccount.upsert({
-      where: { email },
+      where: { userId_email: { userId, email } },
       update: {
         accessToken: encrypt(tokens.access_token ?? ''),
         refreshToken: encrypt(tokens.refresh_token ?? ''),
@@ -44,9 +44,9 @@ export class GmailAccountRepository {
     }));
   }
 
-  async findByEmail(email: string) {
+  async findByUserAndEmail(userId: string, email: string) {
     const account = await this.prisma.gmailAccount.findUnique({
-      where: { email },
+      where: { userId_email: { userId, email } },
     });
 
     if (!account) {
@@ -60,15 +60,15 @@ export class GmailAccountRepository {
     };
   }
 
-  async delete(email: string) {
+  async delete(userId: string, email: string) {
     return this.prisma.gmailAccount.delete({
-      where: { email },
+      where: { userId_email: { userId, email } },
     });
   }
 
-  async updateTokens(email: string, tokens: GoogleTokens) {
+  async updateTokens(userId: string, email: string, tokens: GoogleTokens) {
     return this.prisma.gmailAccount.update({
-      where: { email },
+      where: { userId_email: { userId, email } },
       data: {
         accessToken: encrypt(tokens.access_token ?? ''),
         refreshToken: encrypt(tokens.refresh_token ?? ''),

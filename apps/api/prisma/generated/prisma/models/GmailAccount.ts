@@ -223,18 +223,19 @@ export type GmailAccountOrderByWithRelationInput = {
 
 export type GmailAccountWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  email?: string
+  userId_email?: Prisma.GmailAccountUserIdEmailCompoundUniqueInput
   AND?: Prisma.GmailAccountWhereInput | Prisma.GmailAccountWhereInput[]
   OR?: Prisma.GmailAccountWhereInput[]
   NOT?: Prisma.GmailAccountWhereInput | Prisma.GmailAccountWhereInput[]
   userId?: Prisma.StringFilter<"GmailAccount"> | string
+  email?: Prisma.StringFilter<"GmailAccount"> | string
   accessToken?: Prisma.BytesFilter<"GmailAccount"> | runtime.Bytes
   refreshToken?: Prisma.BytesFilter<"GmailAccount"> | runtime.Bytes
   expiresAt?: Prisma.DateTimeNullableFilter<"GmailAccount"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"GmailAccount"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"GmailAccount"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-}, "id" | "email">
+}, "id" | "userId_email">
 
 export type GmailAccountOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
@@ -348,6 +349,11 @@ export type GmailAccountListRelationFilter = {
 
 export type GmailAccountOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
+}
+
+export type GmailAccountUserIdEmailCompoundUniqueInput = {
+  userId: string
+  email: string
 }
 
 export type GmailAccountCountOrderByAggregateInput = {

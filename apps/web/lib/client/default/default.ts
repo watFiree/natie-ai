@@ -5,18 +5,41 @@
  * API documentation
  * OpenAPI spec version: 1.0.0
  */
+import useSwr from 'swr';
 import type {
+  Arguments,
+  Key,
+  SWRConfiguration
+} from 'swr';
+
+import useSWRMutation from 'swr/mutation';
+import type {
+  SWRMutationConfiguration
+} from 'swr/mutation';
+
+import type {
+  DeleteGmailAccounts200,
+  DeleteGmailAccounts401,
+  DeleteGmailAccounts404,
+  DeleteGmailAccountsParams,
   GetAuthStatus200,
   GetAuthStatus401,
+  GetGmailAccounts200Item,
+  GetGmailAccounts401,
   PostEmailChatBody,
-  PostEmailCreateBody,
+  PostNatieChatBody,
   PostXAccountBody,
-  PostXChatBody,
-  PostXCreateBody
-} from '.././model';
+  PostXChatBody
+} from '../../api/models';
 
 import { customInstance } from '../../custom-client';
 
+
+  
+  type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
+
+
+  
 export type getAuthLoginResponse200 = {
   data: void
   status: 200
@@ -49,6 +72,28 @@ export const getAuthLogin = async ( options?: RequestInit): Promise<getAuthLogin
 );}
 
 
+
+
+export const getGetAuthLoginKey = () => [`/auth/login`] as const;
+
+export type GetAuthLoginQueryResult = NonNullable<Awaited<ReturnType<typeof getAuthLogin>>>
+
+export const useGetAuthLogin = <TError = unknown>(
+   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getAuthLogin>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
+) => {
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetAuthLoginKey() : null);
+  const swrFn = () => getAuthLogin(requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
 export type getAuthCallbackResponse200 = {
   data: void
   status: 200
@@ -81,6 +126,28 @@ export const getAuthCallback = async ( options?: RequestInit): Promise<getAuthCa
 );}
 
 
+
+
+export const getGetAuthCallbackKey = () => [`/auth/callback`] as const;
+
+export type GetAuthCallbackQueryResult = NonNullable<Awaited<ReturnType<typeof getAuthCallback>>>
+
+export const useGetAuthCallback = <TError = unknown>(
+   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getAuthCallback>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
+) => {
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetAuthCallbackKey() : null);
+  const swrFn = () => getAuthCallback(requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
 export type getAuthStatusResponse200 = {
   data: GetAuthStatus200
   status: 200
@@ -120,6 +187,28 @@ export const getAuthStatus = async ( options?: RequestInit): Promise<getAuthStat
 );}
 
 
+
+
+export const getGetAuthStatusKey = () => [`/auth/status`] as const;
+
+export type GetAuthStatusQueryResult = NonNullable<Awaited<ReturnType<typeof getAuthStatus>>>
+
+export const useGetAuthStatus = <TError = GetAuthStatus401>(
+   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getAuthStatus>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
+) => {
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetAuthStatusKey() : null);
+  const swrFn = () => getAuthStatus(requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
 export type getAuthLogoutResponse200 = {
   data: void
   status: 200
@@ -152,6 +241,28 @@ export const getAuthLogout = async ( options?: RequestInit): Promise<getAuthLogo
 );}
 
 
+
+
+export const getGetAuthLogoutKey = () => [`/auth/logout`] as const;
+
+export type GetAuthLogoutQueryResult = NonNullable<Awaited<ReturnType<typeof getAuthLogout>>>
+
+export const useGetAuthLogout = <TError = unknown>(
+   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getAuthLogout>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
+) => {
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetAuthLogoutKey() : null);
+  const swrFn = () => getAuthLogout(requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
 export type getAuthGoogleResponse200 = {
   data: void
   status: 200
@@ -184,6 +295,28 @@ export const getAuthGoogle = async ( options?: RequestInit): Promise<getAuthGoog
 );}
 
 
+
+
+export const getGetAuthGoogleKey = () => [`/auth/google`] as const;
+
+export type GetAuthGoogleQueryResult = NonNullable<Awaited<ReturnType<typeof getAuthGoogle>>>
+
+export const useGetAuthGoogle = <TError = unknown>(
+   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getAuthGoogle>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
+) => {
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetAuthGoogleKey() : null);
+  const swrFn = () => getAuthGoogle(requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
 export type getOauthGoogleCallbackResponse200 = {
   data: void
   status: 200
@@ -216,6 +349,167 @@ export const getOauthGoogleCallback = async ( options?: RequestInit): Promise<ge
 );}
 
 
+
+
+export const getGetOauthGoogleCallbackKey = () => [`/oauth/google/callback`] as const;
+
+export type GetOauthGoogleCallbackQueryResult = NonNullable<Awaited<ReturnType<typeof getOauthGoogleCallback>>>
+
+export const useGetOauthGoogleCallback = <TError = unknown>(
+   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getOauthGoogleCallback>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
+) => {
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetOauthGoogleCallbackKey() : null);
+  const swrFn = () => getOauthGoogleCallback(requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
+export type getGmailAccountsResponse200 = {
+  data: GetGmailAccounts200Item[]
+  status: 200
+}
+
+export type getGmailAccountsResponse401 = {
+  data: GetGmailAccounts401
+  status: 401
+}
+    
+export type getGmailAccountsResponseSuccess = (getGmailAccountsResponse200) & {
+  headers: Headers;
+};
+export type getGmailAccountsResponseError = (getGmailAccountsResponse401) & {
+  headers: Headers;
+};
+
+export type getGmailAccountsResponse = (getGmailAccountsResponseSuccess | getGmailAccountsResponseError)
+
+export const getGetGmailAccountsUrl = () => {
+
+
+  
+
+  return `/gmail-accounts`
+}
+
+export const getGmailAccounts = async ( options?: RequestInit): Promise<getGmailAccountsResponse> => {
+  
+  return customInstance<getGmailAccountsResponse>(getGetGmailAccountsUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+
+export const getGetGmailAccountsKey = () => [`/gmail-accounts`] as const;
+
+export type GetGmailAccountsQueryResult = NonNullable<Awaited<ReturnType<typeof getGmailAccounts>>>
+
+export const useGetGmailAccounts = <TError = GetGmailAccounts401>(
+   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getGmailAccounts>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
+) => {
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetGmailAccountsKey() : null);
+  const swrFn = () => getGmailAccounts(requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
+export type deleteGmailAccountsResponse200 = {
+  data: DeleteGmailAccounts200
+  status: 200
+}
+
+export type deleteGmailAccountsResponse401 = {
+  data: DeleteGmailAccounts401
+  status: 401
+}
+
+export type deleteGmailAccountsResponse404 = {
+  data: DeleteGmailAccounts404
+  status: 404
+}
+    
+export type deleteGmailAccountsResponseSuccess = (deleteGmailAccountsResponse200) & {
+  headers: Headers;
+};
+export type deleteGmailAccountsResponseError = (deleteGmailAccountsResponse401 | deleteGmailAccountsResponse404) & {
+  headers: Headers;
+};
+
+export type deleteGmailAccountsResponse = (deleteGmailAccountsResponseSuccess | deleteGmailAccountsResponseError)
+
+export const getDeleteGmailAccountsUrl = (params: DeleteGmailAccountsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/gmail-accounts?${stringifiedParams}` : `/gmail-accounts`
+}
+
+export const deleteGmailAccounts = async (params: DeleteGmailAccountsParams, options?: RequestInit): Promise<deleteGmailAccountsResponse> => {
+  
+  return customInstance<deleteGmailAccountsResponse>(getDeleteGmailAccountsUrl(params),
+  {      
+    ...options,
+    method: 'DELETE'
+    
+    
+  }
+);}
+
+
+
+
+export const getDeleteGmailAccountsMutationFetcher = (params: DeleteGmailAccountsParams, options?: SecondParameter<typeof customInstance>) => {
+  return (_: Key, __: { arg: Arguments }) => {
+    return deleteGmailAccounts(params, options);
+  }
+}
+export const getDeleteGmailAccountsMutationKey = (params: DeleteGmailAccountsParams,) => [`/gmail-accounts`, ...(params ? [params]: [])] as const;
+
+export type DeleteGmailAccountsMutationResult = NonNullable<Awaited<ReturnType<typeof deleteGmailAccounts>>>
+
+export const useDeleteGmailAccounts = <TError = DeleteGmailAccounts401 | DeleteGmailAccounts404>(
+  params: DeleteGmailAccountsParams, options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof deleteGmailAccounts>>, TError, Key, Arguments, Awaited<ReturnType<typeof deleteGmailAccounts>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
+) => {
+
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getDeleteGmailAccountsMutationKey(params);
+  const swrFn = getDeleteGmailAccountsMutationFetcher(params, requestOptions);
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
 export type getXAccountResponse200 = {
   data: void
   status: 200
@@ -248,6 +542,28 @@ export const getXAccount = async ( options?: RequestInit): Promise<getXAccountRe
 );}
 
 
+
+
+export const getGetXAccountKey = () => [`/x-account/`] as const;
+
+export type GetXAccountQueryResult = NonNullable<Awaited<ReturnType<typeof getXAccount>>>
+
+export const useGetXAccount = <TError = unknown>(
+   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getXAccount>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
+) => {
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetXAccountKey() : null);
+  const swrFn = () => getXAccount(requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
 export type postXAccountResponse200 = {
   data: void
   status: 200
@@ -281,6 +597,33 @@ export const postXAccount = async (postXAccountBody: PostXAccountBody, options?:
 );}
 
 
+
+
+export const getPostXAccountMutationFetcher = ( options?: SecondParameter<typeof customInstance>) => {
+  return (_: Key, { arg }: { arg: PostXAccountBody }) => {
+    return postXAccount(arg, options);
+  }
+}
+export const getPostXAccountMutationKey = () => [`/x-account/`] as const;
+
+export type PostXAccountMutationResult = NonNullable<Awaited<ReturnType<typeof postXAccount>>>
+
+export const usePostXAccount = <TError = unknown>(
+   options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof postXAccount>>, TError, Key, PostXAccountBody, Awaited<ReturnType<typeof postXAccount>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
+) => {
+
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getPostXAccountMutationKey();
+  const swrFn = getPostXAccountMutationFetcher(requestOptions);
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
 export type deleteXAccountResponse200 = {
   data: void
   status: 200
@@ -313,39 +656,33 @@ export const deleteXAccount = async ( options?: RequestInit): Promise<deleteXAcc
 );}
 
 
-export type postEmailCreateResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type postEmailCreateResponseSuccess = (postEmailCreateResponse200) & {
-  headers: Headers;
-};
-;
-
-export type postEmailCreateResponse = (postEmailCreateResponseSuccess)
-
-export const getPostEmailCreateUrl = () => {
 
 
-  
-
-  return `/email/create`
-}
-
-export const postEmailCreate = async (postEmailCreateBody: PostEmailCreateBody, options?: RequestInit): Promise<postEmailCreateResponse> => {
-  
-  return customInstance<postEmailCreateResponse>(getPostEmailCreateUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      postEmailCreateBody,)
+export const getDeleteXAccountMutationFetcher = ( options?: SecondParameter<typeof customInstance>) => {
+  return (_: Key, __: { arg: Arguments }) => {
+    return deleteXAccount(options);
   }
-);}
+}
+export const getDeleteXAccountMutationKey = () => [`/x-account/`] as const;
 
+export type DeleteXAccountMutationResult = NonNullable<Awaited<ReturnType<typeof deleteXAccount>>>
 
+export const useDeleteXAccount = <TError = unknown>(
+   options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof deleteXAccount>>, TError, Key, Arguments, Awaited<ReturnType<typeof deleteXAccount>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
+) => {
+
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getDeleteXAccountMutationKey();
+  const swrFn = getDeleteXAccountMutationFetcher(requestOptions);
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
 export type postEmailChatResponse200 = {
   data: void
   status: 200
@@ -379,39 +716,33 @@ export const postEmailChat = async (postEmailChatBody: PostEmailChatBody, option
 );}
 
 
-export type postXCreateResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type postXCreateResponseSuccess = (postXCreateResponse200) & {
-  headers: Headers;
-};
-;
-
-export type postXCreateResponse = (postXCreateResponseSuccess)
-
-export const getPostXCreateUrl = () => {
 
 
-  
-
-  return `/x/create`
-}
-
-export const postXCreate = async (postXCreateBody: PostXCreateBody, options?: RequestInit): Promise<postXCreateResponse> => {
-  
-  return customInstance<postXCreateResponse>(getPostXCreateUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      postXCreateBody,)
+export const getPostEmailChatMutationFetcher = ( options?: SecondParameter<typeof customInstance>) => {
+  return (_: Key, { arg }: { arg: PostEmailChatBody }) => {
+    return postEmailChat(arg, options);
   }
-);}
+}
+export const getPostEmailChatMutationKey = () => [`/email/chat`] as const;
 
+export type PostEmailChatMutationResult = NonNullable<Awaited<ReturnType<typeof postEmailChat>>>
 
+export const usePostEmailChat = <TError = unknown>(
+   options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof postEmailChat>>, TError, Key, PostEmailChatBody, Awaited<ReturnType<typeof postEmailChat>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
+) => {
+
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getPostEmailChatMutationKey();
+  const swrFn = getPostEmailChatMutationFetcher(requestOptions);
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
 export type postXChatResponse200 = {
   data: void
   status: 200
@@ -445,3 +776,90 @@ export const postXChat = async (postXChatBody: PostXChatBody, options?: RequestI
 );}
 
 
+
+
+export const getPostXChatMutationFetcher = ( options?: SecondParameter<typeof customInstance>) => {
+  return (_: Key, { arg }: { arg: PostXChatBody }) => {
+    return postXChat(arg, options);
+  }
+}
+export const getPostXChatMutationKey = () => [`/x/chat`] as const;
+
+export type PostXChatMutationResult = NonNullable<Awaited<ReturnType<typeof postXChat>>>
+
+export const usePostXChat = <TError = unknown>(
+   options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof postXChat>>, TError, Key, PostXChatBody, Awaited<ReturnType<typeof postXChat>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
+) => {
+
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getPostXChatMutationKey();
+  const swrFn = getPostXChatMutationFetcher(requestOptions);
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
+export type postNatieChatResponse200 = {
+  data: void
+  status: 200
+}
+    
+export type postNatieChatResponseSuccess = (postNatieChatResponse200) & {
+  headers: Headers;
+};
+;
+
+export type postNatieChatResponse = (postNatieChatResponseSuccess)
+
+export const getPostNatieChatUrl = () => {
+
+
+  
+
+  return `/natie/chat`
+}
+
+export const postNatieChat = async (postNatieChatBody: PostNatieChatBody, options?: RequestInit): Promise<postNatieChatResponse> => {
+  
+  return customInstance<postNatieChatResponse>(getPostNatieChatUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      postNatieChatBody,)
+  }
+);}
+
+
+
+
+export const getPostNatieChatMutationFetcher = ( options?: SecondParameter<typeof customInstance>) => {
+  return (_: Key, { arg }: { arg: PostNatieChatBody }) => {
+    return postNatieChat(arg, options);
+  }
+}
+export const getPostNatieChatMutationKey = () => [`/natie/chat`] as const;
+
+export type PostNatieChatMutationResult = NonNullable<Awaited<ReturnType<typeof postNatieChat>>>
+
+export const usePostNatieChat = <TError = unknown>(
+   options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof postNatieChat>>, TError, Key, PostNatieChatBody, Awaited<ReturnType<typeof postNatieChat>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
+) => {
+
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getPostNatieChatMutationKey();
+  const swrFn = getPostNatieChatMutationFetcher(requestOptions);
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}

@@ -1,16 +1,45 @@
-export default function Page() {
+import { Suspense } from 'react';
+import { cookies } from 'next/headers';
+import { getGmailAccounts } from '@/lib/api/default/default';
+import { EmailIntegrationShell } from './components/email-integration-shell';
+import { EmailToastHandler } from './components/email-toast-handler';
+
+async function getEmailAccounts() {
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore
+    .getAll()
+    .map((cookie) => `${cookie.name}=${cookie.value}`)
+    .join('; ');
+
+  try {
+    const response = await getGmailAccounts({
+      cache: 'no-store',
+      headers: {
+        Cookie: cookieHeader,
+      },
+    });
+
+    if (response.status !== 200) {
+      return [];
+    }
+
+    const data = response.data;
+
+    return data;
+  } catch {
+    return [];
+  }
+}
+
+export default async function Page() {
+  const initialAccounts = await getEmailAccounts();
+
   return (
-    <div className="flex flex-1 flex-col">
-      <div className="@container/main flex flex-1 flex-col gap-2">
-        <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-          <div className="px-4 lg:px-6">
-            <h1 className="text-2xl font-bold mb-4">Email Integration</h1>
-            <p className="text-muted-foreground">
-              Connect your email accounts and chat with Natie about your emails.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+    <>
+      <Suspense>
+        <EmailToastHandler />
+      </Suspense>
+      <EmailIntegrationShell initialAccounts={initialAccounts} />
+    </>
+  );
 }

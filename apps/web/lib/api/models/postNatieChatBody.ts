@@ -5,10 +5,10 @@
  * API documentation
  * OpenAPI spec version: 1.0.0
  */
-import type { PostEmailChatBodyType } from './postEmailChatBodyType';
+import type { PostNatieChatBodyType } from './postNatieChatBodyType';
 
-export type PostEmailChatBody = {
+export type PostNatieChatBody = {
   /** @minLength 1 */
   message: string;
-  type: PostEmailChatBodyType;
+  type: PostNatieChatBodyType;
 };

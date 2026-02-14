@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 
-import { postXAccount } from '@/lib/client/default/default';
+import { postXAccount } from '@/lib/api/default/default';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
