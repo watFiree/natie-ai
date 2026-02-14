@@ -136,6 +136,11 @@ export const GmailRouter = async (fastify: FastifyInstance) => {
     }
   );
 
+  /* TODO: update the OpenAPI spec and
+  backend router to move the email out of query parameters and into the request
+  body or a path segment (e.g., DELETE /gmail-accounts/{encodedEmail} or DELETE
+  /gmail-accounts with {email} in JSON body)
+  */
   typedFastify.delete(
     '/gmail-accounts',
     {
