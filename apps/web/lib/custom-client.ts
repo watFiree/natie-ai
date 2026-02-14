@@ -30,6 +30,14 @@ export const customInstance = async <T>(
   };
 
   const response = await fetch(requestUrl, requestInit);
+
+  if (!response.ok) {
+    const errorBody = await response.text();
+    throw new Error(
+      `Request failed with status ${response.status}: ${errorBody}`
+    );
+  }
+
   const data = await getBody<T>(response);
 
   return { status: response.status, data, headers: response.headers } as T;
