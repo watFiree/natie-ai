@@ -1,16 +1,44 @@
-export default function Page() {
+import { cookies } from 'next/headers';
+
+import { getTelegram } from '@/lib/api/default/default';
+
+import { TelegramGatewayShell } from './components/telegram-gateway-shell';
+
+async function getTelegramConfig() {
+  const cookieStore = await cookies();
+  const cookieHeader = cookieStore
+    .getAll()
+    .map((cookie) => `${cookie.name}=${cookie.value}`)
+    .join('; ');
+
+  try {
+    const response = await getTelegram({
+      cache: 'no-store',
+      headers: {
+        Cookie: cookieHeader,
+      },
+    });
+
+    if (response.status === 200) {
+      return {
+        isConfigured: true,
+        telegramUserId: response.data.telegramUserId,
+      };
+    }
+
+    return { isConfigured: false };
+  } catch {
+    return { isConfigured: false };
+  }
+}
+
+export default async function Page() {
+  const config = await getTelegramConfig();
+
   return (
-    <div className="flex flex-1 flex-col">
-      <div className="@container/main flex flex-1 flex-col gap-2">
-        <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-          <div className="px-4 lg:px-6">
-            <h1 className="text-2xl font-bold mb-4">Telegram Integration</h1>
-            <p className="text-muted-foreground">
-              Connect your Telegram account and chat with Natie about your messages.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+    <TelegramGatewayShell
+      initialIsConfigured={config.isConfigured}
+      initialTelegramUserId={config.telegramUserId}
+    />
+  );
 }

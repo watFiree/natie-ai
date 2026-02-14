@@ -115,9 +115,27 @@ export function isZodSchema(
   );
 }
 
+export function isVoidSchema(schema: unknown): boolean {
+  return (
+    typeof schema === 'object' &&
+    schema !== null &&
+    '_zod' in schema &&
+    typeof schema._zod === 'object' &&
+    schema._zod !== null &&
+    'def' in schema._zod &&
+    typeof schema._zod.def === 'object' &&
+    schema._zod.def !== null &&
+    'type' in schema._zod.def &&
+    schema._zod.def.type === 'void'
+  );
+}
+
 export function toJsonSchema(schema: unknown) {
   if (!isZodSchema(schema)) {
     return schema;
+  }
+  if (isVoidSchema(schema)) {
+    return undefined;
   }
   const jsonSchema = schema.toJSONSchema({ target: 'openApi3' });
   return convertNullable(jsonSchema);

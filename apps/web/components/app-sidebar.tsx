@@ -69,7 +69,7 @@ const data = {
   gateways: [
     {
       name: "Telegram",
-      url: "#",
+      url: "/app/telegram",
       icon: IconBrandTelegram,
     },
   ],

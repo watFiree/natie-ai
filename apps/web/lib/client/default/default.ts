@@ -21,13 +21,30 @@ import type {
   DeleteGmailAccounts200,
   DeleteGmailAccounts401,
   DeleteGmailAccounts404,
+  DeleteGmailAccounts500,
   DeleteGmailAccountsParams,
+  DeleteTelegram200,
+  DeleteTelegram401,
+  DeleteTelegram404,
+  DeleteTelegram500,
+  GetAuthGoogle401,
   GetAuthStatus200,
   GetAuthStatus401,
   GetGmailAccounts200Item,
   GetGmailAccounts401,
+  GetGmailAccounts500,
+  GetOauthGoogleCallback401,
+  GetOauthGoogleCallbackParams,
+  GetTelegram200,
+  GetTelegram401,
+  GetTelegram404,
+  GetTelegram500,
   PostEmailChatBody,
   PostNatieChatBody,
+  PostTelegram200,
+  PostTelegram401,
+  PostTelegram500,
+  PostTelegramBody,
   PostXAccountBody,
   PostXChatBody
 } from '../../api/models';
@@ -263,17 +280,22 @@ export const useGetAuthLogout = <TError = unknown>(
     ...query
   }
 }
-export type getAuthGoogleResponse200 = {
-  data: void
-  status: 200
+export type getAuthGoogleResponse302 = {
+  data: unknown
+  status: 302
+}
+
+export type getAuthGoogleResponse401 = {
+  data: GetAuthGoogle401
+  status: 401
 }
     
-export type getAuthGoogleResponseSuccess = (getAuthGoogleResponse200) & {
+;
+export type getAuthGoogleResponseError = (getAuthGoogleResponse302 | getAuthGoogleResponse401) & {
   headers: Headers;
 };
-;
 
-export type getAuthGoogleResponse = (getAuthGoogleResponseSuccess)
+export type getAuthGoogleResponse = (getAuthGoogleResponseError)
 
 export const getGetAuthGoogleUrl = () => {
 
@@ -301,7 +323,7 @@ export const getGetAuthGoogleKey = () => [`/auth/google`] as const;
 
 export type GetAuthGoogleQueryResult = NonNullable<Awaited<ReturnType<typeof getAuthGoogle>>>
 
-export const useGetAuthGoogle = <TError = unknown>(
+export const useGetAuthGoogle = <TError = unknown | GetAuthGoogle401>(
    options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getAuthGoogle>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
 ) => {
   const {swr: swrOptions, request: requestOptions} = options ?? {}
@@ -317,29 +339,41 @@ export const useGetAuthGoogle = <TError = unknown>(
     ...query
   }
 }
-export type getOauthGoogleCallbackResponse200 = {
-  data: void
-  status: 200
+export type getOauthGoogleCallbackResponse302 = {
+  data: unknown
+  status: 302
+}
+
+export type getOauthGoogleCallbackResponse401 = {
+  data: GetOauthGoogleCallback401
+  status: 401
 }
     
-export type getOauthGoogleCallbackResponseSuccess = (getOauthGoogleCallbackResponse200) & {
+;
+export type getOauthGoogleCallbackResponseError = (getOauthGoogleCallbackResponse302 | getOauthGoogleCallbackResponse401) & {
   headers: Headers;
 };
-;
 
-export type getOauthGoogleCallbackResponse = (getOauthGoogleCallbackResponseSuccess)
+export type getOauthGoogleCallbackResponse = (getOauthGoogleCallbackResponseError)
 
-export const getGetOauthGoogleCallbackUrl = () => {
+export const getGetOauthGoogleCallbackUrl = (params?: GetOauthGoogleCallbackParams,) => {
+  const normalizedParams = new URLSearchParams();
 
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
 
-  
+  const stringifiedParams = normalizedParams.toString();
 
-  return `/oauth/google/callback`
+  return stringifiedParams.length > 0 ? `/oauth/google/callback?${stringifiedParams}` : `/oauth/google/callback`
 }
 
-export const getOauthGoogleCallback = async ( options?: RequestInit): Promise<getOauthGoogleCallbackResponse> => {
+export const getOauthGoogleCallback = async (params?: GetOauthGoogleCallbackParams, options?: RequestInit): Promise<getOauthGoogleCallbackResponse> => {
   
-  return customInstance<getOauthGoogleCallbackResponse>(getGetOauthGoogleCallbackUrl(),
+  return customInstance<getOauthGoogleCallbackResponse>(getGetOauthGoogleCallbackUrl(params),
   {      
     ...options,
     method: 'GET'
@@ -351,18 +385,18 @@ export const getOauthGoogleCallback = async ( options?: RequestInit): Promise<ge
 
 
 
-export const getGetOauthGoogleCallbackKey = () => [`/oauth/google/callback`] as const;
+export const getGetOauthGoogleCallbackKey = (params?: GetOauthGoogleCallbackParams,) => [`/oauth/google/callback`, ...(params ? [params]: [])] as const;
 
 export type GetOauthGoogleCallbackQueryResult = NonNullable<Awaited<ReturnType<typeof getOauthGoogleCallback>>>
 
-export const useGetOauthGoogleCallback = <TError = unknown>(
-   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getOauthGoogleCallback>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
+export const useGetOauthGoogleCallback = <TError = unknown | GetOauthGoogleCallback401>(
+  params?: GetOauthGoogleCallbackParams, options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getOauthGoogleCallback>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
 ) => {
   const {swr: swrOptions, request: requestOptions} = options ?? {}
 
   const isEnabled = swrOptions?.enabled !== false
-  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetOauthGoogleCallbackKey() : null);
-  const swrFn = () => getOauthGoogleCallback(requestOptions)
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetOauthGoogleCallbackKey(params) : null);
+  const swrFn = () => getOauthGoogleCallback(params, requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
 
@@ -380,11 +414,16 @@ export type getGmailAccountsResponse401 = {
   data: GetGmailAccounts401
   status: 401
 }
+
+export type getGmailAccountsResponse500 = {
+  data: GetGmailAccounts500
+  status: 500
+}
     
 export type getGmailAccountsResponseSuccess = (getGmailAccountsResponse200) & {
   headers: Headers;
 };
-export type getGmailAccountsResponseError = (getGmailAccountsResponse401) & {
+export type getGmailAccountsResponseError = (getGmailAccountsResponse401 | getGmailAccountsResponse500) & {
   headers: Headers;
 };
 
@@ -416,7 +455,7 @@ export const getGetGmailAccountsKey = () => [`/gmail-accounts`] as const;
 
 export type GetGmailAccountsQueryResult = NonNullable<Awaited<ReturnType<typeof getGmailAccounts>>>
 
-export const useGetGmailAccounts = <TError = GetGmailAccounts401>(
+export const useGetGmailAccounts = <TError = GetGmailAccounts401 | GetGmailAccounts500>(
    options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getGmailAccounts>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
 ) => {
   const {swr: swrOptions, request: requestOptions} = options ?? {}
@@ -446,11 +485,16 @@ export type deleteGmailAccountsResponse404 = {
   data: DeleteGmailAccounts404
   status: 404
 }
+
+export type deleteGmailAccountsResponse500 = {
+  data: DeleteGmailAccounts500
+  status: 500
+}
     
 export type deleteGmailAccountsResponseSuccess = (deleteGmailAccountsResponse200) & {
   headers: Headers;
 };
-export type deleteGmailAccountsResponseError = (deleteGmailAccountsResponse401 | deleteGmailAccountsResponse404) & {
+export type deleteGmailAccountsResponseError = (deleteGmailAccountsResponse401 | deleteGmailAccountsResponse404 | deleteGmailAccountsResponse500) & {
   headers: Headers;
 };
 
@@ -494,7 +538,7 @@ export const getDeleteGmailAccountsMutationKey = (params: DeleteGmailAccountsPar
 
 export type DeleteGmailAccountsMutationResult = NonNullable<Awaited<ReturnType<typeof deleteGmailAccounts>>>
 
-export const useDeleteGmailAccounts = <TError = DeleteGmailAccounts401 | DeleteGmailAccounts404>(
+export const useDeleteGmailAccounts = <TError = DeleteGmailAccounts401 | DeleteGmailAccounts404 | DeleteGmailAccounts500>(
   params: DeleteGmailAccountsParams, options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof deleteGmailAccounts>>, TError, Key, Arguments, Awaited<ReturnType<typeof deleteGmailAccounts>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
 ) => {
 
@@ -855,6 +899,225 @@ export const usePostNatieChat = <TError = unknown>(
 
   const swrKey = swrOptions?.swrKey ?? getPostNatieChatMutationKey();
   const swrFn = getPostNatieChatMutationFetcher(requestOptions);
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
+export type getTelegramResponse200 = {
+  data: GetTelegram200
+  status: 200
+}
+
+export type getTelegramResponse401 = {
+  data: GetTelegram401
+  status: 401
+}
+
+export type getTelegramResponse404 = {
+  data: GetTelegram404
+  status: 404
+}
+
+export type getTelegramResponse500 = {
+  data: GetTelegram500
+  status: 500
+}
+    
+export type getTelegramResponseSuccess = (getTelegramResponse200) & {
+  headers: Headers;
+};
+export type getTelegramResponseError = (getTelegramResponse401 | getTelegramResponse404 | getTelegramResponse500) & {
+  headers: Headers;
+};
+
+export type getTelegramResponse = (getTelegramResponseSuccess | getTelegramResponseError)
+
+export const getGetTelegramUrl = () => {
+
+
+  
+
+  return `/telegram/`
+}
+
+export const getTelegram = async ( options?: RequestInit): Promise<getTelegramResponse> => {
+  
+  return customInstance<getTelegramResponse>(getGetTelegramUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+
+export const getGetTelegramKey = () => [`/telegram/`] as const;
+
+export type GetTelegramQueryResult = NonNullable<Awaited<ReturnType<typeof getTelegram>>>
+
+export const useGetTelegram = <TError = GetTelegram401 | GetTelegram404 | GetTelegram500>(
+   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getTelegram>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
+) => {
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetTelegramKey() : null);
+  const swrFn = () => getTelegram(requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
+export type postTelegramResponse200 = {
+  data: PostTelegram200
+  status: 200
+}
+
+export type postTelegramResponse401 = {
+  data: PostTelegram401
+  status: 401
+}
+
+export type postTelegramResponse500 = {
+  data: PostTelegram500
+  status: 500
+}
+    
+export type postTelegramResponseSuccess = (postTelegramResponse200) & {
+  headers: Headers;
+};
+export type postTelegramResponseError = (postTelegramResponse401 | postTelegramResponse500) & {
+  headers: Headers;
+};
+
+export type postTelegramResponse = (postTelegramResponseSuccess | postTelegramResponseError)
+
+export const getPostTelegramUrl = () => {
+
+
+  
+
+  return `/telegram/`
+}
+
+export const postTelegram = async (postTelegramBody: PostTelegramBody, options?: RequestInit): Promise<postTelegramResponse> => {
+  
+  return customInstance<postTelegramResponse>(getPostTelegramUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      postTelegramBody,)
+  }
+);}
+
+
+
+
+export const getPostTelegramMutationFetcher = ( options?: SecondParameter<typeof customInstance>) => {
+  return (_: Key, { arg }: { arg: PostTelegramBody }) => {
+    return postTelegram(arg, options);
+  }
+}
+export const getPostTelegramMutationKey = () => [`/telegram/`] as const;
+
+export type PostTelegramMutationResult = NonNullable<Awaited<ReturnType<typeof postTelegram>>>
+
+export const usePostTelegram = <TError = PostTelegram401 | PostTelegram500>(
+   options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof postTelegram>>, TError, Key, PostTelegramBody, Awaited<ReturnType<typeof postTelegram>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
+) => {
+
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getPostTelegramMutationKey();
+  const swrFn = getPostTelegramMutationFetcher(requestOptions);
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
+export type deleteTelegramResponse200 = {
+  data: DeleteTelegram200
+  status: 200
+}
+
+export type deleteTelegramResponse401 = {
+  data: DeleteTelegram401
+  status: 401
+}
+
+export type deleteTelegramResponse404 = {
+  data: DeleteTelegram404
+  status: 404
+}
+
+export type deleteTelegramResponse500 = {
+  data: DeleteTelegram500
+  status: 500
+}
+    
+export type deleteTelegramResponseSuccess = (deleteTelegramResponse200) & {
+  headers: Headers;
+};
+export type deleteTelegramResponseError = (deleteTelegramResponse401 | deleteTelegramResponse404 | deleteTelegramResponse500) & {
+  headers: Headers;
+};
+
+export type deleteTelegramResponse = (deleteTelegramResponseSuccess | deleteTelegramResponseError)
+
+export const getDeleteTelegramUrl = () => {
+
+
+  
+
+  return `/telegram/`
+}
+
+export const deleteTelegram = async ( options?: RequestInit): Promise<deleteTelegramResponse> => {
+  
+  return customInstance<deleteTelegramResponse>(getDeleteTelegramUrl(),
+  {      
+    ...options,
+    method: 'DELETE'
+    
+    
+  }
+);}
+
+
+
+
+export const getDeleteTelegramMutationFetcher = ( options?: SecondParameter<typeof customInstance>) => {
+  return (_: Key, __: { arg: Arguments }) => {
+    return deleteTelegram(options);
+  }
+}
+export const getDeleteTelegramMutationKey = () => [`/telegram/`] as const;
+
+export type DeleteTelegramMutationResult = NonNullable<Awaited<ReturnType<typeof deleteTelegram>>>
+
+export const useDeleteTelegram = <TError = DeleteTelegram401 | DeleteTelegram404 | DeleteTelegram500>(
+   options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof deleteTelegram>>, TError, Key, Arguments, Awaited<ReturnType<typeof deleteTelegram>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
+) => {
+
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getDeleteTelegramMutationKey();
+  const swrFn = getDeleteTelegramMutationFetcher(requestOptions);
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
