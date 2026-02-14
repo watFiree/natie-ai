@@ -48,7 +48,7 @@ export const GmailRouter = async (fastify: FastifyInstance) => {
 
       reply.setCookie('google_oauth_state', state, {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
         maxAge: 5 * 60, // 5 minutes (seconds in Fastify)
         signed: true,
@@ -118,6 +118,7 @@ export const GmailRouter = async (fastify: FastifyInstance) => {
         response: {
           200: GmailAccountsResponseSchema,
           401: ErrorResponseSchema,
+          500: ErrorResponseSchema,
         },
       },
     },
@@ -125,14 +126,18 @@ export const GmailRouter = async (fastify: FastifyInstance) => {
       if (!req.user?.id) {
         return reply.code(401).send({ error: 'Unauthorized' });
       }
-
-      const accounts = await repository.findByUserId(req.user.id);
-      return reply.send(
-        accounts.map((account) => ({
-          email: account.email,
-          provider: 'gmail' as const,
-        }))
-      );
+      try {
+        const accounts = await repository.findByUserId(req.user.id);
+        return reply.send(
+          accounts.map((account) => ({
+            email: account.email,
+            provider: 'gmail' as const,
+          }))
+        );
+      } catch (err) {
+        req.log.error(err, 'Failed to get Gmail accounts');
+        return reply.code(500).send({ error: 'Internal server error' });
+      }
     }
   );
 
@@ -151,6 +156,7 @@ export const GmailRouter = async (fastify: FastifyInstance) => {
           200: SuccessResponseSchema,
           401: ErrorResponseSchema,
           404: ErrorResponseSchema,
+          500: ErrorResponseSchema,
         },
       },
     },
@@ -159,16 +165,38 @@ export const GmailRouter = async (fastify: FastifyInstance) => {
         return reply.code(401).send({ error: 'Unauthorized' });
       }
 
-      const account = await repository.findByUserAndEmail(
-        req.user.id,
-        req.query.email
-      );
-      if (!account) {
-        return reply.code(404).send({ error: 'Account not found' });
-      }
+      try {
+        const account = await repository.findByUserAndEmail(
+          req.user.id,
+          req.query.email
+        );
+        if (!account) {
+          return reply.code(404).send({ error: 'Account not found' });
+        }
 
-      await repository.delete(req.user.id, req.query.email);
-      return reply.send({ success: true });
+        const tokenToRevoke = account.refreshToken ?? account.accessToken;
+        if (tokenToRevoke) {
+          const oauth2Client = createOAuth2Client();
+          const { status, data } =
+            await oauth2Client.revokeToken(tokenToRevoke);
+
+          if (status !== 200) {
+            req.log.error(
+              { status, data, email: req.query.email },
+              'Failed to revoke Google token'
+            );
+            return reply
+              .code(500)
+              .send({ error: 'Failed to revoke Google token' });
+          }
+        }
+
+        await repository.delete(req.user.id, req.query.email);
+        return reply.send({ success: true });
+      } catch (err) {
+        req.log.error(err, `Error deleting Gmail account ${req.query.email}`);
+        return reply.code(500).send({ error: 'Internal server error' });
+      }
     }
   );
 };
