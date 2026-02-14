@@ -16,6 +16,7 @@ import { EmailAgentRouter } from './integrations/email_handler/router';
 import { XAgentRouter } from './integrations/x_handler/router';
 import { NatieRouter } from './modules/natie/router';
 import { TelegramGateway } from './gateways/telegram/gateway';
+import { TelegramSettingsRouter } from './gateways/telegram/router';
 import { InMemoryAgentLockService } from './modules/agent_lock/service';
 
 const app = fastify({ logger: true });
@@ -41,6 +42,7 @@ app.register(XAccountRouter, { prefix: '/x-account' });
 app.register(EmailAgentRouter, { prefix: '/email' });
 app.register(XAgentRouter, { prefix: '/x' });
 app.register(NatieRouter, { prefix: '/natie' });
+app.register(TelegramSettingsRouter, { prefix: '/telegram-settings' });
 
 app.listen({ port: 3000 }, async (err) => {
   if (err) {

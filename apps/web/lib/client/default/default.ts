@@ -445,3 +445,103 @@ export const postXChat = async (postXChatBody: PostXChatBody, options?: RequestI
 );}
 
 
+// ---- Telegram Settings ----
+
+export type getTelegramSettingsResponse200 = {
+  data: {
+    id: string
+    telegramUserId: string
+    createdAt: string
+    updatedAt: string
+  }
+  status: 200
+}
+
+export type getTelegramSettingsResponse404 = {
+  data: { error: string }
+  status: 404
+}
+
+export type getTelegramSettingsResponseSuccess = (getTelegramSettingsResponse200) & {
+  headers: Headers;
+};
+
+export type getTelegramSettingsResponseError = (getTelegramSettingsResponse404) & {
+  headers: Headers;
+};
+
+export type getTelegramSettingsResponse = (getTelegramSettingsResponseSuccess | getTelegramSettingsResponseError)
+
+export const getGetTelegramSettingsUrl = () => {
+  return `/telegram-settings/`
+}
+
+export const getTelegramSettings = async ( options?: RequestInit): Promise<getTelegramSettingsResponse> => {
+  return customInstance<getTelegramSettingsResponse>(getGetTelegramSettingsUrl(),
+  {      
+    ...options,
+    method: 'GET'
+  }
+);}
+
+
+export type PostTelegramSettingsBody = {
+  telegramUserId: string
+}
+
+export type postTelegramSettingsResponse200 = {
+  data: {
+    id: string
+    telegramUserId: string
+    createdAt: string
+    updatedAt: string
+  }
+  status: 200
+}
+
+export type postTelegramSettingsResponseSuccess = (postTelegramSettingsResponse200) & {
+  headers: Headers;
+};
+
+export type postTelegramSettingsResponse = (postTelegramSettingsResponseSuccess)
+
+export const getPostTelegramSettingsUrl = () => {
+  return `/telegram-settings/`
+}
+
+export const postTelegramSettings = async (postTelegramSettingsBody: PostTelegramSettingsBody, options?: RequestInit): Promise<postTelegramSettingsResponse> => {
+  return customInstance<postTelegramSettingsResponse>(getPostTelegramSettingsUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      postTelegramSettingsBody,)
+  }
+);}
+
+
+export type deleteTelegramSettingsResponse200 = {
+  data: { success: boolean }
+  status: 200
+}
+
+export type deleteTelegramSettingsResponseSuccess = (deleteTelegramSettingsResponse200) & {
+  headers: Headers;
+};
+
+export type deleteTelegramSettingsResponse = (deleteTelegramSettingsResponseSuccess)
+
+export const getDeleteTelegramSettingsUrl = () => {
+  return `/telegram-settings/`
+}
+
+export const deleteTelegramSettings = async ( options?: RequestInit): Promise<deleteTelegramSettingsResponse> => {
+  return customInstance<deleteTelegramSettingsResponse>(getDeleteTelegramSettingsUrl(),
+  {      
+    ...options,
+    method: 'DELETE'
+  }
+);}
+
+
