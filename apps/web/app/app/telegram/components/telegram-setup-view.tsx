@@ -41,12 +41,12 @@ export function TelegramSetupView({
     <div className="grid gap-4 xl:grid-cols-[1.3fr_1fr]">
       <Card className="hidden xl:block">
         <CardHeader>
-          <CardTitle>How to find your Telegram User ID</CardTitle>
+          <CardTitle>How to connect Telegram</CardTitle>
           <CardDescription>
-            Follow the steps below to get your numeric Telegram user ID.
+            Message @NatieAi_bot to get your User ID, then paste it here.
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="mt-4">
           <TelegramSetupInstructions />
         </CardContent>
       </Card>
@@ -57,9 +57,18 @@ export function TelegramSetupView({
             <div className="space-y-1">
               <CardTitle>Telegram settings</CardTitle>
               <CardDescription>
-                {isConfigured
-                  ? 'Your Telegram account is connected. You can update or disconnect it below.'
-                  : 'Enter your Telegram user ID to connect your account.'}
+                {isConfigured ? (
+                  <span>
+                    Your Telegram account is{' '}
+                    <strong className="text-green-600">connected</strong>. You
+                    can update or disconnect it below.
+                  </span>
+                ) : (
+                  <span>
+                    Enter your Telegram user ID to <strong>connect</strong> your
+                    account.
+                  </span>
+                )}
               </CardDescription>
             </div>
 
@@ -82,9 +91,10 @@ export function TelegramSetupView({
                 className="w-full max-w-full overflow-y-auto sm:max-w-xl"
               >
                 <SheetHeader>
-                  <SheetTitle>How to find your Telegram User ID</SheetTitle>
+                  <SheetTitle>How to connect Telegram</SheetTitle>
                   <SheetDescription>
-                    Step-by-step instructions to get your Telegram user ID.
+                    Message @NatieAi_bot to get your User ID, then paste it
+                    here.
                   </SheetDescription>
                 </SheetHeader>
                 <div className="px-4 pb-6">

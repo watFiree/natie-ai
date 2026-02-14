@@ -9,13 +9,30 @@ import type {
   DeleteGmailAccounts200,
   DeleteGmailAccounts401,
   DeleteGmailAccounts404,
+  DeleteGmailAccounts500,
   DeleteGmailAccountsParams,
+  DeleteTelegram200,
+  DeleteTelegram401,
+  DeleteTelegram404,
+  DeleteTelegram500,
+  GetAuthGoogle401,
   GetAuthStatus200,
   GetAuthStatus401,
   GetGmailAccounts200Item,
   GetGmailAccounts401,
+  GetGmailAccounts500,
+  GetOauthGoogleCallback401,
+  GetOauthGoogleCallbackParams,
+  GetTelegram200,
+  GetTelegram401,
+  GetTelegram404,
+  GetTelegram500,
   PostEmailChatBody,
   PostNatieChatBody,
+  PostTelegram200,
+  PostTelegram401,
+  PostTelegram500,
+  PostTelegramBody,
   PostXAccountBody,
   PostXChatBody
 } from '.././models';
@@ -157,17 +174,22 @@ export const getAuthLogout = async ( options?: RequestInit): Promise<getAuthLogo
 );}
 
 
-export type getAuthGoogleResponse200 = {
-  data: void
-  status: 200
+export type getAuthGoogleResponse302 = {
+  data: unknown
+  status: 302
+}
+
+export type getAuthGoogleResponse401 = {
+  data: GetAuthGoogle401
+  status: 401
 }
     
-export type getAuthGoogleResponseSuccess = (getAuthGoogleResponse200) & {
+;
+export type getAuthGoogleResponseError = (getAuthGoogleResponse302 | getAuthGoogleResponse401) & {
   headers: Headers;
 };
-;
 
-export type getAuthGoogleResponse = (getAuthGoogleResponseSuccess)
+export type getAuthGoogleResponse = (getAuthGoogleResponseError)
 
 export const getGetAuthGoogleUrl = () => {
 
@@ -189,29 +211,41 @@ export const getAuthGoogle = async ( options?: RequestInit): Promise<getAuthGoog
 );}
 
 
-export type getOauthGoogleCallbackResponse200 = {
-  data: void
-  status: 200
+export type getOauthGoogleCallbackResponse302 = {
+  data: unknown
+  status: 302
+}
+
+export type getOauthGoogleCallbackResponse401 = {
+  data: GetOauthGoogleCallback401
+  status: 401
 }
     
-export type getOauthGoogleCallbackResponseSuccess = (getOauthGoogleCallbackResponse200) & {
+;
+export type getOauthGoogleCallbackResponseError = (getOauthGoogleCallbackResponse302 | getOauthGoogleCallbackResponse401) & {
   headers: Headers;
 };
-;
 
-export type getOauthGoogleCallbackResponse = (getOauthGoogleCallbackResponseSuccess)
+export type getOauthGoogleCallbackResponse = (getOauthGoogleCallbackResponseError)
 
-export const getGetOauthGoogleCallbackUrl = () => {
+export const getGetOauthGoogleCallbackUrl = (params?: GetOauthGoogleCallbackParams,) => {
+  const normalizedParams = new URLSearchParams();
 
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
 
-  
+  const stringifiedParams = normalizedParams.toString();
 
-  return `/oauth/google/callback`
+  return stringifiedParams.length > 0 ? `/oauth/google/callback?${stringifiedParams}` : `/oauth/google/callback`
 }
 
-export const getOauthGoogleCallback = async ( options?: RequestInit): Promise<getOauthGoogleCallbackResponse> => {
+export const getOauthGoogleCallback = async (params?: GetOauthGoogleCallbackParams, options?: RequestInit): Promise<getOauthGoogleCallbackResponse> => {
   
-  return customInstance<getOauthGoogleCallbackResponse>(getGetOauthGoogleCallbackUrl(),
+  return customInstance<getOauthGoogleCallbackResponse>(getGetOauthGoogleCallbackUrl(params),
   {      
     ...options,
     method: 'GET'
@@ -230,11 +264,16 @@ export type getGmailAccountsResponse401 = {
   data: GetGmailAccounts401
   status: 401
 }
+
+export type getGmailAccountsResponse500 = {
+  data: GetGmailAccounts500
+  status: 500
+}
     
 export type getGmailAccountsResponseSuccess = (getGmailAccountsResponse200) & {
   headers: Headers;
 };
-export type getGmailAccountsResponseError = (getGmailAccountsResponse401) & {
+export type getGmailAccountsResponseError = (getGmailAccountsResponse401 | getGmailAccountsResponse500) & {
   headers: Headers;
 };
 
@@ -274,11 +313,16 @@ export type deleteGmailAccountsResponse404 = {
   data: DeleteGmailAccounts404
   status: 404
 }
+
+export type deleteGmailAccountsResponse500 = {
+  data: DeleteGmailAccounts500
+  status: 500
+}
     
 export type deleteGmailAccountsResponseSuccess = (deleteGmailAccountsResponse200) & {
   headers: Headers;
 };
-export type deleteGmailAccountsResponseError = (deleteGmailAccountsResponse401 | deleteGmailAccountsResponse404) & {
+export type deleteGmailAccountsResponseError = (deleteGmailAccountsResponse401 | deleteGmailAccountsResponse404 | deleteGmailAccountsResponse500) & {
   headers: Headers;
 };
 
@@ -503,6 +547,149 @@ export const postNatieChat = async (postNatieChatBody: PostNatieChatBody, option
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(
       postNatieChatBody,)
+  }
+);}
+
+
+export type getTelegramResponse200 = {
+  data: GetTelegram200
+  status: 200
+}
+
+export type getTelegramResponse401 = {
+  data: GetTelegram401
+  status: 401
+}
+
+export type getTelegramResponse404 = {
+  data: GetTelegram404
+  status: 404
+}
+
+export type getTelegramResponse500 = {
+  data: GetTelegram500
+  status: 500
+}
+    
+export type getTelegramResponseSuccess = (getTelegramResponse200) & {
+  headers: Headers;
+};
+export type getTelegramResponseError = (getTelegramResponse401 | getTelegramResponse404 | getTelegramResponse500) & {
+  headers: Headers;
+};
+
+export type getTelegramResponse = (getTelegramResponseSuccess | getTelegramResponseError)
+
+export const getGetTelegramUrl = () => {
+
+
+  
+
+  return `/telegram/`
+}
+
+export const getTelegram = async ( options?: RequestInit): Promise<getTelegramResponse> => {
+  
+  return customInstance<getTelegramResponse>(getGetTelegramUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+export type postTelegramResponse200 = {
+  data: PostTelegram200
+  status: 200
+}
+
+export type postTelegramResponse401 = {
+  data: PostTelegram401
+  status: 401
+}
+
+export type postTelegramResponse500 = {
+  data: PostTelegram500
+  status: 500
+}
+    
+export type postTelegramResponseSuccess = (postTelegramResponse200) & {
+  headers: Headers;
+};
+export type postTelegramResponseError = (postTelegramResponse401 | postTelegramResponse500) & {
+  headers: Headers;
+};
+
+export type postTelegramResponse = (postTelegramResponseSuccess | postTelegramResponseError)
+
+export const getPostTelegramUrl = () => {
+
+
+  
+
+  return `/telegram/`
+}
+
+export const postTelegram = async (postTelegramBody: PostTelegramBody, options?: RequestInit): Promise<postTelegramResponse> => {
+  
+  return customInstance<postTelegramResponse>(getPostTelegramUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      postTelegramBody,)
+  }
+);}
+
+
+export type deleteTelegramResponse200 = {
+  data: DeleteTelegram200
+  status: 200
+}
+
+export type deleteTelegramResponse401 = {
+  data: DeleteTelegram401
+  status: 401
+}
+
+export type deleteTelegramResponse404 = {
+  data: DeleteTelegram404
+  status: 404
+}
+
+export type deleteTelegramResponse500 = {
+  data: DeleteTelegram500
+  status: 500
+}
+    
+export type deleteTelegramResponseSuccess = (deleteTelegramResponse200) & {
+  headers: Headers;
+};
+export type deleteTelegramResponseError = (deleteTelegramResponse401 | deleteTelegramResponse404 | deleteTelegramResponse500) & {
+  headers: Headers;
+};
+
+export type deleteTelegramResponse = (deleteTelegramResponseSuccess | deleteTelegramResponseError)
+
+export const getDeleteTelegramUrl = () => {
+
+
+  
+
+  return `/telegram/`
+}
+
+export const deleteTelegram = async ( options?: RequestInit): Promise<deleteTelegramResponse> => {
+  
+  return customInstance<deleteTelegramResponse>(getDeleteTelegramUrl(),
+  {      
+    ...options,
+    method: 'DELETE'
+    
+    
   }
 );}
 

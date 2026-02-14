@@ -43,7 +43,7 @@ app.register(XAccountRouter, { prefix: '/x-account' });
 app.register(EmailAgentRouter, { prefix: '/email' });
 app.register(XAgentRouter, { prefix: '/x' });
 app.register(NatieRouter, { prefix: '/natie' });
-app.register(TelegramSettingsRouter, { prefix: '/telegram-settings' });
+app.register(TelegramSettingsRouter, { prefix: '/telegram' });
 
 app.listen({ port: 3000 }, async (err) => {
   if (err) {

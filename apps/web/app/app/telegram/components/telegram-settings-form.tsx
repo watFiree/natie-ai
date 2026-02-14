@@ -2,7 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 
-import { postTelegramSettings, deleteTelegramSettings } from '@/lib/client/default/default';
+import { postTelegram, deleteTelegram } from '@/lib/api/default/default';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -30,7 +30,7 @@ export function TelegramSettingsForm({
     reset,
     clearErrors,
     setError,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isDirty },
   } = useForm<TelegramSettingsFormValues>({
     defaultValues: {
       telegramUserId: currentTelegramUserId ?? '',
@@ -43,7 +43,7 @@ export function TelegramSettingsForm({
     const telegramUserId = values.telegramUserId.trim();
 
     try {
-      const response = await postTelegramSettings({
+      const response = await postTelegram({
         telegramUserId,
       });
 
@@ -69,7 +69,7 @@ export function TelegramSettingsForm({
     clearErrors('root');
 
     try {
-      const response = await deleteTelegramSettings();
+      const response = await deleteTelegram();
 
       if (response.status !== 200) {
         setError('root', {
@@ -118,7 +118,7 @@ export function TelegramSettingsForm({
       )}
 
       <div className="flex flex-wrap gap-2">
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" disabled={isSubmitting || (isConfigured && !isDirty)}>
           {isSubmitting
             ? 'Saving...'
             : isConfigured

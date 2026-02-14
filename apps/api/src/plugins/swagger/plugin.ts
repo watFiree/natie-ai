@@ -2,7 +2,7 @@ import fp from 'fastify-plugin';
 import swagger from '@fastify/swagger';
 import swaggerUi from '@fastify/swagger-ui';
 import type { FastifyInstance } from 'fastify';
-import { toJsonSchema } from './helpers';
+import { isVoidSchema, toJsonSchema } from './helpers';
 
 async function swaggerPlugin(fastify: FastifyInstance) {
   await fastify.register(swagger, {
@@ -30,6 +30,19 @@ async function swaggerPlugin(fastify: FastifyInstance) {
         Object.assign(response, schema.response);
         for (const key of Object.keys(response)) {
           const responseSchema = response[key];
+
+          // Void schemas (e.g. redirects) have no response body
+          if (isVoidSchema(responseSchema)) {
+            const description =
+              typeof responseSchema === 'object' &&
+              responseSchema !== null &&
+              'description' in responseSchema
+                ? String(responseSchema.description)
+                : 'No content';
+            response[key] = { description };
+            continue;
+          }
+
           // Check if already wrapped in content (manual OpenAPI format)
           if (
             typeof responseSchema === 'object' &&

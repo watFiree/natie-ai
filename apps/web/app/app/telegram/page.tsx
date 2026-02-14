@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 
-import { getTelegramSettings } from '@/lib/client/default/default';
+import { getTelegram } from '@/lib/api/default/default';
 
 import { TelegramGatewayShell } from './components/telegram-gateway-shell';
 
@@ -12,7 +12,7 @@ async function getTelegramConfig() {
     .join('; ');
 
   try {
-    const response = await getTelegramSettings({
+    const response = await getTelegram({
       cache: 'no-store',
       headers: {
         Cookie: cookieHeader,
