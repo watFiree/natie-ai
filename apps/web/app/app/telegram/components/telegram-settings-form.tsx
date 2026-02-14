@@ -9,9 +9,8 @@ import { Label } from '@/components/ui/label';
 
 type TelegramSettingsFormProps = {
   isConfigured: boolean;
-  currentTelegramUserId?: string;
-  onSettingsSaved: () => void;
-  onSettingsDeleted: () => void;
+  setIsConfigured: (isConfigured: boolean) => void;
+  initialTelegramUserId?: string;
 };
 
 type TelegramSettingsFormValues = {
@@ -20,9 +19,8 @@ type TelegramSettingsFormValues = {
 
 export function TelegramSettingsForm({
   isConfigured,
-  currentTelegramUserId,
-  onSettingsSaved,
-  onSettingsDeleted,
+  setIsConfigured,
+  initialTelegramUserId,
 }: TelegramSettingsFormProps) {
   const {
     register,
@@ -33,7 +31,7 @@ export function TelegramSettingsForm({
     formState: { errors, isSubmitting, isDirty },
   } = useForm<TelegramSettingsFormValues>({
     defaultValues: {
-      telegramUserId: currentTelegramUserId ?? '',
+      telegramUserId: initialTelegramUserId ?? '',
     },
   });
 
@@ -55,8 +53,8 @@ export function TelegramSettingsForm({
         return;
       }
 
-      reset({ telegramUserId });
-      onSettingsSaved();
+      setIsConfigured(true);
+      reset({ telegramUserId: response.data.telegramUserId });
     } catch {
       setError('root', {
         type: 'manual',
@@ -80,7 +78,7 @@ export function TelegramSettingsForm({
       }
 
       reset({ telegramUserId: '' });
-      onSettingsDeleted();
+      setIsConfigured(false);
     } catch {
       setError('root', {
         type: 'manual',
@@ -118,7 +116,10 @@ export function TelegramSettingsForm({
       )}
 
       <div className="flex flex-wrap gap-2">
-        <Button type="submit" disabled={isSubmitting || (isConfigured && !isDirty)}>
+        <Button
+          type="submit"
+          disabled={isSubmitting || (isConfigured && !isDirty)}
+        >
           {isSubmitting
             ? 'Saving...'
             : isConfigured

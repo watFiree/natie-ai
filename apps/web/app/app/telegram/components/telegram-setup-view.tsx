@@ -23,18 +23,15 @@ import { TelegramSettingsForm } from './telegram-settings-form';
 import { TelegramSetupInstructions } from './telegram-setup-instructions';
 
 type TelegramSetupViewProps = {
-  isConfigured: boolean;
-  currentTelegramUserId?: string;
-  onSettingsSaved: () => void;
-  onSettingsDeleted: () => void;
+  initialIsConfigured: boolean;
+  initialTelegramUserId?: string;
 };
 
 export function TelegramSetupView({
-  isConfigured,
-  currentTelegramUserId,
-  onSettingsSaved,
-  onSettingsDeleted,
+  initialIsConfigured,
+  initialTelegramUserId,
 }: TelegramSetupViewProps) {
+  const [isConfigured, setIsConfigured] = useState(initialIsConfigured);
   const [isInstructionsOpen, setIsInstructionsOpen] = useState(false);
 
   return (
@@ -108,9 +105,8 @@ export function TelegramSetupView({
         <CardContent>
           <TelegramSettingsForm
             isConfigured={isConfigured}
-            currentTelegramUserId={currentTelegramUserId}
-            onSettingsSaved={onSettingsSaved}
-            onSettingsDeleted={onSettingsDeleted}
+            setIsConfigured={setIsConfigured}
+            initialTelegramUserId={initialTelegramUserId}
           />
         </CardContent>
       </Card>

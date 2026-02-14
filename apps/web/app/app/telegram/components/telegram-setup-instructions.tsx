@@ -19,8 +19,7 @@ export function TelegramSetupInstructions() {
         <code className="bg-muted rounded px-1">123456789</code>).
       </li>
       <li>
-        <strong>Copy your User ID</strong> and paste it into the form on the
-        right.
+        <strong>Copy your User ID</strong> and paste it into the form.
       </li>
       <li>
         Once your User ID is saved, you can{' '}

@@ -1,7 +1,3 @@
-'use client';
-
-import { useState } from 'react';
-
 import { TelegramSetupView } from './telegram-setup-view';
 
 type TelegramGatewayShellProps = {
@@ -13,11 +9,6 @@ export function TelegramGatewayShell({
   initialIsConfigured,
   initialTelegramUserId,
 }: TelegramGatewayShellProps) {
-  const [isConfigured, setIsConfigured] = useState(initialIsConfigured);
-  const [telegramUserId, setTelegramUserId] = useState(
-    initialTelegramUserId
-  );
-
   return (
     <div className="flex flex-1 flex-col">
       <div className="@container/main flex flex-1 flex-col gap-2">
@@ -31,19 +22,8 @@ export function TelegramGatewayShell({
           </div>
           <div className="px-4 lg:px-6">
             <TelegramSetupView
-              isConfigured={isConfigured}
-              currentTelegramUserId={telegramUserId}
-              onSettingsSaved={() => {
-                setIsConfigured(true);
-                // We don't have the new telegramUserId in this callback,
-                // but the form has been reset with the new value.
-                // For simplicity, trigger a page refresh behavior:
-                setTelegramUserId(undefined);
-              }}
-              onSettingsDeleted={() => {
-                setIsConfigured(false);
-                setTelegramUserId(undefined);
-              }}
+              initialIsConfigured={initialIsConfigured}
+              initialTelegramUserId={initialTelegramUserId}
             />
           </div>
         </div>

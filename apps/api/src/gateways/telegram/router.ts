@@ -1,5 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
+import { Prisma } from '../../../prisma/generated/prisma/client';
 import { TelegramSettingsRepository } from './repository';
 import { authHandler } from '../../modules/auth/handler';
 import {
@@ -109,15 +110,17 @@ export const TelegramSettingsRouter = async (fastify: FastifyInstance) => {
       }
 
       try {
-        const settings = await repository.findByUserId(req.user.id);
-        if (!settings) {
-          return reply.code(404).send({ error: 'Not Found' });
-        }
-
         await repository.delete(req.user.id);
 
         return reply.send({ success: true });
       } catch (err) {
+        if (
+          err instanceof Prisma.PrismaClientKnownRequestError &&
+          err.code === 'P2025'
+        ) {
+          return reply.code(404).send({ error: 'Not Found' });
+        }
+
         req.log.error(err, 'Failed to delete Telegram settings');
         return reply.code(500).send({ error: 'Internal server error' });
       }
