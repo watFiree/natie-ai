@@ -22,7 +22,6 @@ export class GmailSearchTool extends StructuredTool {
     const tool = new GmailSearch({
       credentials: {
         clientEmail: input.accountEmail,
-        privateKey: process.env.GMAIL_PRIVATE_KEY,
         accessToken: token,
       },
     });

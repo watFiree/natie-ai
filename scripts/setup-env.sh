@@ -1,13 +1,26 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if [[ "${BASH_VERSINFO[0]}" -lt 4 ]]; then
+  for candidate in /opt/homebrew/bin/bash /usr/local/bin/bash; do
+    if [[ -x "$candidate" ]]; then
+      exec "$candidate" "$0" "$@"
+    fi
+  done
+  echo "Error: Bash 4+ is required (you have ${BASH_VERSION})." >&2
+  echo "Install with: brew install bash" >&2
+  exit 1
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 ENV_EXAMPLE_PATHS=(
+  "$ROOT_DIR/.env.example"
   "$ROOT_DIR/apps/api/.env.example"
   "$ROOT_DIR/apps/web/.env.example"
 )
 TARGET_ENV_PATHS=(
+  "$ROOT_DIR/.env"
   "$ROOT_DIR/apps/api/.env"
   "$ROOT_DIR/apps/web/.env"
 )
@@ -75,7 +88,20 @@ prompt_required_value() {
       else
         printf "Enter value for %s: " "$key" >&2
       fi
-      IFS= read -r -s user_value
+      user_value=""
+      while IFS= read -r -s -n 1 char; do
+        if [[ -z "$char" ]]; then
+          break
+        elif [[ "$char" == $'\x7f' || "$char" == $'\b' ]]; then
+          if [[ -n "$user_value" ]]; then
+            user_value="${user_value%?}"
+            printf "\b \b" >&2
+          fi
+        else
+          user_value+="$char"
+          printf "*" >&2
+        fi
+      done
       printf "\n" >&2
     else
       if [[ -n "$default_value" ]]; then
@@ -96,6 +122,15 @@ prompt_required_value() {
 
     echo "Value for $key is required." >&2
   done
+}
+
+interpolate_vars() {
+  local value="$1"
+  local key
+  for key in "${!ENV_VALUES[@]}"; do
+    value="${value//\$\{$key\}/${ENV_VALUES[$key]}}"
+  done
+  printf '%s' "$value"
 }
 
 if [[ ${#ENV_EXAMPLE_PATHS[@]} -ne ${#TARGET_ENV_PATHS[@]} ]]; then
@@ -130,7 +165,7 @@ for idx in "${!ENV_EXAMPLE_PATHS[@]}"; do
       continue
     fi
 
-    default_value="${template_defaults[$key]}"
+    default_value="$(interpolate_vars "${template_defaults[$key]}")"
     ENV_VALUES["$key"]="$(prompt_required_value "$key" "$default_value")"
   done
 

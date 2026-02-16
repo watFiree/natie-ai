@@ -31,7 +31,6 @@ export class GmailCreateDraftTool extends StructuredTool {
     const tool = new GmailCreateDraft({
       credentials: {
         clientEmail: input.accountEmail,
-        privateKey: process.env.GMAIL_PRIVATE_KEY,
         accessToken: token,
       },
     });
