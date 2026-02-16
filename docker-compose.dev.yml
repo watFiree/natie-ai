@@ -22,15 +22,7 @@ services:
       dockerfile: ./apps/api/Dockerfile.dev
     restart: unless-stopped
     env_file:
-      - ./.env
-    environment:
-      DATABASE_URL: ${DATABASE_URL:-postgresql://admin:pwd@db:5432/natie?schema=public}
-      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173}
-      APP_BASE_URL: ${APP_BASE_URL:-http://localhost:3000}
-      WORKOS_API_KEY: ${WORKOS_API_KEY}
-      WORKOS_CLIENT_ID: ${WORKOS_CLIENT_ID}
-      WORKOS_COOKIE_PASSWORD: ${WORKOS_COOKIE_PASSWORD}
-      WORKOS_REDIRECT_URI: ${WORKOS_REDIRECT_URI:-http://localhost:3000/auth/callback}
+      - ./apps/api/.env
     depends_on:
       db:
         condition: service_healthy
@@ -43,10 +35,7 @@ services:
       dockerfile: ./apps/web/Dockerfile.dev
     restart: unless-stopped
     env_file:
-      - ./.env
-    environment:
-      NEXT_PUBLIC_API_HOST: ${NEXT_PUBLIC_API_HOST:-http://localhost:3000}
-      API_INTERNAL_HOST: ${API_INTERNAL_HOST:-http://api:3000}
+      - ./apps/web/.env
     depends_on:
       api:
         condition: service_started

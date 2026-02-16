@@ -77,16 +77,17 @@ pnpm install
 
 `setup.sh` runs `scripts/setup-env.sh`, which:
 
-- Reads keys from `.env.example`
+- Reads keys from:
+  - `./apps/api/.env.example`
+  - `./apps/web/.env.example`
 - Prompts for every key (hidden input for sensitive keys)
-- Uses defaults from `.env.example` when you press Enter
+- Uses defaults from each `.env.example` when you press Enter
 - Writes `.env` files to:
-  - `./.env`
   - `./apps/api/.env`
   - `./apps/web/.env`
 - Backs up existing `.env` files before overwriting
 - Applies secure permissions (`chmod 600`) to generated `.env` files
-- Starts Docker with `pnpm docker:up` (`docker compose --env-file .env up --build`)
+- Starts Docker with `pnpm docker:up` (`docker compose --env-file apps/web/.env up --build`)
 
 3. Open:
 
