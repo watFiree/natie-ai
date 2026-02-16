@@ -1,0 +1,68 @@
+import { Steps } from 'nextra/components';
+
+# Setup
+
+Use this guide to run Natie AI locally in production mode.
+
+## Requirements
+
+- Node.js **20+**
+- Docker
+
+## Ready to use setup
+
+<Steps>
+### Download the repository
+ 
+```bash
+git clone https://github.com/watFiree/natie-ai.git
+cd natie-ai
+```
+### Get all Requirements
+
+Follow the [Credentials](/credentials) page to get all required keys for next step.
+
+### Run setup script
+
+Run the following script to setup your project and run the app.
+
+```bash
+./setup.sh
+```
+
+### Open the app
+
+- App: http://localhost:5173
+
+</Steps>
+
+## Development setup
+
+If `./setup.sh` is not available yet, use this flow:
+
+```bash
+pnpm install
+```
+
+Create and fill:
+
+- `apps/api/.env`
+- `apps/web/.env`
+
+At minimum for local startup:
+
+- `apps/api/.env`: `DATABASE_URL`, `ENCRYPTION_KEY`, WorkOS variables, and any integration keys you plan to use.
+- `apps/web/.env`: `NEXT_PUBLIC_API_HOST` (usually `http://localhost:3000`).
+
+Prepare the database:
+
+```bash
+pnpm --filter api db:generate
+pnpm --filter api db:migrate
+```
+
+Start services with Docker:
+
+```bash
+pnpm docker:up
+```
