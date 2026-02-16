@@ -28,28 +28,48 @@ Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
 ### Docker
 
-This repo is configured with a root Docker Compose setup for local development.
-It starts:
+This repo has two Docker modes:
+
+- **Production (default)**: optimized multi-stage images via `docker-compose.yml` and `apps/*/Dockerfile`
+- **Development**: explicit dev images via `docker-compose.dev.yml` and `apps/*/Dockerfile.dev`
+
+Both modes run:
 
 - `web` (Next.js) on `http://localhost:5173`
 - `api` (Fastify) on `http://localhost:3000`
 - `db` (Postgres) on `localhost:5432`
 
-Run the full stack with one command:
+Run the optimized production stack (default):
 
 ```
-# Build and start all services
+# Build and start production services
 pnpm docker:up
 # or:
 docker compose up --build
 ```
 
-Stop everything with:
+Run the development stack:
+
+```
+pnpm docker:dev:up
+# or:
+docker compose -f docker-compose.dev.yml up --build
+```
+
+Stop everything:
 
 ```
 pnpm docker:down
 # or:
 docker compose down
+```
+
+Stop development stack:
+
+```
+pnpm docker:dev:down
+# or:
+docker compose -f docker-compose.dev.yml down
 ```
 
 ### Remote Caching

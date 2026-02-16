@@ -19,10 +19,9 @@ services:
   api:
     build:
       context: .
-      dockerfile: ./apps/api/Dockerfile
+      dockerfile: ./apps/api/Dockerfile.dev
     restart: unless-stopped
     environment:
-      NODE_ENV: production
       DATABASE_URL: postgresql://admin:pwd@db:5432/natie?schema=public
       FRONTEND_URL: http://localhost:5173
       APP_BASE_URL: http://localhost:3000
@@ -39,12 +38,10 @@ services:
   web:
     build:
       context: .
-      dockerfile: ./apps/web/Dockerfile
-      args:
-        NEXT_PUBLIC_API_HOST: ${NEXT_PUBLIC_API_HOST:-http://localhost:3000}
+      dockerfile: ./apps/web/Dockerfile.dev
     restart: unless-stopped
     environment:
-      NODE_ENV: production
+      NEXT_PUBLIC_API_HOST: http://localhost:3000
       API_INTERNAL_HOST: http://api:3000
     depends_on:
       api:
