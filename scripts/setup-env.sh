@@ -71,12 +71,12 @@ prompt_required_value() {
 
     if is_sensitive_key "$key"; then
       if [[ -n "$default_value" ]]; then
-        printf "Enter value for %s (press Enter to use default): " "$key"
+        printf "Enter value for %s (press Enter to use default): " "$key" >&2
       else
-        printf "Enter value for %s: " "$key"
+        printf "Enter value for %s: " "$key" >&2
       fi
       IFS= read -r -s user_value
-      printf "\n"
+      printf "\n" >&2
     else
       if [[ -n "$default_value" ]]; then
         read -r -p "Enter value for $key [$default_value]: " user_value
@@ -94,7 +94,7 @@ prompt_required_value() {
       return 0
     fi
 
-    echo "Value for $key is required."
+    echo "Value for $key is required." >&2
   done
 }
 
