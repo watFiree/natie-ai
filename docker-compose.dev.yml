@@ -7,11 +7,11 @@ services:
       POSTGRES_PASSWORD: pwd
       POSTGRES_DB: natie
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d natie"]
+      test: ['CMD-SHELL', 'pg_isready -U admin -d natie']
       interval: 5s
       timeout: 5s
       retries: 10
@@ -33,7 +33,7 @@ services:
       db:
         condition: service_healthy
     ports:
-      - "3000:3000"
+      - '3000:3000'
 
   web:
     build:
@@ -47,7 +47,7 @@ services:
       api:
         condition: service_started
     ports:
-      - "5173:5173"
+      - '5173:5173'
 
 volumes:
   postgres_data:
