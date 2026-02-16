@@ -1,104 +1,163 @@
-# Turborepo Docker starter
+# Natie AI
 
-This is a community-maintained example. If you experience a problem, please submit a pull request with a fix. GitHub Issues will be closed.
+Natie AI is a self-hostable personal assistant platform built as a TypeScript monorepo.  
+It combines a Next.js web app with a Fastify API that runs agent workflows for chat, Gmail, X (Twitter), and Telegram.
 
-## Using this example
+## What this project does
 
-Run the following command:
+Natie AI provides:
 
-```sh
-npx create-turbo@latest -e with-docker
+- A **main assistant endpoint** (`/natie/chat`) that can delegate to specialized subagents.
+- **Email integration** via Gmail OAuth (connect/list/remove accounts).
+- **X integration** via user-provided `auth_token` and `ct0` credentials.
+- **Telegram gateway** support (optional bot token) to chat with Natie from Telegram.
+- **OpenAPI docs** at `/docs` and generated web clients via Orval.
+
+> Current state: several integration setup flows are implemented in the web UI, while dedicated in-browser chat UIs for some modules are still scaffolded placeholders.
+
+## Repository structure
+
+This repository uses **pnpm workspaces** and **Turbo**.
+
+- `apps/web` — Next.js 16 web app (port `5173`)
+- `apps/api` — Fastify + Prisma + LangChain API (port `3000`)
+- `packages/logger` — shared logger package with Jest tests
+- `packages/eslint-config`, `packages/typescript-config`, `packages/jest-presets` — shared tooling packages
+
+## Requirements
+
+- Node.js **20+** (Node 22 is currently used in this repo environment)
+- pnpm **10.10.0** (see root `packageManager`)
+- PostgreSQL database reachable via `DATABASE_URL`
+- API credentials for enabled integrations (WorkOS, OpenAI, Google, etc.)
+
+## Configuration
+
+For complete setup guidance, see: **https://docs.natie-ai.com**  
+(Current in-app links still point to `https://docs.natie.ai`.)
+
+### API environment variables (`apps/api`)
+
+| Variable                 | Required                        | Purpose                                                                   |
+| ------------------------ | ------------------------------- | ------------------------------------------------------------------------- |
+| `DATABASE_URL`           | Yes                             | Prisma PostgreSQL connection string                                       |
+| `OPENAI_API_KEY`         | Yes (for AI features)           | Used by LangChain `ChatOpenAI` models                                     |
+| `ENCRYPTION_KEY`         | Yes                             | Encrypts stored sensitive credentials (tokens/cookies)                    |
+| `WORKOS_API_KEY`         | Yes                             | WorkOS AuthKit integration                                                |
+| `WORKOS_CLIENT_ID`       | Yes                             | WorkOS client identifier                                                  |
+| `WORKOS_REDIRECT_URI`    | Yes                             | WorkOS callback URL                                                       |
+| `WORKOS_COOKIE_PASSWORD` | Yes                             | Sealed session cookie key                                                 |
+| `FRONTEND_URL`           | Recommended                     | CORS + redirect target (defaults to `http://localhost:5173`)              |
+| `APP_BASE_URL`           | Recommended                     | OpenAPI server URL shown in Swagger (defaults to `http://localhost:3000`) |
+| `GOOGLE_CLIENT_ID`       | Needed for Gmail integration    | Google OAuth client ID                                                    |
+| `GOOGLE_CLIENT_SECRET`   | Needed for Gmail integration    | Google OAuth client secret                                                |
+| `GOOGLE_REDIRECT_URI`    | Needed for Gmail integration    | Google OAuth callback URL                                                 |
+| `GMAIL_PRIVATE_KEY`      | Needed for Gmail tool execution | Key used in Gmail tool calls                                              |
+| `TELEGRAM_TOKEN`         | Optional                        | Enables Telegram bot gateway when set                                     |
+
+### Web environment variables (`apps/web`)
+
+| Variable               | Required    | Purpose                                                                      |
+| ---------------------- | ----------- | ---------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_API_HOST` | Recommended | API base URL used by web fetch clients (defaults to `http://localhost:3000`) |
+
+## Getting started (local development)
+
+1. Install dependencies:
+
+```bash
+pnpm install
 ```
 
-## What's inside?
+2. Configure environment variables for `apps/api` and `apps/web`.
 
-This Turborepo includes the following:
+3. Prepare Prisma client and run migrations:
 
-### Apps and Packages
-
-- `web`: a [Next.js](https://nextjs.org/) app
-- `api`: an [Express](https://expressjs.com/) server
-- `@repo/ui`: a React component library
-- `@repo/logger`: Isomorphic logger (a small wrapper around console.log)
-- `@repo/eslint-config`: ESLint presets
-- `@repo/typescript-config`: tsconfig.json's used throughout the monorepo
-- `@repo/jest-presets`: Jest configurations
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Docker
-
-This repo has two Docker modes:
-
-- **Production (default)**: optimized multi-stage images via `docker-compose.yml` and `apps/*/Dockerfile`
-- **Development**: explicit dev images via `docker-compose.dev.yml` and `apps/*/Dockerfile.dev`
-
-Both modes run:
-
-- `web` (Next.js) on `http://localhost:5173`
-- `api` (Fastify) on `http://localhost:3000`
-- `db` (Postgres) on `localhost:5432`
-
-Run the optimized production stack (default):
-
-```
-# Build and start production services
-pnpm docker:up
-# or:
-docker compose up --build
+```bash
+pnpm --filter api db:generate
+pnpm --filter api db:migrate
 ```
 
-Run the development stack:
+4. Start the API:
 
-```
-pnpm docker:dev:up
-# or:
-docker compose -f docker-compose.dev.yml up --build
+```bash
+pnpm --filter api dev
 ```
 
-Stop everything:
+5. In another terminal, start the web app:
 
-```
-pnpm docker:down
-# or:
-docker compose down
+```bash
+pnpm --filter web dev
 ```
 
-Stop development stack:
+6. Open:
 
+- Web app: `http://localhost:5173`
+- API docs: `http://localhost:3000/docs`
+
+## Usage examples
+
+### 1) Start auth flow (browser redirect)
+
+Open this in your browser to start WorkOS login:
+
+```text
+http://localhost:3000/auth/login
 ```
-pnpm docker:dev:down
-# or:
-docker compose -f docker-compose.dev.yml down
+
+### 2) Ask Natie (invoke mode)
+
+After authenticating (cookie `wos-session`), call:
+
+```bash
+curl -X POST "http://localhost:3000/natie/chat" \
+  -H "Content-Type: application/json" \
+  -H "Cookie: wos-session=<your-session-cookie>" \
+  -d '{"message":"Summarize my inbox priorities for today","type":"invoke"}'
 ```
 
-### Remote Caching
+### 3) Ask Natie (stream mode / SSE)
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+```bash
+curl -N -X POST "http://localhost:3000/natie/chat" \
+  -H "Content-Type: application/json" \
+  -H "Cookie: wos-session=<your-session-cookie>" \
+  -d '{"message":"Give me a quick daily briefing","type":"stream"}'
+```
 
-This example includes optional remote caching. In the Dockerfiles of the apps, uncomment the build arguments for `TURBO_TEAM` and `TURBO_TOKEN`. Then, pass these build arguments to your Docker build.
+### 4) Link X credentials
 
-You can test this behavior using a command like:
+```bash
+curl -X POST "http://localhost:3000/x-account/" \
+  -H "Content-Type: application/json" \
+  -H "Cookie: wos-session=<your-session-cookie>" \
+  -d '{"authToken":"<auth_token>","ct0":"<ct0>"}'
+```
 
-`docker build -f apps/web/Dockerfile . --build-arg TURBO_TEAM=“your-team-name” --build-arg TURBO_TOKEN=“your-token“ --no-cache`
+## Build, lint, and test
 
-### Utilities
+From repository root:
 
-This Turborepo has some additional tools already setup for you:
+```bash
+pnpm build
+pnpm lint
+pnpm test
+pnpm format:check
+```
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Jest](https://jestjs.io) test runner for all things JavaScript
-- [Prettier](https://prettier.io) for code formatting
+## Contributing
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for contribution workflow, PR expectations, and checks.
 
 ## License
 
-This project is licensed under the [Creative Commons Attribution-NonCommercial 4.0 International License](LICENSE).
+This repository is licensed under **Creative Commons Attribution-NonCommercial 4.0 International**.  
+See [LICENSE](./LICENSE).
 
-- ✅ **Personal use** is allowed
-- ✅ **Modification and sharing** for non-commercial purposes is allowed
-- ❌ **Commercial use** is prohibited
-- ❌ **Selling** this software is prohibited
+- Personal and other non-commercial use is allowed.
+- Commercial use is not allowed without separate permission.
 
-For commercial licensing inquiries, please contact the author.
+## Maintainer / contact
+
+- Maintainer: [@watFiree](https://github.com/watFiree)
+- General contact: `maintainers@natie.ai` _(placeholder until official public email is confirmed)_
