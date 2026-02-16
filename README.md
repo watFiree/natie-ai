@@ -61,7 +61,7 @@ For complete setup guidance, see: **https://docs.natie-ai.com**
 | ---------------------- | ----------- | ---------------------------------------------------------------------------- |
 | `NEXT_PUBLIC_API_HOST` | Recommended | API base URL used by web fetch clients (defaults to `http://localhost:3000`) |
 
-## Getting started (local development)
+## Getting started (Docker, recommended)
 
 1. Install dependencies:
 
@@ -69,31 +69,59 @@ For complete setup guidance, see: **https://docs.natie-ai.com**
 pnpm install
 ```
 
-2. Configure environment variables for `apps/api` and `apps/web`.
+2. Run the setup entrypoint:
 
-3. Prepare Prisma client and run migrations:
+```bash
+./setup.sh
+```
+
+`setup.sh` runs `scripts/setup-env.sh`, which:
+
+- Reads keys from `.env.example`
+- Prompts for every key (hidden input for sensitive keys)
+- Uses defaults from `.env.example` when you press Enter
+- Writes `.env` files to:
+  - `./.env`
+  - `./apps/api/.env`
+  - `./apps/web/.env`
+- Backs up existing `.env` files before overwriting
+- Applies secure permissions (`chmod 600`) to generated `.env` files
+- Starts Docker with `pnpm docker:up` (`docker compose --env-file .env up --build`)
+
+3. Open:
+
+- Web app: `http://localhost:5173`
+- API docs: `http://localhost:3000/docs`
+
+4. Stop containers:
+
+```bash
+pnpm docker:down
+```
+
+## Getting started (without Docker)
+
+If you prefer running services directly:
+
+1. Configure environment variables for `apps/api` and `apps/web`.
+2. Prepare Prisma client and run migrations:
 
 ```bash
 pnpm --filter api db:generate
 pnpm --filter api db:migrate
 ```
 
-4. Start the API:
+3. Start the API:
 
 ```bash
 pnpm --filter api dev
 ```
 
-5. In another terminal, start the web app:
+4. In another terminal, start the web app:
 
 ```bash
 pnpm --filter web dev
 ```
-
-6. Open:
-
-- Web app: `http://localhost:5173`
-- API docs: `http://localhost:3000/docs`
 
 ## Usage examples
 

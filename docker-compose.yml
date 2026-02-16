@@ -20,8 +20,10 @@ services:
     build:
       context: .
       dockerfile: ./apps/api/Dockerfile.migrate
+    env_file:
+      - ./.env
     environment:
-      DATABASE_URL: postgresql://admin:pwd@db:5432/natie?schema=public
+      DATABASE_URL: ${DATABASE_URL:-postgresql://admin:pwd@db:5432/natie?schema=public}
     depends_on:
       db:
         condition: service_healthy
@@ -32,14 +34,16 @@ services:
       context: .
       dockerfile: ./apps/api/Dockerfile
     restart: unless-stopped
+    env_file:
+      - ./.env
     environment:
       NODE_ENV: production
-      DATABASE_URL: postgresql://admin:pwd@db:5432/natie?schema=public
-      FRONTEND_URL: http://localhost:5173
-      APP_BASE_URL: http://localhost:3000
-      WORKOS_API_KEY: ${WORKOS_API_KEY:-sk_test_local_placeholder}
-      WORKOS_CLIENT_ID: ${WORKOS_CLIENT_ID:-client_local_placeholder}
-      WORKOS_COOKIE_PASSWORD: ${WORKOS_COOKIE_PASSWORD:-local_cookie_password_change_me_1234567890}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://admin:pwd@db:5432/natie?schema=public}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173}
+      APP_BASE_URL: ${APP_BASE_URL:-http://localhost:3000}
+      WORKOS_API_KEY: ${WORKOS_API_KEY}
+      WORKOS_CLIENT_ID: ${WORKOS_CLIENT_ID}
+      WORKOS_COOKIE_PASSWORD: ${WORKOS_COOKIE_PASSWORD}
       WORKOS_REDIRECT_URI: ${WORKOS_REDIRECT_URI:-http://localhost:3000/auth/callback}
     depends_on:
       db:
@@ -56,9 +60,12 @@ services:
       args:
         NEXT_PUBLIC_API_HOST: ${NEXT_PUBLIC_API_HOST:-http://localhost:3000}
     restart: unless-stopped
+    env_file:
+      - ./.env
     environment:
       NODE_ENV: production
-      API_INTERNAL_HOST: http://api:3000
+      API_INTERNAL_HOST: ${API_INTERNAL_HOST:-http://api:3000}
+      NEXT_PUBLIC_API_HOST: ${NEXT_PUBLIC_API_HOST:-http://localhost:3000}
     depends_on:
       api:
         condition: service_started
