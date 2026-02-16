@@ -1,0 +1,32 @@
+# Natie AI Docs
+
+Natie AI is a self-hostable personal assistant platform built as a TypeScript monorepo.
+It combines a Next.js web app with a Fastify API that runs agent workflows for chat, Gmail, X (Twitter), and Telegram.
+
+Use this documentation to install the project, configure integrations, and understand how the repository is structured.
+
+## What you can do with Natie
+
+- Chat with Natie about your inbox, X (Twitter), and Telegram.
+- Connect Gmail using OAuth.
+- Connect X (Twitter) using your `auth_token` and `ct0` credentials.
+- Use Telegram gateway support (optional bot token) to chat with Natie from Telegram.
+- Explore API docs at `/docs` and consume generated clients via Orval.
+
+## Start here
+
+1. Follow the [Setup](/setup) guide to run the app locally.
+2. Continue to [Configure](/configure) to enable Gmail, Telegram, and WorkOS integrations.
+
+## Repository at a glance
+
+This project uses **pnpm workspaces** and **Turbo** in a monorepo layout:
+
+- `apps/web`: Next.js frontend application.
+- `apps/api`: Fastify API and agent workflows.
+- `apps/docs`: Nextra-based documentation site.
+- `packages/*`: shared libraries and generated clients.
+
+## Need help?
+
+If you are setting this up for the first time, complete the setup guide first, then configure each integration one by one.
