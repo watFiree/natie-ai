@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsx src/index.ts",
-    "start": "node --experimental-specifier-resolution=node dist/index.js",
+    "start": "node --experimental-specifier-resolution=node dist/src/index.js",
     "format": "prettier --write .",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",

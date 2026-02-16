@@ -45,4 +45,4 @@ COPY --from=builder /app/apps/api/prisma.config.ts ./apps/api/prisma.config.ts
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "cd apps/api && ../../node_modules/.bin/prisma migrate deploy && node --experimental-specifier-resolution=node dist/index.js"]
+CMD ["sh", "-c", "cd apps/api && ../../node_modules/.bin/prisma migrate deploy && node --experimental-specifier-resolution=node dist/src/index.js"]
