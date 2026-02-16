@@ -16,6 +16,17 @@ services:
       timeout: 5s
       retries: 10
 
+  api-migrate:
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile.migrate
+    environment:
+      DATABASE_URL: postgresql://admin:pwd@db:5432/natie?schema=public
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
   api:
     build:
       context: .
@@ -33,6 +44,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      api-migrate:
+        condition: service_completed_successfully
     ports:
       - "3000:3000"
 

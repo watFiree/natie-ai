@@ -53,6 +53,9 @@ importers:
       '@workos-inc/node':
         specifier: ^8.0.0
         version: 8.0.0
+      dotenv:
+        specifier: ^17.2.3
+        version: 17.2.3
       fastify:
         specifier: ^5.7.1
         version: 5.7.1
@@ -90,9 +93,6 @@ importers:
       '@types/pg':
         specifier: ^8.16.0
         version: 8.16.0
-      dotenv:
-        specifier: ^17.2.3
-        version: 17.2.3
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -11623,7 +11623,7 @@ snapshots:
       isstream: 0.1.2
       jsonwebtoken: 9.0.3
       mime-types: 2.1.35
-      retry-axios: 2.6.0(axios@1.13.4)
+      retry-axios: 2.6.0(axios@1.13.4(debug@4.4.3))
       tough-cookie: 4.1.4
     transitivePeerDependencies:
       - supports-color
@@ -13396,7 +13396,7 @@ snapshots:
 
   ret@0.5.0: {}
 
-  retry-axios@2.6.0(axios@1.13.4):
+  retry-axios@2.6.0(axios@1.13.4(debug@4.4.3)):
     dependencies:
       axios: 1.13.4(debug@4.4.3)
 
