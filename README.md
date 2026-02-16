@@ -28,30 +28,28 @@ Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
 
 ### Docker
 
-This repo is configured to be built with Docker, and Docker compose. To build all apps in this repo:
+This repo is configured with a root Docker Compose setup for local development.
+It starts:
+
+- `web` (Next.js) on `http://localhost:5173`
+- `api` (Fastify) on `http://localhost:3000`
+- `db` (Postgres) on `localhost:5432`
+
+Run the full stack with one command:
 
 ```
-# Install dependencies
-yarn install
-
-# Create a network, which allows containers to communicate
-# with each other, by using their container name as a hostname
-docker network create app_network
-
-# Build prod using new BuildKit engine
-COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml build
-
-# Start prod in detached mode
-docker-compose -f docker-compose.yml up -d
+# Build and start all services
+pnpm docker:up
+# or:
+docker compose up --build
 ```
 
-Open http://localhost:3000.
-
-To shutdown all running containers:
+Stop everything with:
 
 ```
-# Stop running containers started by docker-compse
- docker-compose -f docker-compose.yml down
+pnpm docker:down
+# or:
+docker compose down
 ```
 
 ### Remote Caching

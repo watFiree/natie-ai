@@ -5,6 +5,14 @@ function trimTrailingSlash(url: string): string {
 }
 
 export function getApiBaseUrl(): string {
+  if (typeof window === 'undefined') {
+    return trimTrailingSlash(
+      process.env.API_INTERNAL_HOST ??
+        process.env.NEXT_PUBLIC_API_HOST ??
+        DEFAULT_API_BASE_URL
+    );
+  }
+
   return trimTrailingSlash(
     process.env.NEXT_PUBLIC_API_HOST ?? DEFAULT_API_BASE_URL
   );

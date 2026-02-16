@@ -45,7 +45,7 @@ app.register(XAgentRouter, { prefix: '/x' });
 app.register(NatieRouter, { prefix: '/natie' });
 app.register(TelegramSettingsRouter, { prefix: '/telegram' });
 
-app.listen({ port: 3000 }, async (err) => {
+app.listen({ port: 3000, host: process.env.HOST || '0.0.0.0' }, async (err) => {
   if (err) {
     console.error(err);
     process.exit(1);

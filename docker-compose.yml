@@ -1,29 +1,56 @@
-version: "3"
-
 services:
-  web:
-    container_name: web
-    build:
-      context: .
-      dockerfile: ./apps/web/Dockerfile
-    restart: always
+  db:
+    container_name: natie-db
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pwd
+      POSTGRES_DB: natie
     ports:
-      - 3000:3000
-    networks:
-      - app_network
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d natie"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
   api:
     container_name: api
     build:
       context: .
       dockerfile: ./apps/api/Dockerfile
-    restart: always
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://admin:pwd@db:5432/natie?schema=public
+      FRONTEND_URL: http://localhost:5173
+      APP_BASE_URL: http://localhost:3000
+      WORKOS_API_KEY: ${WORKOS_API_KEY:-sk_test_local_placeholder}
+      WORKOS_CLIENT_ID: ${WORKOS_CLIENT_ID:-client_local_placeholder}
+      WORKOS_COOKIE_PASSWORD: ${WORKOS_COOKIE_PASSWORD:-local_cookie_password_change_me_1234567890}
+      WORKOS_REDIRECT_URI: ${WORKOS_REDIRECT_URI:-http://localhost:3000/auth/callback}
+    depends_on:
+      db:
+        condition: service_healthy
     ports:
-      - 3001:3001
-    networks:
-      - app_network
+      - "3000:3000"
 
-# Define a network, which allows containers to communicate
-# with each other, by using their container name as a hostname
-networks:
-  app_network:
-    external: true
+  web:
+    container_name: web
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile
+    restart: unless-stopped
+    environment:
+      NEXT_PUBLIC_API_HOST: http://localhost:3000
+      API_INTERNAL_HOST: http://api:3000
+    depends_on:
+      api:
+        condition: service_started
+    ports:
+      - "5173:5173"
+
+volumes:
+  postgres_data:
