@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "dev": "tsx src/index.ts",
-    "start": "node --experimental-specifier-resolution=node dist/src/index.js",
+    "start": "node --import tsx dist/src/index.js",
     "format": "prettier --write .",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
@@ -32,6 +32,7 @@
     "googleapis": "^170.1.0",
     "langchain": "^1.2.11",
     "pg": "^8.17.2",
+    "tsx": "^4.21.0",
     "telegraf": "^4.16.3",
     "zod": "^4.3.5"
   },
@@ -39,7 +40,6 @@
     "@types/node": "^25.0.10",
     "@types/pg": "^8.16.0",
     "dotenv": "^17.2.3",
-    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
 }
