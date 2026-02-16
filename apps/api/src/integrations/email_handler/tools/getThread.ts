@@ -22,7 +22,6 @@ export class GmailGetThreadTool extends StructuredTool {
     const tool = new GmailGetThread({
       credentials: {
         clientEmail: input.accountEmail,
-        privateKey: process.env.GMAIL_PRIVATE_KEY,
         accessToken: token,
       },
     });
