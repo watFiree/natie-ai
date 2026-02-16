@@ -7,33 +7,21 @@ services:
       POSTGRES_PASSWORD: pwd
       POSTGRES_DB: natie
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d natie"]
+      test: ['CMD-SHELL', 'pg_isready -U admin -d natie']
       interval: 5s
       timeout: 5s
       retries: 10
 
-  api-migrate:
-    build:
-      context: .
-      dockerfile: ./apps/api/Dockerfile.migrate
-    environment:
-      DATABASE_URL: postgresql://admin:pwd@db:5432/natie?schema=public
-    depends_on:
-      db:
-        condition: service_healthy
-    restart: "no"
-
   api:
     build:
       context: .
-      dockerfile: ./apps/api/Dockerfile
+      dockerfile: ./apps/api/Dockerfile.dev
     restart: unless-stopped
     environment:
-      NODE_ENV: production
       DATABASE_URL: postgresql://admin:pwd@db:5432/natie?schema=public
       FRONTEND_URL: http://localhost:5173
       APP_BASE_URL: http://localhost:3000
@@ -44,26 +32,22 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      api-migrate:
-        condition: service_completed_successfully
     ports:
-      - "3000:3000"
+      - '3000:3000'
 
   web:
     build:
       context: .
-      dockerfile: ./apps/web/Dockerfile
-      args:
-        NEXT_PUBLIC_API_HOST: ${NEXT_PUBLIC_API_HOST:-http://localhost:3000}
+      dockerfile: ./apps/web/Dockerfile.dev
     restart: unless-stopped
     environment:
-      NODE_ENV: production
+      NEXT_PUBLIC_API_HOST: http://localhost:3000
       API_INTERNAL_HOST: http://api:3000
     depends_on:
       api:
         condition: service_started
     ports:
-      - "5173:5173"
+      - '5173:5173'
 
 volumes:
   postgres_data:

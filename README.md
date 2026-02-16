@@ -38,27 +38,27 @@ For complete setup guidance, see: **https://docs.natie-ai.com**
 
 ### API environment variables (`apps/api`)
 
-| Variable | Required | Purpose |
-| --- | --- | --- |
-| `DATABASE_URL` | Yes | Prisma PostgreSQL connection string |
-| `OPENAI_API_KEY` | Yes (for AI features) | Used by LangChain `ChatOpenAI` models |
-| `ENCRYPTION_KEY` | Yes | Encrypts stored sensitive credentials (tokens/cookies) |
-| `WORKOS_API_KEY` | Yes | WorkOS AuthKit integration |
-| `WORKOS_CLIENT_ID` | Yes | WorkOS client identifier |
-| `WORKOS_REDIRECT_URI` | Yes | WorkOS callback URL |
-| `WORKOS_COOKIE_PASSWORD` | Yes | Sealed session cookie key |
-| `FRONTEND_URL` | Recommended | CORS + redirect target (defaults to `http://localhost:5173`) |
-| `APP_BASE_URL` | Recommended | OpenAPI server URL shown in Swagger (defaults to `http://localhost:3000`) |
-| `GOOGLE_CLIENT_ID` | Needed for Gmail integration | Google OAuth client ID |
-| `GOOGLE_CLIENT_SECRET` | Needed for Gmail integration | Google OAuth client secret |
-| `GOOGLE_REDIRECT_URI` | Needed for Gmail integration | Google OAuth callback URL |
-| `GMAIL_PRIVATE_KEY` | Needed for Gmail tool execution | Key used in Gmail tool calls |
-| `TELEGRAM_TOKEN` | Optional | Enables Telegram bot gateway when set |
+| Variable                 | Required                        | Purpose                                                                   |
+| ------------------------ | ------------------------------- | ------------------------------------------------------------------------- |
+| `DATABASE_URL`           | Yes                             | Prisma PostgreSQL connection string                                       |
+| `OPENAI_API_KEY`         | Yes (for AI features)           | Used by LangChain `ChatOpenAI` models                                     |
+| `ENCRYPTION_KEY`         | Yes                             | Encrypts stored sensitive credentials (tokens/cookies)                    |
+| `WORKOS_API_KEY`         | Yes                             | WorkOS AuthKit integration                                                |
+| `WORKOS_CLIENT_ID`       | Yes                             | WorkOS client identifier                                                  |
+| `WORKOS_REDIRECT_URI`    | Yes                             | WorkOS callback URL                                                       |
+| `WORKOS_COOKIE_PASSWORD` | Yes                             | Sealed session cookie key                                                 |
+| `FRONTEND_URL`           | Recommended                     | CORS + redirect target (defaults to `http://localhost:5173`)              |
+| `APP_BASE_URL`           | Recommended                     | OpenAPI server URL shown in Swagger (defaults to `http://localhost:3000`) |
+| `GOOGLE_CLIENT_ID`       | Needed for Gmail integration    | Google OAuth client ID                                                    |
+| `GOOGLE_CLIENT_SECRET`   | Needed for Gmail integration    | Google OAuth client secret                                                |
+| `GOOGLE_REDIRECT_URI`    | Needed for Gmail integration    | Google OAuth callback URL                                                 |
+| `GMAIL_PRIVATE_KEY`      | Needed for Gmail tool execution | Key used in Gmail tool calls                                              |
+| `TELEGRAM_TOKEN`         | Optional                        | Enables Telegram bot gateway when set                                     |
 
 ### Web environment variables (`apps/web`)
 
-| Variable | Required | Purpose |
-| --- | --- | --- |
+| Variable               | Required    | Purpose                                                                      |
+| ---------------------- | ----------- | ---------------------------------------------------------------------------- |
 | `NEXT_PUBLIC_API_HOST` | Recommended | API base URL used by web fetch clients (defaults to `http://localhost:3000`) |
 
 ## Getting started (local development)
@@ -160,4 +160,4 @@ See [LICENSE](./LICENSE).
 ## Maintainer / contact
 
 - Maintainer: [@watFiree](https://github.com/watFiree)
-- General contact: `maintainers@natie.ai` *(placeholder until official public email is confirmed)*
+- General contact: `maintainers@natie.ai` _(placeholder until official public email is confirmed)_
