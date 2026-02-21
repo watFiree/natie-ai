@@ -14,5 +14,5 @@ export interface AgentRunOptions {
   message: string;
   type: 'stream' | 'invoke';
   abortController: AbortController;
-  channel?: MessageChannel;
+  channel: MessageChannel;
 }

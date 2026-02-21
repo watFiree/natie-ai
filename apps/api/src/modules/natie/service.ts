@@ -3,12 +3,12 @@ import type { PrismaClient } from '../../../prisma/generated/prisma/client';
 import {
   createEmailSubagentTool,
   type EmailSubagentDeps,
-} from '../../integrations/email_handler/agent';
+} from '../../integrations/gmail/agent';
 import {
   createXSubagentTool,
   type XSubagentDeps,
-} from '../../integrations/x_handler/agent';
-import { createClient as createXClient } from '../../integrations/x_handler/clientFactory';
+} from '../../integrations/x/agent';
+import { createClient as createXClient } from '../../integrations/x/clientFactory';
 import type { GmailOAuthService } from '../gmail/service';
 import type { GmailAccountRepository } from '../gmail/repository';
 import type { XAccountRepository } from '../../modules/x_account/repository';

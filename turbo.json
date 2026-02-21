@@ -11,6 +11,9 @@
       "outputs": ["coverage/**"],
       "dependsOn": []
     },
+    "tsc": {
+      "dependsOn": ["^build"]
+    },
     "lint": {
       "dependsOn": ["^build"]
     },

@@ -30,7 +30,6 @@ export type ChatType = (typeof ChatType)[keyof typeof ChatType]
 export const LangChainMessageType = {
   human: 'human',
   ai: 'ai',
-  system: 'system',
   tool: 'tool'
 } as const
 
@@ -39,9 +38,7 @@ export type LangChainMessageType = (typeof LangChainMessageType)[keyof typeof La
 
 export const MessageChannel = {
   web: 'web',
-  telegram: 'telegram',
-  email: 'email',
-  x: 'x'
+  telegram: 'telegram'
 } as const
 
 export type MessageChannel = (typeof MessageChannel)[keyof typeof MessageChannel]

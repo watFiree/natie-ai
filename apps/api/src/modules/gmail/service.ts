@@ -95,8 +95,8 @@ export class GmailOAuthService {
       const { credentials } = await this.oauth2.refreshAccessToken();
       await this.repository.updateTokens(userId, email, credentials);
       this.oauth2.setCredentials(credentials);
+      return credentials.access_token ?? '';
     }
-    console.log('AccessToken', account.accessToken);
     return account.accessToken;
   }
 }

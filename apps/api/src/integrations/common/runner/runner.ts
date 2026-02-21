@@ -1,9 +1,20 @@
-import { HumanMessage, BaseMessage, AIMessage } from '@langchain/core/messages';
+import {
+  HumanMessage,
+  BaseMessage,
+  ToolMessage,
+} from '@langchain/core/messages';
 import { ReactAgent } from 'langchain';
 import { Readable } from 'stream';
 import { AgentContext, AgentRunOptions } from './consts';
-import { MessageRepository } from '../../../modules/messages/repository';
-import { mapInternalMessageToLangChain } from '../formatMessages';
+import { mapInternalMessageToLangChain } from './helpers';
+import { MessageTyped } from '../../../modules/messages/consts';
+import {
+  mapLangChainMessagesToInternal,
+  mapLangChainUpdateChunkToInternal,
+} from '../../../modules/messages/helper';
+import { Message } from '../../../../prisma/generated/prisma/client';
+
+type AgentRunCommonOptions = Omit<AgentRunOptions, 'type'>;
 
 export class AgentRunner {
   constructor(private readonly context: AgentContext) {}
@@ -11,125 +22,113 @@ export class AgentRunner {
   async buildMessages(
     conversationId: string,
     currentMessage: string,
-    historyLimit: number = 4
-  ): Promise<{
-    messages: BaseMessage[];
-    dbMessages: Awaited<ReturnType<MessageRepository['findByConversationId']>>;
-  }> {
+    historyLimit: number = 10
+  ): Promise<BaseMessage[]> {
+    // Fetch one extra message to handle edge case where last message is a tool response
     const dbMessages = await this.context.messageRepo.findByConversationId(
       conversationId,
-      historyLimit
+      historyLimit + 1
     );
 
     const messages = dbMessages
-      .map((msg) =>
-        mapInternalMessageToLangChain(
-          msg.type,
-          msg.content,
-          msg.toolCallId,
-          msg.toolName
-        )
-      )
+      .map((msg) => mapInternalMessageToLangChain(msg))
       .reverse();
+
+    // If the last message before current user message is a tool response,
+    // we need to ensure we also have the preceding AI message with tool_calls.
+    // If we fetched extra messages and the last one is still a tool message,
+    // we keep it - otherwise we trim to the requested limit.
+    const lastMsgIndex = messages.length - 1;
+    if (
+      lastMsgIndex >= 0 &&
+      messages[lastMsgIndex] instanceof ToolMessage &&
+      messages.length > historyLimit
+    ) {
+      // Last message is tool response and we have extra messages,
+      // keep all (limit+1) to preserve the AI message with tool_calls
+    } else if (messages.length > historyLimit) {
+      // Trim to requested limit
+      messages.splice(0, messages.length - historyLimit);
+    }
 
     messages.push(new HumanMessage(currentMessage));
 
-    return { messages, dbMessages };
+    return messages;
   }
 
-  async saveUserMessage(
-    conversationId: string,
-    message: string,
-    channel?: AgentRunOptions['channel']
-  ): Promise<void> {
-    await this.context.messageRepo.create({
-      conversationId,
-      type: 'human',
-      content: message,
-      channel,
-    });
+  async saveMessage(message: MessageTyped): Promise<void> {
+    await this.context.messageRepo.create(message);
   }
 
-  async saveAIMessage(
-    conversationId: string,
-    content: string,
-    toolCallId?: string,
-    toolName?: string,
-    channel?: AgentRunOptions['channel']
-  ): Promise<void> {
-    await this.context.messageRepo.create({
-      conversationId,
-      type: 'ai',
-      content,
-      toolCallId,
-      toolName,
-      channel,
-    });
-  }
-
-  async run(
-    agent: ReactAgent,
-    options: AgentRunOptions
-  ): Promise<{ messages: BaseMessage[] } | Readable> {
-    const { messages } = await this.buildMessages(
+  private async prepareRun(
+    options: AgentRunCommonOptions
+  ): Promise<{ messages: BaseMessage[] }> {
+    const messages = await this.buildMessages(
       options.conversationId,
       options.message
     );
 
-    await this.saveUserMessage(options.conversationId, options.message, options.channel);
+    await this.saveMessage({
+      conversationId: options.conversationId,
+      type: 'human',
+      content: options.message,
+      channel: options.channel,
+    });
 
-    if (options.type === 'invoke') {
-      const result = (await agent.invoke({ messages })) as {
-        messages: BaseMessage[];
-      };
+    return { messages };
+  }
 
-      const lastMessage = result.messages[result.messages.length - 1];
-      if (lastMessage instanceof AIMessage) {
-        await this.saveAIMessage(
-          options.conversationId,
-          String(lastMessage.content),
-          undefined,
-          undefined,
-          options.channel
-        );
+  async invoke(
+    agent: ReactAgent,
+    options: AgentRunCommonOptions
+  ): Promise<{ messages: Message[] }> {
+    const { messages } = await this.prepareRun(options);
+    const result = await agent.invoke({ messages });
+
+    const newMessages = result.messages.slice(messages.length);
+    const internalMessages = mapLangChainMessagesToInternal(
+      options.conversationId,
+      options.channel,
+      newMessages
+    );
+    const savedMessages =
+      await this.context.messageRepo.createMany(internalMessages);
+    return { messages: savedMessages };
+  }
+
+  async stream(
+    agent: ReactAgent,
+    options: AgentRunCommonOptions
+  ): Promise<Readable> {
+    console.log('stream', options);
+    const { messages } = await this.prepareRun(options);
+
+    const sseGenerator = async function* (this: AgentRunner) {
+      yield `event: ping\ndata: ${Date.now()}\n\n`;
+
+      for await (const [mode, chunk] of (await agent.stream(
+        { messages },
+        {
+          streamMode: ['messages', 'updates'],
+          signal: options.abortController.signal,
+        }
+      )) as AsyncIterable<[string, unknown]>) {
+        yield `event: ${mode}\ndata: ${JSON.stringify(chunk)}\n\n`;
+
+        if (mode === 'updates' && typeof chunk === 'object' && chunk !== null) {
+          const internalMessages = mapLangChainUpdateChunkToInternal(
+            options.conversationId,
+            options.channel,
+            chunk
+          );
+          const savedMessages =
+            await this.context.messageRepo.createMany(internalMessages);
+        }
       }
 
-      return result;
-    } else {
-      const sseGenerator = async function* (this: AgentRunner) {
-        yield `event: ping\ndata: ${Date.now()}\n\n`;
+      yield `event: done\ndata: {}\n\n`;
+    }.bind(this);
 
-        let fullResponse = '';
-
-        for await (const [mode, chunk] of (await agent.stream(
-          { messages },
-          {
-            streamMode: ['messages', 'updates'],
-            signal: options.abortController.signal,
-          }
-        )) as AsyncIterable<[string, unknown]>) {
-          yield `event: ${mode}\ndata: ${JSON.stringify(chunk)}\n\n`;
-
-          if (
-            mode === 'messages' &&
-            typeof chunk === 'object' &&
-            chunk !== null
-          ) {
-            const chunkObj = chunk as { content?: unknown };
-            if (chunkObj.content) {
-              fullResponse += String(chunkObj.content);
-            }
-          }
-        }
-
-        if (fullResponse) {
-          await this.saveAIMessage(options.conversationId, fullResponse, undefined, undefined, options.channel);
-        }
-
-        yield `event: done\ndata: {}\n\n`;
-      }.bind(this);
-
-      return Readable.from(sseGenerator());
-    }
+    return Readable.from(sseGenerator());
   }
 }
