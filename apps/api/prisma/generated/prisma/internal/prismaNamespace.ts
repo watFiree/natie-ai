@@ -1203,14 +1203,13 @@ export const MessageScalarFieldEnum = {
   conversationId: 'conversationId',
   type: 'type',
   content: 'content',
-  name: 'name',
-  additionalKwargs: 'additionalKwargs',
   responseMetadata: 'responseMetadata',
+  name: 'name',
   toolCallId: 'toolCallId',
-  toolName: 'toolName',
+  toolCalls: 'toolCalls',
+  invalidToolCalls: 'invalidToolCalls',
   channel: 'channel',
-  createdAt: 'createdAt',
-  seq: 'seq'
+  createdAt: 'createdAt'
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
@@ -1233,13 +1232,6 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
-
-
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullableJsonNullValueInput = {
@@ -1411,20 +1403,6 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-/**
- * Reference to a field of type 'Float'
- */
-export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
-    
-
-
-/**
- * Reference to a field of type 'Float[]'
- */
-export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
