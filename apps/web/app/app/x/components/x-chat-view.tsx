@@ -28,7 +28,7 @@ export function XChatView({ onChangeAuthSettings }: XChatViewProps) {
         </Button>
       </CardHeader>
       <CardContent>
-        <ChatRuntimeProvider>
+        <ChatRuntimeProvider chatType="x">
           <Thread />
         </ChatRuntimeProvider>
       </CardContent>

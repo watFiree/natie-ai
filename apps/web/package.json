@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start -p 5173",
     "lint": "eslint",
+    "tsc": "tsc --noEmit",
     "generate:api": "orval --config ./orval.config.ts",
     "generate:api:watch": "orval --config ./orval.config.ts --watch"
   },

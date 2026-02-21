@@ -4,7 +4,7 @@ import { ChatRuntimeProvider } from '@/components/chat/chat';
 export default function Page() {
   return (
     <div className="flex flex-1 flex-col max-h-full">
-      <ChatRuntimeProvider>
+      <ChatRuntimeProvider chatType="natie">
         <Thread />
       </ChatRuntimeProvider>
     </div>

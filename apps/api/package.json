@@ -8,6 +8,7 @@
     "dev": "tsx src/index.ts",
     "start": "node --import tsx dist/src/index.js",
     "format": "prettier --write .",
+    "tsc": "tsc --noEmit",
     "db:migrate": "prisma migrate dev",
     "db:deploy": "prisma migrate deploy",
     "db:generate": "prisma generate",
