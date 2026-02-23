@@ -392,6 +392,8 @@ export const ModelName = {
   UserIntegration: 'UserIntegration',
   UserChat: 'UserChat',
   Message: 'Message',
+  ModelPricing: 'ModelPricing',
+  TokenUsageRecord: 'TokenUsageRecord',
   TelegramSettings: 'TelegramSettings'
 } as const
 
@@ -408,7 +410,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "gmailAccount" | "xAccount" | "emailIntegrationSettings" | "integration" | "userIntegration" | "userChat" | "message" | "telegramSettings"
+    modelProps: "user" | "gmailAccount" | "xAccount" | "emailIntegrationSettings" | "integration" | "userIntegration" | "userChat" | "message" | "modelPricing" | "tokenUsageRecord" | "telegramSettings"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1004,6 +1006,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ModelPricing: {
+      payload: Prisma.$ModelPricingPayload<ExtArgs>
+      fields: Prisma.ModelPricingFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ModelPricingFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelPricingPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ModelPricingFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelPricingPayload>
+        }
+        findFirst: {
+          args: Prisma.ModelPricingFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelPricingPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ModelPricingFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelPricingPayload>
+        }
+        findMany: {
+          args: Prisma.ModelPricingFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelPricingPayload>[]
+        }
+        create: {
+          args: Prisma.ModelPricingCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelPricingPayload>
+        }
+        createMany: {
+          args: Prisma.ModelPricingCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ModelPricingCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelPricingPayload>[]
+        }
+        delete: {
+          args: Prisma.ModelPricingDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelPricingPayload>
+        }
+        update: {
+          args: Prisma.ModelPricingUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelPricingPayload>
+        }
+        deleteMany: {
+          args: Prisma.ModelPricingDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ModelPricingUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ModelPricingUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelPricingPayload>[]
+        }
+        upsert: {
+          args: Prisma.ModelPricingUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ModelPricingPayload>
+        }
+        aggregate: {
+          args: Prisma.ModelPricingAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateModelPricing>
+        }
+        groupBy: {
+          args: Prisma.ModelPricingGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ModelPricingGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ModelPricingCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ModelPricingCountAggregateOutputType> | number
+        }
+      }
+    }
+    TokenUsageRecord: {
+      payload: Prisma.$TokenUsageRecordPayload<ExtArgs>
+      fields: Prisma.TokenUsageRecordFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TokenUsageRecordFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TokenUsageRecordPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TokenUsageRecordFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TokenUsageRecordPayload>
+        }
+        findFirst: {
+          args: Prisma.TokenUsageRecordFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TokenUsageRecordPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TokenUsageRecordFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TokenUsageRecordPayload>
+        }
+        findMany: {
+          args: Prisma.TokenUsageRecordFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TokenUsageRecordPayload>[]
+        }
+        create: {
+          args: Prisma.TokenUsageRecordCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TokenUsageRecordPayload>
+        }
+        createMany: {
+          args: Prisma.TokenUsageRecordCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TokenUsageRecordCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TokenUsageRecordPayload>[]
+        }
+        delete: {
+          args: Prisma.TokenUsageRecordDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TokenUsageRecordPayload>
+        }
+        update: {
+          args: Prisma.TokenUsageRecordUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TokenUsageRecordPayload>
+        }
+        deleteMany: {
+          args: Prisma.TokenUsageRecordDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TokenUsageRecordUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TokenUsageRecordUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TokenUsageRecordPayload>[]
+        }
+        upsert: {
+          args: Prisma.TokenUsageRecordUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TokenUsageRecordPayload>
+        }
+        aggregate: {
+          args: Prisma.TokenUsageRecordAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTokenUsageRecord>
+        }
+        groupBy: {
+          args: Prisma.TokenUsageRecordGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TokenUsageRecordGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TokenUsageRecordCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TokenUsageRecordCountAggregateOutputType> | number
+        }
+      }
+    }
     TelegramSettings: {
       payload: Prisma.$TelegramSettingsPayload<ExtArgs>
       fields: Prisma.TelegramSettingsFieldRefs
@@ -1215,6 +1365,35 @@ export const MessageScalarFieldEnum = {
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
 
 
+export const ModelPricingScalarFieldEnum = {
+  id: 'id',
+  modelName: 'modelName',
+  modelProvider: 'modelProvider',
+  inputPricePerToken: 'inputPricePerToken',
+  outputPricePerToken: 'outputPricePerToken',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ModelPricingScalarFieldEnum = (typeof ModelPricingScalarFieldEnum)[keyof typeof ModelPricingScalarFieldEnum]
+
+
+export const TokenUsageRecordScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  modelPricingId: 'modelPricingId',
+  promptTokens: 'promptTokens',
+  completionTokens: 'completionTokens',
+  totalTokens: 'totalTokens',
+  cachedTokens: 'cachedTokens',
+  reasoningTokens: 'reasoningTokens',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TokenUsageRecordScalarFieldEnum = (typeof TokenUsageRecordScalarFieldEnum)[keyof typeof TokenUsageRecordScalarFieldEnum]
+
+
 export const TelegramSettingsScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -1393,6 +1572,20 @@ export type ListEnumMessageChannelFieldRefInput<$PrismaModel> = FieldRefInputTyp
 
 
 /**
+ * Reference to a field of type 'Decimal'
+ */
+export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+/**
+ * Reference to a field of type 'Decimal[]'
+ */
+export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1403,6 +1596,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -1508,6 +1715,8 @@ export type GlobalOmitConfig = {
   userIntegration?: Prisma.UserIntegrationOmit
   userChat?: Prisma.UserChatOmit
   message?: Prisma.MessageOmit
+  modelPricing?: Prisma.ModelPricingOmit
+  tokenUsageRecord?: Prisma.TokenUsageRecordOmit
   telegramSettings?: Prisma.TelegramSettingsOmit
 }
 

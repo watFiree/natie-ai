@@ -16,6 +16,7 @@ import { TelegramGateway } from './gateways/telegram/gateway';
 import { TelegramSettingsRouter } from './gateways/telegram/router';
 import { InMemoryAgentLockService } from './modules/agent_lock/service';
 import { ChatRouter } from './modules/chat/router';
+import { TokenUsageRouter } from './modules/token_usage/router';
 
 const app = fastify({ logger: true });
 app.setValidatorCompiler(validatorCompiler);
@@ -39,6 +40,7 @@ app.register(AuthRouter, { prefix: '/auth' });
 app.register(GmailRouter);
 app.register(ChatRouter);
 app.register(XAccountRouter, { prefix: '/x-account' });
+app.register(TokenUsageRouter, { prefix: '/token-usage' });
 app.register(TelegramSettingsRouter, { prefix: '/telegram' });
 
 app.listen({ port: 3000, host: process.env.HOST || '0.0.0.0' }, async (err) => {
