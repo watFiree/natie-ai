@@ -17,10 +17,12 @@ Development guidelines for Claude Code when working in the `apps/api` package.
 ### 1. Route schemas are mandatory
 
 Every route **must** declare a `schema` object with:
+
 - `body` / `querystring` / `params` — Zod schemas for all inputs
 - `response` — Zod schemas for **every possible status code**
 
 Minimum required status codes per route:
+
 - `200` — success payload
 - `401` — unauthenticated (all protected routes)
 - `400` — bad input / business rule violation
@@ -92,6 +94,7 @@ pnpm --filter web generate:api
 ```
 
 This runs Orval against `http://localhost:3000/docs/json` and regenerates:
+
 - `apps/web/lib/api/` — raw fetch clients
 - `apps/web/lib/client/` — SWR hooks
 - `apps/web/lib/api/models/` — TypeScript types
@@ -180,12 +183,12 @@ pnpm dev                                          # Start API on :3000
 
 ## Development Scripts
 
-| Script | Purpose |
-|--------|---------|
-| `pnpm dev` | Start dev server (tsx watch) |
-| `pnpm tsc` | Type-check without emitting |
-| `pnpm db:migrate` | Create and apply new migration |
-| `pnpm db:deploy` | Apply existing migrations (production) |
-| `pnpm db:generate` | Regenerate Prisma client |
-| `pnpm db:studio` | Open Prisma Studio |
-| `pnpm format` | Format with Prettier |
+| Script             | Purpose                                |
+| ------------------ | -------------------------------------- |
+| `pnpm dev`         | Start dev server (tsx watch)           |
+| `pnpm tsc`         | Type-check without emitting            |
+| `pnpm db:migrate`  | Create and apply new migration         |
+| `pnpm db:deploy`   | Apply existing migrations (production) |
+| `pnpm db:generate` | Regenerate Prisma client               |
+| `pnpm db:studio`   | Open Prisma Studio                     |
+| `pnpm format`      | Format with Prettier                   |

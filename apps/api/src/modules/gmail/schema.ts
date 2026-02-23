@@ -23,7 +23,3 @@ export const SuccessResponseSchema = z.object({
 });
 
 export const RedirectResponseSchema = z.void().describe('Redirect');
-
-export const ErrorResponseSchema = z.object({
-  error: z.string(),
-});
