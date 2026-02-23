@@ -1,22 +1,47 @@
 import { PrismaClient, Message } from '../../../prisma/generated/prisma/client';
-import { CreateMessageData } from './consts';
+import { MessageTyped } from './consts';
 
 export class MessageRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async create(data: CreateMessageData): Promise<Message> {
-    const { conversationId, type, content, toolCallId, toolName, channel } =
-      data;
+  async create(data: MessageTyped): Promise<Message> {
+    const {
+      conversationId,
+      type,
+      content,
+      toolCallId,
+      name,
+      responseMetadata,
+      toolCalls,
+      invalidToolCalls,
+      channel,
+    } = data;
 
     return this.prisma.message.create({
       data: {
         conversationId,
         type,
-        content: { text: content },
+        content,
         toolCallId,
-        toolName,
-        ...(channel && { channel }),
+        name,
+        responseMetadata,
+        toolCalls,
+        invalidToolCalls,
+        channel,
       },
+    });
+  }
+
+  async createMany(data: MessageTyped[]): Promise<Message[]> {
+    return this.prisma.$transaction(async (tx) => {
+      const createdMessages: Message[] = [];
+      for (const message of data) {
+        const created = await tx.message.create({
+          data: message,
+        });
+        createdMessages.push(created);
+      }
+      return createdMessages;
     });
   }
 
@@ -26,7 +51,7 @@ export class MessageRepository {
   ): Promise<Message[]> {
     return this.prisma.message.findMany({
       where: { conversationId },
-      orderBy: { createdAt: 'desc' },
+      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
       take: limit,
     });
   }

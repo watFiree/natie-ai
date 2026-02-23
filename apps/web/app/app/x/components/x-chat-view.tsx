@@ -1,15 +1,17 @@
-import { Button } from "@/components/ui/button"
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from '@/components/ui/card';
+import { ChatRuntimeProvider } from '@/components/chat/chat';
+import { Thread } from '@/components/assistant-ui/thread';
 
 type XChatViewProps = {
-  onChangeAuthSettings: () => void
-}
+  onChangeAuthSettings: () => void;
+};
 
 export function XChatView({ onChangeAuthSettings }: XChatViewProps) {
   return (
@@ -26,10 +28,10 @@ export function XChatView({ onChangeAuthSettings }: XChatViewProps) {
         </Button>
       </CardHeader>
       <CardContent>
-        <div className="text-muted-foreground flex min-h-[280px] items-center justify-center rounded-md border border-dashed text-center text-sm">
-          Empty chat view for X integration.
-        </div>
+        <ChatRuntimeProvider chatType="x">
+          <Thread />
+        </ChatRuntimeProvider>
       </CardContent>
     </Card>
-  )
+  );
 }

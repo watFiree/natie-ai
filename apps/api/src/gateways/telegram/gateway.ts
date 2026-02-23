@@ -2,7 +2,6 @@ import { Telegraf, Context } from 'telegraf';
 import { message as messageFilter } from 'telegraf/filters';
 import { PrismaClient } from '../../../prisma/generated/prisma/client';
 import { GmailOAuthService } from '../../modules/gmail/service';
-import { createOAuth2Client } from '../../modules/gmail/clientFactory';
 import { GmailAccountRepository } from '../../modules/gmail/repository';
 import { XAccountRepository } from '../../modules/x_account/repository';
 import { MessageRepository } from '../../modules/messages/repository';
@@ -10,7 +9,6 @@ import { ChatRepository } from '../../modules/chat/repository';
 import { AgentRunner } from '../../integrations/common/runner';
 import { NatieService } from '../../modules/natie/service';
 import type { FastifyInstance } from 'fastify';
-import { AIMessage } from '@langchain/core/messages';
 import type { AgentLockService } from '../../modules/agent_lock/service';
 
 const ACTIVE_WEB_CONVERSATION_MESSAGE =
@@ -45,10 +43,7 @@ export class TelegramGateway {
     });
 
     const gmailAccountRepo = new GmailAccountRepository(this.prisma);
-    const gmailService = new GmailOAuthService(
-      createOAuth2Client(),
-      gmailAccountRepo
-    );
+    const gmailService = new GmailOAuthService(gmailAccountRepo);
     const xAccountRepo = new XAccountRepository(this.prisma);
 
     this.natieService = new NatieService(
@@ -188,9 +183,13 @@ export class TelegramGateway {
     message: string
   ): Promise<string> {
     const abortController = new AbortController();
-    const isLockAcquired = await this.agentLockService.acquire(userId, 'telegram');
+    const isLockAcquired = await this.agentLockService.acquire(
+      userId,
+      'telegram'
+    );
     if (!isLockAcquired) {
-      const activeChannel = await this.agentLockService.getActiveChannel(userId);
+      const activeChannel =
+        await this.agentLockService.getActiveChannel(userId);
       if (activeChannel === 'web') {
         return ACTIVE_WEB_CONVERSATION_MESSAGE;
       }
@@ -205,19 +204,16 @@ export class TelegramGateway {
     try {
       const mainAgent = await this.natieService.createMainAgent(userId);
 
-      const result = await this.agentRunner.run(mainAgent, {
+      const result = await this.agentRunner.invoke(mainAgent, {
         conversationId,
         message,
-        type: 'invoke',
         abortController,
         channel: 'telegram',
       });
 
-      if ('messages' in result) {
-        const lastMessage = result.messages.at(-1);
-        if (lastMessage && lastMessage instanceof AIMessage) {
-          return String(lastMessage.content);
-        }
+      const lastMessage = result.messages.at(-1);
+      if (lastMessage?.type === 'ai') {
+        return String(lastMessage.content);
       }
 
       return 'I processed your request but could not generate a response.';

@@ -119,15 +119,12 @@ model UserChat {
 enum LangChainMessageType {
   human
   ai
-  system
   tool
 }
 
 enum MessageChannel {
   web
   telegram
-  email
-  x
 }
 
 model Message {
@@ -135,27 +132,22 @@ model Message {
   conversationId String
   type           LangChainMessageType
 
-  content        Json
+  content        String
 
-  name           String?             // optional "name" field on messages
-  additionalKwargs Json?             @map("additional_kwargs")
   responseMetadata Json?             @map("response_metadata")
 
-  /// For ToolMessage / tool results
-  toolCallId     String?             @map("tool_call_id")
-  toolName       String?             @map("tool_name")
+  name String? 
+  toolCallId String? @map("tool_call_id")
+  toolCalls     Json?             @map("tool_calls")
+  invalidToolCalls       Json?             @map("invalid_tool_calls")
 
-  /// Channel the message came from
   channel        MessageChannel      @default(web)
 
-  /// Ordering
   createdAt      DateTime            @default(now())
-  seq            Int?
 
   conversation UserChat @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   @@index([conversationId, createdAt])
-  @@index([conversationId, seq])
 }
 
 model TelegramSettings {

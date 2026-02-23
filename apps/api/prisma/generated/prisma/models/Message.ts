@@ -20,42 +20,30 @@ export type MessageModel = runtime.Types.Result.DefaultSelection<Prisma.$Message
 
 export type AggregateMessage = {
   _count: MessageCountAggregateOutputType | null
-  _avg: MessageAvgAggregateOutputType | null
-  _sum: MessageSumAggregateOutputType | null
   _min: MessageMinAggregateOutputType | null
   _max: MessageMaxAggregateOutputType | null
-}
-
-export type MessageAvgAggregateOutputType = {
-  seq: number | null
-}
-
-export type MessageSumAggregateOutputType = {
-  seq: number | null
 }
 
 export type MessageMinAggregateOutputType = {
   id: string | null
   conversationId: string | null
   type: $Enums.LangChainMessageType | null
+  content: string | null
   name: string | null
   toolCallId: string | null
-  toolName: string | null
   channel: $Enums.MessageChannel | null
   createdAt: Date | null
-  seq: number | null
 }
 
 export type MessageMaxAggregateOutputType = {
   id: string | null
   conversationId: string | null
   type: $Enums.LangChainMessageType | null
+  content: string | null
   name: string | null
   toolCallId: string | null
-  toolName: string | null
   channel: $Enums.MessageChannel | null
   createdAt: Date | null
-  seq: number | null
 }
 
 export type MessageCountAggregateOutputType = {
@@ -63,48 +51,37 @@ export type MessageCountAggregateOutputType = {
   conversationId: number
   type: number
   content: number
-  name: number
-  additionalKwargs: number
   responseMetadata: number
+  name: number
   toolCallId: number
-  toolName: number
+  toolCalls: number
+  invalidToolCalls: number
   channel: number
   createdAt: number
-  seq: number
   _all: number
 }
 
-
-export type MessageAvgAggregateInputType = {
-  seq?: true
-}
-
-export type MessageSumAggregateInputType = {
-  seq?: true
-}
 
 export type MessageMinAggregateInputType = {
   id?: true
   conversationId?: true
   type?: true
+  content?: true
   name?: true
   toolCallId?: true
-  toolName?: true
   channel?: true
   createdAt?: true
-  seq?: true
 }
 
 export type MessageMaxAggregateInputType = {
   id?: true
   conversationId?: true
   type?: true
+  content?: true
   name?: true
   toolCallId?: true
-  toolName?: true
   channel?: true
   createdAt?: true
-  seq?: true
 }
 
 export type MessageCountAggregateInputType = {
@@ -112,14 +89,13 @@ export type MessageCountAggregateInputType = {
   conversationId?: true
   type?: true
   content?: true
-  name?: true
-  additionalKwargs?: true
   responseMetadata?: true
+  name?: true
   toolCallId?: true
-  toolName?: true
+  toolCalls?: true
+  invalidToolCalls?: true
   channel?: true
   createdAt?: true
-  seq?: true
   _all?: true
 }
 
@@ -161,18 +137,6 @@ export type MessageAggregateArgs<ExtArgs extends runtime.Types.Extensions.Intern
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
-   * Select which fields to average
-  **/
-  _avg?: MessageAvgAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
-   * Select which fields to sum
-  **/
-  _sum?: MessageSumAggregateInputType
-  /**
-   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-   * 
    * Select which fields to find the minimum value
   **/
   _min?: MessageMinAggregateInputType
@@ -203,8 +167,6 @@ export type MessageGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   _count?: MessageCountAggregateInputType | true
-  _avg?: MessageAvgAggregateInputType
-  _sum?: MessageSumAggregateInputType
   _min?: MessageMinAggregateInputType
   _max?: MessageMaxAggregateInputType
 }
@@ -213,18 +175,15 @@ export type MessageGroupByOutputType = {
   id: string
   conversationId: string
   type: $Enums.LangChainMessageType
-  content: runtime.JsonValue
-  name: string | null
-  additionalKwargs: runtime.JsonValue | null
+  content: string
   responseMetadata: runtime.JsonValue | null
+  name: string | null
   toolCallId: string | null
-  toolName: string | null
+  toolCalls: runtime.JsonValue | null
+  invalidToolCalls: runtime.JsonValue | null
   channel: $Enums.MessageChannel
   createdAt: Date
-  seq: number | null
   _count: MessageCountAggregateOutputType | null
-  _avg: MessageAvgAggregateOutputType | null
-  _sum: MessageSumAggregateOutputType | null
   _min: MessageMinAggregateOutputType | null
   _max: MessageMaxAggregateOutputType | null
 }
@@ -251,15 +210,14 @@ export type MessageWhereInput = {
   id?: Prisma.StringFilter<"Message"> | string
   conversationId?: Prisma.StringFilter<"Message"> | string
   type?: Prisma.EnumLangChainMessageTypeFilter<"Message"> | $Enums.LangChainMessageType
-  content?: Prisma.JsonFilter<"Message">
-  name?: Prisma.StringNullableFilter<"Message"> | string | null
-  additionalKwargs?: Prisma.JsonNullableFilter<"Message">
+  content?: Prisma.StringFilter<"Message"> | string
   responseMetadata?: Prisma.JsonNullableFilter<"Message">
+  name?: Prisma.StringNullableFilter<"Message"> | string | null
   toolCallId?: Prisma.StringNullableFilter<"Message"> | string | null
-  toolName?: Prisma.StringNullableFilter<"Message"> | string | null
+  toolCalls?: Prisma.JsonNullableFilter<"Message">
+  invalidToolCalls?: Prisma.JsonNullableFilter<"Message">
   channel?: Prisma.EnumMessageChannelFilter<"Message"> | $Enums.MessageChannel
   createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
-  seq?: Prisma.IntNullableFilter<"Message"> | number | null
   conversation?: Prisma.XOR<Prisma.UserChatScalarRelationFilter, Prisma.UserChatWhereInput>
 }
 
@@ -268,14 +226,13 @@ export type MessageOrderByWithRelationInput = {
   conversationId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   content?: Prisma.SortOrder
-  name?: Prisma.SortOrderInput | Prisma.SortOrder
-  additionalKwargs?: Prisma.SortOrderInput | Prisma.SortOrder
   responseMetadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  name?: Prisma.SortOrderInput | Prisma.SortOrder
   toolCallId?: Prisma.SortOrderInput | Prisma.SortOrder
-  toolName?: Prisma.SortOrderInput | Prisma.SortOrder
+  toolCalls?: Prisma.SortOrderInput | Prisma.SortOrder
+  invalidToolCalls?: Prisma.SortOrderInput | Prisma.SortOrder
   channel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  seq?: Prisma.SortOrderInput | Prisma.SortOrder
   conversation?: Prisma.UserChatOrderByWithRelationInput
 }
 
@@ -286,15 +243,14 @@ export type MessageWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.MessageWhereInput | Prisma.MessageWhereInput[]
   conversationId?: Prisma.StringFilter<"Message"> | string
   type?: Prisma.EnumLangChainMessageTypeFilter<"Message"> | $Enums.LangChainMessageType
-  content?: Prisma.JsonFilter<"Message">
-  name?: Prisma.StringNullableFilter<"Message"> | string | null
-  additionalKwargs?: Prisma.JsonNullableFilter<"Message">
+  content?: Prisma.StringFilter<"Message"> | string
   responseMetadata?: Prisma.JsonNullableFilter<"Message">
+  name?: Prisma.StringNullableFilter<"Message"> | string | null
   toolCallId?: Prisma.StringNullableFilter<"Message"> | string | null
-  toolName?: Prisma.StringNullableFilter<"Message"> | string | null
+  toolCalls?: Prisma.JsonNullableFilter<"Message">
+  invalidToolCalls?: Prisma.JsonNullableFilter<"Message">
   channel?: Prisma.EnumMessageChannelFilter<"Message"> | $Enums.MessageChannel
   createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
-  seq?: Prisma.IntNullableFilter<"Message"> | number | null
   conversation?: Prisma.XOR<Prisma.UserChatScalarRelationFilter, Prisma.UserChatWhereInput>
 }, "id">
 
@@ -303,19 +259,16 @@ export type MessageOrderByWithAggregationInput = {
   conversationId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   content?: Prisma.SortOrder
-  name?: Prisma.SortOrderInput | Prisma.SortOrder
-  additionalKwargs?: Prisma.SortOrderInput | Prisma.SortOrder
   responseMetadata?: Prisma.SortOrderInput | Prisma.SortOrder
+  name?: Prisma.SortOrderInput | Prisma.SortOrder
   toolCallId?: Prisma.SortOrderInput | Prisma.SortOrder
-  toolName?: Prisma.SortOrderInput | Prisma.SortOrder
+  toolCalls?: Prisma.SortOrderInput | Prisma.SortOrder
+  invalidToolCalls?: Prisma.SortOrderInput | Prisma.SortOrder
   channel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  seq?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.MessageCountOrderByAggregateInput
-  _avg?: Prisma.MessageAvgOrderByAggregateInput
   _max?: Prisma.MessageMaxOrderByAggregateInput
   _min?: Prisma.MessageMinOrderByAggregateInput
-  _sum?: Prisma.MessageSumOrderByAggregateInput
 }
 
 export type MessageScalarWhereWithAggregatesInput = {
@@ -325,29 +278,27 @@ export type MessageScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Message"> | string
   conversationId?: Prisma.StringWithAggregatesFilter<"Message"> | string
   type?: Prisma.EnumLangChainMessageTypeWithAggregatesFilter<"Message"> | $Enums.LangChainMessageType
-  content?: Prisma.JsonWithAggregatesFilter<"Message">
-  name?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
-  additionalKwargs?: Prisma.JsonNullableWithAggregatesFilter<"Message">
+  content?: Prisma.StringWithAggregatesFilter<"Message"> | string
   responseMetadata?: Prisma.JsonNullableWithAggregatesFilter<"Message">
+  name?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
   toolCallId?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
-  toolName?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
+  toolCalls?: Prisma.JsonNullableWithAggregatesFilter<"Message">
+  invalidToolCalls?: Prisma.JsonNullableWithAggregatesFilter<"Message">
   channel?: Prisma.EnumMessageChannelWithAggregatesFilter<"Message"> | $Enums.MessageChannel
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Message"> | Date | string
-  seq?: Prisma.IntNullableWithAggregatesFilter<"Message"> | number | null
 }
 
 export type MessageCreateInput = {
   id?: string
   type: $Enums.LangChainMessageType
-  content: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  name?: string | null
-  additionalKwargs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  content: string
   responseMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  name?: string | null
   toolCallId?: string | null
-  toolName?: string | null
+  toolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  invalidToolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   channel?: $Enums.MessageChannel
   createdAt?: Date | string
-  seq?: number | null
   conversation: Prisma.UserChatCreateNestedOneWithoutMessagesInput
 }
 
@@ -355,29 +306,27 @@ export type MessageUncheckedCreateInput = {
   id?: string
   conversationId: string
   type: $Enums.LangChainMessageType
-  content: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  name?: string | null
-  additionalKwargs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  content: string
   responseMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  name?: string | null
   toolCallId?: string | null
-  toolName?: string | null
+  toolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  invalidToolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   channel?: $Enums.MessageChannel
   createdAt?: Date | string
-  seq?: number | null
 }
 
 export type MessageUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumLangChainMessageTypeFieldUpdateOperationsInput | $Enums.LangChainMessageType
-  content?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  additionalKwargs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  content?: Prisma.StringFieldUpdateOperationsInput | string
   responseMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toolCallId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  toolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  invalidToolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   channel?: Prisma.EnumMessageChannelFieldUpdateOperationsInput | $Enums.MessageChannel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  seq?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   conversation?: Prisma.UserChatUpdateOneRequiredWithoutMessagesNestedInput
 }
 
@@ -385,59 +334,55 @@ export type MessageUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   conversationId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumLangChainMessageTypeFieldUpdateOperationsInput | $Enums.LangChainMessageType
-  content?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  additionalKwargs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  content?: Prisma.StringFieldUpdateOperationsInput | string
   responseMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toolCallId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  toolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  invalidToolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   channel?: Prisma.EnumMessageChannelFieldUpdateOperationsInput | $Enums.MessageChannel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  seq?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type MessageCreateManyInput = {
   id?: string
   conversationId: string
   type: $Enums.LangChainMessageType
-  content: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  name?: string | null
-  additionalKwargs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  content: string
   responseMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  name?: string | null
   toolCallId?: string | null
-  toolName?: string | null
+  toolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  invalidToolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   channel?: $Enums.MessageChannel
   createdAt?: Date | string
-  seq?: number | null
 }
 
 export type MessageUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumLangChainMessageTypeFieldUpdateOperationsInput | $Enums.LangChainMessageType
-  content?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  additionalKwargs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  content?: Prisma.StringFieldUpdateOperationsInput | string
   responseMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toolCallId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  toolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  invalidToolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   channel?: Prisma.EnumMessageChannelFieldUpdateOperationsInput | $Enums.MessageChannel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  seq?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type MessageUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   conversationId?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumLangChainMessageTypeFieldUpdateOperationsInput | $Enums.LangChainMessageType
-  content?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  additionalKwargs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  content?: Prisma.StringFieldUpdateOperationsInput | string
   responseMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toolCallId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  toolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  invalidToolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   channel?: Prisma.EnumMessageChannelFieldUpdateOperationsInput | $Enums.MessageChannel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  seq?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type MessageListRelationFilter = {
@@ -455,46 +400,35 @@ export type MessageCountOrderByAggregateInput = {
   conversationId?: Prisma.SortOrder
   type?: Prisma.SortOrder
   content?: Prisma.SortOrder
-  name?: Prisma.SortOrder
-  additionalKwargs?: Prisma.SortOrder
   responseMetadata?: Prisma.SortOrder
+  name?: Prisma.SortOrder
   toolCallId?: Prisma.SortOrder
-  toolName?: Prisma.SortOrder
+  toolCalls?: Prisma.SortOrder
+  invalidToolCalls?: Prisma.SortOrder
   channel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  seq?: Prisma.SortOrder
-}
-
-export type MessageAvgOrderByAggregateInput = {
-  seq?: Prisma.SortOrder
 }
 
 export type MessageMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   conversationId?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  content?: Prisma.SortOrder
   name?: Prisma.SortOrder
   toolCallId?: Prisma.SortOrder
-  toolName?: Prisma.SortOrder
   channel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  seq?: Prisma.SortOrder
 }
 
 export type MessageMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   conversationId?: Prisma.SortOrder
   type?: Prisma.SortOrder
+  content?: Prisma.SortOrder
   name?: Prisma.SortOrder
   toolCallId?: Prisma.SortOrder
-  toolName?: Prisma.SortOrder
   channel?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
-  seq?: Prisma.SortOrder
-}
-
-export type MessageSumOrderByAggregateInput = {
-  seq?: Prisma.SortOrder
 }
 
 export type MessageCreateNestedManyWithoutConversationInput = {
@@ -547,40 +481,30 @@ export type EnumMessageChannelFieldUpdateOperationsInput = {
   set?: $Enums.MessageChannel
 }
 
-export type NullableIntFieldUpdateOperationsInput = {
-  set?: number | null
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
-}
-
 export type MessageCreateWithoutConversationInput = {
   id?: string
   type: $Enums.LangChainMessageType
-  content: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  name?: string | null
-  additionalKwargs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  content: string
   responseMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  name?: string | null
   toolCallId?: string | null
-  toolName?: string | null
+  toolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  invalidToolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   channel?: $Enums.MessageChannel
   createdAt?: Date | string
-  seq?: number | null
 }
 
 export type MessageUncheckedCreateWithoutConversationInput = {
   id?: string
   type: $Enums.LangChainMessageType
-  content: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  name?: string | null
-  additionalKwargs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  content: string
   responseMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  name?: string | null
   toolCallId?: string | null
-  toolName?: string | null
+  toolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  invalidToolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   channel?: $Enums.MessageChannel
   createdAt?: Date | string
-  seq?: number | null
 }
 
 export type MessageCreateOrConnectWithoutConversationInput = {
@@ -616,71 +540,66 @@ export type MessageScalarWhereInput = {
   id?: Prisma.StringFilter<"Message"> | string
   conversationId?: Prisma.StringFilter<"Message"> | string
   type?: Prisma.EnumLangChainMessageTypeFilter<"Message"> | $Enums.LangChainMessageType
-  content?: Prisma.JsonFilter<"Message">
-  name?: Prisma.StringNullableFilter<"Message"> | string | null
-  additionalKwargs?: Prisma.JsonNullableFilter<"Message">
+  content?: Prisma.StringFilter<"Message"> | string
   responseMetadata?: Prisma.JsonNullableFilter<"Message">
+  name?: Prisma.StringNullableFilter<"Message"> | string | null
   toolCallId?: Prisma.StringNullableFilter<"Message"> | string | null
-  toolName?: Prisma.StringNullableFilter<"Message"> | string | null
+  toolCalls?: Prisma.JsonNullableFilter<"Message">
+  invalidToolCalls?: Prisma.JsonNullableFilter<"Message">
   channel?: Prisma.EnumMessageChannelFilter<"Message"> | $Enums.MessageChannel
   createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
-  seq?: Prisma.IntNullableFilter<"Message"> | number | null
 }
 
 export type MessageCreateManyConversationInput = {
   id?: string
   type: $Enums.LangChainMessageType
-  content: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  name?: string | null
-  additionalKwargs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  content: string
   responseMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  name?: string | null
   toolCallId?: string | null
-  toolName?: string | null
+  toolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  invalidToolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   channel?: $Enums.MessageChannel
   createdAt?: Date | string
-  seq?: number | null
 }
 
 export type MessageUpdateWithoutConversationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumLangChainMessageTypeFieldUpdateOperationsInput | $Enums.LangChainMessageType
-  content?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  additionalKwargs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  content?: Prisma.StringFieldUpdateOperationsInput | string
   responseMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toolCallId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  toolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  invalidToolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   channel?: Prisma.EnumMessageChannelFieldUpdateOperationsInput | $Enums.MessageChannel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  seq?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type MessageUncheckedUpdateWithoutConversationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumLangChainMessageTypeFieldUpdateOperationsInput | $Enums.LangChainMessageType
-  content?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  additionalKwargs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  content?: Prisma.StringFieldUpdateOperationsInput | string
   responseMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toolCallId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  toolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  invalidToolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   channel?: Prisma.EnumMessageChannelFieldUpdateOperationsInput | $Enums.MessageChannel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  seq?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 export type MessageUncheckedUpdateManyWithoutConversationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   type?: Prisma.EnumLangChainMessageTypeFieldUpdateOperationsInput | $Enums.LangChainMessageType
-  content?: Prisma.JsonNullValueInput | runtime.InputJsonValue
-  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  additionalKwargs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  content?: Prisma.StringFieldUpdateOperationsInput | string
   responseMetadata?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   toolCallId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  toolName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  toolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  invalidToolCalls?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   channel?: Prisma.EnumMessageChannelFieldUpdateOperationsInput | $Enums.MessageChannel
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  seq?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
 }
 
 
@@ -690,14 +609,13 @@ export type MessageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   conversationId?: boolean
   type?: boolean
   content?: boolean
-  name?: boolean
-  additionalKwargs?: boolean
   responseMetadata?: boolean
+  name?: boolean
   toolCallId?: boolean
-  toolName?: boolean
+  toolCalls?: boolean
+  invalidToolCalls?: boolean
   channel?: boolean
   createdAt?: boolean
-  seq?: boolean
   conversation?: boolean | Prisma.UserChatDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["message"]>
 
@@ -706,14 +624,13 @@ export type MessageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   conversationId?: boolean
   type?: boolean
   content?: boolean
-  name?: boolean
-  additionalKwargs?: boolean
   responseMetadata?: boolean
+  name?: boolean
   toolCallId?: boolean
-  toolName?: boolean
+  toolCalls?: boolean
+  invalidToolCalls?: boolean
   channel?: boolean
   createdAt?: boolean
-  seq?: boolean
   conversation?: boolean | Prisma.UserChatDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["message"]>
 
@@ -722,14 +639,13 @@ export type MessageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   conversationId?: boolean
   type?: boolean
   content?: boolean
-  name?: boolean
-  additionalKwargs?: boolean
   responseMetadata?: boolean
+  name?: boolean
   toolCallId?: boolean
-  toolName?: boolean
+  toolCalls?: boolean
+  invalidToolCalls?: boolean
   channel?: boolean
   createdAt?: boolean
-  seq?: boolean
   conversation?: boolean | Prisma.UserChatDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["message"]>
 
@@ -738,17 +654,16 @@ export type MessageSelectScalar = {
   conversationId?: boolean
   type?: boolean
   content?: boolean
-  name?: boolean
-  additionalKwargs?: boolean
   responseMetadata?: boolean
+  name?: boolean
   toolCallId?: boolean
-  toolName?: boolean
+  toolCalls?: boolean
+  invalidToolCalls?: boolean
   channel?: boolean
   createdAt?: boolean
-  seq?: boolean
 }
 
-export type MessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "conversationId" | "type" | "content" | "name" | "additionalKwargs" | "responseMetadata" | "toolCallId" | "toolName" | "channel" | "createdAt" | "seq", ExtArgs["result"]["message"]>
+export type MessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "conversationId" | "type" | "content" | "responseMetadata" | "name" | "toolCallId" | "toolCalls" | "invalidToolCalls" | "channel" | "createdAt", ExtArgs["result"]["message"]>
 export type MessageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   conversation?: boolean | Prisma.UserChatDefaultArgs<ExtArgs>
 }
@@ -768,24 +683,14 @@ export type $MessagePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     id: string
     conversationId: string
     type: $Enums.LangChainMessageType
-    content: runtime.JsonValue
-    name: string | null
-    additionalKwargs: runtime.JsonValue | null
+    content: string
     responseMetadata: runtime.JsonValue | null
-    /**
-     * For ToolMessage / tool results
-     */
+    name: string | null
     toolCallId: string | null
-    toolName: string | null
-    /**
-     * Channel the message came from
-     */
+    toolCalls: runtime.JsonValue | null
+    invalidToolCalls: runtime.JsonValue | null
     channel: $Enums.MessageChannel
-    /**
-     * Ordering
-     */
     createdAt: Date
-    seq: number | null
   }, ExtArgs["result"]["message"]>
   composites: {}
 }
@@ -1213,15 +1118,14 @@ export interface MessageFieldRefs {
   readonly id: Prisma.FieldRef<"Message", 'String'>
   readonly conversationId: Prisma.FieldRef<"Message", 'String'>
   readonly type: Prisma.FieldRef<"Message", 'LangChainMessageType'>
-  readonly content: Prisma.FieldRef<"Message", 'Json'>
-  readonly name: Prisma.FieldRef<"Message", 'String'>
-  readonly additionalKwargs: Prisma.FieldRef<"Message", 'Json'>
+  readonly content: Prisma.FieldRef<"Message", 'String'>
   readonly responseMetadata: Prisma.FieldRef<"Message", 'Json'>
+  readonly name: Prisma.FieldRef<"Message", 'String'>
   readonly toolCallId: Prisma.FieldRef<"Message", 'String'>
-  readonly toolName: Prisma.FieldRef<"Message", 'String'>
+  readonly toolCalls: Prisma.FieldRef<"Message", 'Json'>
+  readonly invalidToolCalls: Prisma.FieldRef<"Message", 'Json'>
   readonly channel: Prisma.FieldRef<"Message", 'MessageChannel'>
   readonly createdAt: Prisma.FieldRef<"Message", 'DateTime'>
-  readonly seq: Prisma.FieldRef<"Message", 'Int'>
 }
     
 
