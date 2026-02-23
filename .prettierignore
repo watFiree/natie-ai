@@ -58,3 +58,11 @@ package-lock.json
 # Temporary files
 *.tmp
 *.temp
+
+# Web
+/apps/web/lib/api
+/apps/web/lib/client
+
+# Api
+/apps/api/prisma/generated
+/apps/api/prisma/migrations
