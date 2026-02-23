@@ -8,12 +8,12 @@ import { GmailAccountRepository } from './repository';
 import { authHandler } from '../auth/handler';
 import {
   DeleteGmailAccountQuerySchema,
-  ErrorResponseSchema,
   GmailAccountsResponseSchema,
   OAuthCallbackQuerySchema,
   RedirectResponseSchema,
   SuccessResponseSchema,
 } from './schema';
+import { ErrorResponseSchema } from '../../common/schema';
 
 export const GmailRouter = async (fastify: FastifyInstance) => {
   const typedFastify = fastify.withTypeProvider<ZodTypeProvider>();
