@@ -36,8 +36,7 @@ export const GmailRouter = async (fastify: FastifyInstance) => {
     },
     async (req, reply) => {
       const state = crypto.randomBytes(24).toString('hex');
-      const oauth2Client = createOAuth2Client();
-      const svc = new GmailOAuthService(oauth2Client, repository);
+      const svc = new GmailOAuthService(repository);
 
       const url = svc.generateRedirectUrl({
         state,
@@ -88,8 +87,7 @@ export const GmailRouter = async (fastify: FastifyInstance) => {
       reply.clearCookie('google_oauth_state', { path: '/' });
 
       try {
-        const oauth2Client = createOAuth2Client();
-        const svc = new GmailOAuthService(oauth2Client, repository);
+        const svc = new GmailOAuthService(repository);
 
         const tokens = await svc.exchangeCodeForTokens(code);
         const email = await svc.getEmailFromIdToken(tokens);

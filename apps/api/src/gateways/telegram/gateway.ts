@@ -2,7 +2,6 @@ import { Telegraf, Context } from 'telegraf';
 import { message as messageFilter } from 'telegraf/filters';
 import { PrismaClient } from '../../../prisma/generated/prisma/client';
 import { GmailOAuthService } from '../../modules/gmail/service';
-import { createOAuth2Client } from '../../modules/gmail/clientFactory';
 import { GmailAccountRepository } from '../../modules/gmail/repository';
 import { XAccountRepository } from '../../modules/x_account/repository';
 import { MessageRepository } from '../../modules/messages/repository';
@@ -44,10 +43,7 @@ export class TelegramGateway {
     });
 
     const gmailAccountRepo = new GmailAccountRepository(this.prisma);
-    const gmailService = new GmailOAuthService(
-      createOAuth2Client(),
-      gmailAccountRepo
-    );
+    const gmailService = new GmailOAuthService(gmailAccountRepo);
     const xAccountRepo = new XAccountRepository(this.prisma);
 
     this.natieService = new NatieService(

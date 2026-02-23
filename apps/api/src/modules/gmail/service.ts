@@ -1,16 +1,19 @@
 import { google, Auth } from 'googleapis';
 import type { RedirectUrlOptions, GoogleTokens } from './consts';
 import type { GmailAccountRepository } from './repository';
+import { createOAuth2Client } from './clientFactory';
 
 export class GmailOAuthService {
   private readonly oauth2: Auth.OAuth2Client;
+  private readonly oauth2ClientFactory: () => Auth.OAuth2Client;
   private readonly repository: GmailAccountRepository;
 
   constructor(
-    oauth2Client: Auth.OAuth2Client,
-    repository: GmailAccountRepository
+    repository: GmailAccountRepository,
+    oauth2ClientFactory: () => Auth.OAuth2Client = createOAuth2Client
   ) {
-    this.oauth2 = oauth2Client;
+    this.oauth2ClientFactory = oauth2ClientFactory;
+    this.oauth2 = oauth2ClientFactory();
     this.repository = repository;
   }
 
@@ -88,13 +91,13 @@ export class GmailOAuthService {
       : true;
 
     if (isExpired && account.refreshToken) {
-      this.oauth2.setCredentials({
+      const oauth2 = this.oauth2ClientFactory();
+      oauth2.setCredentials({
         access_token: account.accessToken,
         refresh_token: account.refreshToken,
       });
-      const { credentials } = await this.oauth2.refreshAccessToken();
+      const { credentials } = await oauth2.refreshAccessToken();
       await this.repository.updateTokens(userId, email, credentials);
-      this.oauth2.setCredentials(credentials);
       return credentials.access_token ?? '';
     }
     return account.accessToken;

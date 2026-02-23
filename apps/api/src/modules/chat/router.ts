@@ -15,7 +15,6 @@ import { NatieService } from '../natie/service';
 import { XAgentService } from '../x_account/service';
 import { GmailAgentService } from '../gmail/agentService';
 import { GmailOAuthService } from '../gmail/service';
-import { createOAuth2Client } from '../gmail/clientFactory';
 import { GmailAccountRepository } from '../gmail/repository';
 import { XAccountRepository } from '../x_account/repository';
 import { ChatType } from '../../../prisma/generated/prisma/client';
@@ -35,10 +34,7 @@ export const ChatRouter = async (fastify: FastifyInstance) => {
   const xAccountRepo = new XAccountRepository(fastify.prisma);
 
   // Services
-  const gmailService = new GmailOAuthService(
-    createOAuth2Client(),
-    gmailAccountRepo
-  );
+  const gmailService = new GmailOAuthService(gmailAccountRepo);
   const agentRunner = new AgentRunner({ prisma: fastify.prisma, messageRepo });
 
   // Agent services
