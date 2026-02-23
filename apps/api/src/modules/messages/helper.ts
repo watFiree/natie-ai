@@ -71,7 +71,7 @@ const isToolCall = (value: unknown): value is ToolCall => {
     typeof value.name === 'string' &&
     typeof value.type === 'string' &&
     typeof value.id === 'string' &&
-    typeof value.args.query === 'string'
+    isRecord(value.args)
   );
 };
 

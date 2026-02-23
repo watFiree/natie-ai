@@ -9,9 +9,7 @@ type JsonObject = Prisma.InputJsonObject;
 
 export type ToolCall = JsonObject & {
   name: string;
-  args: JsonObject & {
-    query: string;
-  };
+  args: JsonObject;
   type: string;
   id: string;
 };
