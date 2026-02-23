@@ -73,4 +73,3 @@ export function mapInternalMessageToLangChain(
       return new HumanMessage(textContent);
   }
 }
-

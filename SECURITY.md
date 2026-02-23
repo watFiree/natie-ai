@@ -4,16 +4,16 @@
 
 This project is currently maintained primarily from the `main` branch.
 
-| Version / branch | Supported |
-| --- | --- |
-| `main` | :white_check_mark: |
-| Older commits / feature branches | :x: |
+| Version / branch                 | Supported          |
+| -------------------------------- | ------------------ |
+| `main`                           | :white_check_mark: |
+| Older commits / feature branches | :x:                |
 
 ## Reporting a vulnerability
 
 If you discover a security vulnerability, please report it privately.
 
-- Preferred contact: **security@natie.ai** *(placeholder until official security mailbox is published)*
+- Preferred contact: **security@natie.ai** _(placeholder until official security mailbox is published)_
 - Alternative: open a private security advisory on GitHub (if enabled for this repository)
 
 Please **do not** open public GitHub issues for unpatched vulnerabilities.

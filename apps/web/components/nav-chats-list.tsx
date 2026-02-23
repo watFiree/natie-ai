@@ -1,7 +1,7 @@
-"use client"
+'use client';
 
-import Link from "next/link"
-import { IconCirclePlus, type Icon } from "@tabler/icons-react"
+import Link from 'next/link';
+import { IconCirclePlus, type Icon } from '@tabler/icons-react';
 
 import {
   SidebarGroup,
@@ -9,16 +9,16 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar';
 
 export function NavChatsList({
   items,
 }: {
   items: {
-    title: string
-    url: string
-    icon?: Icon
-  }[]
+    title: string;
+    url: string;
+    icon?: Icon;
+  }[];
 }) {
   return (
     <SidebarGroup>
@@ -26,7 +26,11 @@ export function NavChatsList({
         <SidebarMenu>
           {items.map((item) => (
             <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild tooltip={`Chat with ${item.title}`} className="h-10 [&_svg]:size-5">
+              <SidebarMenuButton
+                asChild
+                tooltip={`Chat with ${item.title}`}
+                className="h-10 [&_svg]:size-5"
+              >
                 <Link href={item.url}>
                   {item.icon && <item.icon />}
                   <span className="font-medium">Chat with {item.title}</span>
@@ -35,7 +39,10 @@ export function NavChatsList({
             </SidebarMenuItem>
           ))}
           <SidebarMenuItem>
-            <SidebarMenuButton asChild className="text-sidebar-foreground/70 h-10 [&_svg]:size-5">
+            <SidebarMenuButton
+              asChild
+              className="text-sidebar-foreground/70 h-10 [&_svg]:size-5"
+            >
               <Link href="/app/integrations">
                 <IconCirclePlus className="text-sidebar-foreground/70" />
                 <span className="font-medium">Add integration</span>
@@ -45,5 +52,5 @@ export function NavChatsList({
         </SidebarMenu>
       </SidebarGroupContent>
     </SidebarGroup>
-  )
+  );
 }

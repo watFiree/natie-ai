@@ -1,12 +1,7 @@
-"use client"
+'use client';
 
-import Link from "next/link"
-import {
-  IconCirclePlus,
-
-  type Icon,
-} from "@tabler/icons-react"
-
+import Link from 'next/link';
+import { IconCirclePlus, type Icon } from '@tabler/icons-react';
 
 import {
   SidebarGroup,
@@ -14,20 +9,17 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar';
 
 export function NavGateways({
   items,
 }: {
   items: {
-    name: string
-    url: string
-    icon: Icon
-  }[]
+    name: string;
+    url: string;
+    icon: Icon;
+  }[];
 }) {
-  const { isMobile } = useSidebar()
-
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
       <SidebarGroupLabel>Gateways</SidebarGroupLabel>
@@ -43,7 +35,10 @@ export function NavGateways({
           </SidebarMenuItem>
         ))}
         <SidebarMenuItem>
-          <SidebarMenuButton asChild className="text-sidebar-foreground/70 h-10 [&_svg]:size-5">
+          <SidebarMenuButton
+            asChild
+            className="text-sidebar-foreground/70 h-10 [&_svg]:size-5"
+          >
             <Link href="/app/gateways">
               <IconCirclePlus className="text-sidebar-foreground/70" />
               <span className="font-medium">Add gateway</span>
@@ -52,5 +47,5 @@ export function NavGateways({
         </SidebarMenuItem>
       </SidebarMenu>
     </SidebarGroup>
-  )
+  );
 }

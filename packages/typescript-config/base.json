@@ -11,8 +11,9 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "noUnusedLocals": false,
-    "noUnusedParameters": false,
+    "noUnusedParameters": true,
     "preserveWatchOutput": true,
+    "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
     "strict": true
   },

@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
 interface FeatureCardProps {
   icon: React.ElementType;
@@ -19,7 +19,7 @@ export function FeatureCard({
     <div className="group relative p-6 rounded-2xl border border-border bg-card/50 backdrop-blur-sm hover:bg-card transition-all duration-300 hover:scale-[1.02]">
       <div
         className={cn(
-          "w-12 h-12 rounded-xl flex items-center justify-center mb-4",
+          'w-12 h-12 rounded-xl flex items-center justify-center mb-4',
           gradient
         )}
       >

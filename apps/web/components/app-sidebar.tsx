@@ -1,7 +1,7 @@
-"use client"
+'use client';
 
-import Image from "next/image"
-import * as React from "react"
+import Image from 'next/image';
+import * as React from 'react';
 import {
   IconBrandTelegram,
   IconBrandX,
@@ -10,70 +10,69 @@ import {
   IconRobot,
   IconSearch,
   IconSettings,
-} from "@tabler/icons-react"
+} from '@tabler/icons-react';
 
-import { NavChatsList } from "@/components/nav-chats-list"
-import { NavGateways } from "@/components/nav-gateways"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
+import { NavChatsList } from '@/components/nav-chats-list';
+import { NavGateways } from '@/components/nav-gateways';
+import { NavSecondary } from '@/components/nav-secondary';
+import { NavUser } from '@/components/nav-user';
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar';
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: 'shadcn',
+    email: 'm@example.com',
+    avatar: '/avatars/shadcn.jpg',
   },
   navMain: [
     {
-      title: "Natie",
-      url: "/app/natie",
+      title: 'Natie',
+      url: '/app/natie',
       icon: IconRobot,
     },
     {
-      title: "Email",
-      url: "/app/email",
+      title: 'Email',
+      url: '/app/email',
       icon: IconMail,
     },
     {
-      title: "X",
-      url: "/app/x",
+      title: 'X',
+      url: '/app/x',
       icon: IconBrandX,
-    }
+    },
   ],
   navSecondary: [
     {
-      title: "Settings",
-      url: "#",
+      title: 'Settings',
+      url: '#',
       icon: IconSettings,
     },
     {
-      title: "Get Help",
-      url: "#",
+      title: 'Get Help',
+      url: '#',
       icon: IconHelp,
     },
     {
-      title: "Search",
-      url: "#",
+      title: 'Search',
+      url: '#',
       icon: IconSearch,
     },
   ],
   gateways: [
     {
-      name: "Telegram",
-      url: "/app/telegram",
+      name: 'Telegram',
+      url: '/app/telegram',
       icon: IconBrandTelegram,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
@@ -83,7 +82,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem>
             <div className="flex h-12 items-center gap-3 px-2">
               <div className="w-10 h-10 overflow-hidden rounded-md">
-                <Image src="/logo.png" alt="Natie AI" width={40} height={40} className="object-cover scale-150" />
+                <Image
+                  src="/logo.png"
+                  alt="Natie AI"
+                  width={40}
+                  height={40}
+                  className="object-cover scale-150"
+                />
               </div>
               <span className="text-lg font-semibold">Natie AI</span>
             </div>
@@ -99,5 +104,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }
