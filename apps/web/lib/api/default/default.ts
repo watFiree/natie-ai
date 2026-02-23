@@ -21,20 +21,31 @@ import type {
   GetGmailAccounts200Item,
   GetGmailAccounts401,
   GetGmailAccounts500,
+  GetMessages200,
+  GetMessages400,
+  GetMessages401,
+  GetMessages500,
+  GetMessagesParams,
   GetOauthGoogleCallback401,
   GetOauthGoogleCallbackParams,
   GetTelegram200,
   GetTelegram401,
   GetTelegram404,
   GetTelegram500,
-  PostEmailChatBody,
-  PostNatieChatBody,
+  PostChat200,
+  PostChat400,
+  PostChat401,
+  PostChat429,
+  PostChatBody,
+  PostChatStream400,
+  PostChatStream401,
+  PostChatStream429,
+  PostChatStreamBody,
   PostTelegram200,
   PostTelegram401,
   PostTelegram500,
   PostTelegramBody,
-  PostXAccountBody,
-  PostXChatBody
+  PostXAccountBody
 } from '.././models';
 
 import { customInstance } from '../../custom-client';
@@ -355,6 +366,162 @@ export const deleteGmailAccounts = async (params: DeleteGmailAccountsParams, opt
 );}
 
 
+export type getMessagesResponse200 = {
+  data: GetMessages200
+  status: 200
+}
+
+export type getMessagesResponse400 = {
+  data: GetMessages400
+  status: 400
+}
+
+export type getMessagesResponse401 = {
+  data: GetMessages401
+  status: 401
+}
+
+export type getMessagesResponse500 = {
+  data: GetMessages500
+  status: 500
+}
+    
+export type getMessagesResponseSuccess = (getMessagesResponse200) & {
+  headers: Headers;
+};
+export type getMessagesResponseError = (getMessagesResponse400 | getMessagesResponse401 | getMessagesResponse500) & {
+  headers: Headers;
+};
+
+export type getMessagesResponse = (getMessagesResponseSuccess | getMessagesResponseError)
+
+export const getGetMessagesUrl = (params: GetMessagesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/messages?${stringifiedParams}` : `/messages`
+}
+
+export const getMessages = async (params: GetMessagesParams, options?: RequestInit): Promise<getMessagesResponse> => {
+  
+  return customInstance<getMessagesResponse>(getGetMessagesUrl(params),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+export type postChatResponse200 = {
+  data: PostChat200
+  status: 200
+}
+
+export type postChatResponse400 = {
+  data: PostChat400
+  status: 400
+}
+
+export type postChatResponse401 = {
+  data: PostChat401
+  status: 401
+}
+
+export type postChatResponse429 = {
+  data: PostChat429
+  status: 429
+}
+    
+export type postChatResponseSuccess = (postChatResponse200) & {
+  headers: Headers;
+};
+export type postChatResponseError = (postChatResponse400 | postChatResponse401 | postChatResponse429) & {
+  headers: Headers;
+};
+
+export type postChatResponse = (postChatResponseSuccess | postChatResponseError)
+
+export const getPostChatUrl = () => {
+
+
+  
+
+  return `/chat`
+}
+
+export const postChat = async (postChatBody: PostChatBody, options?: RequestInit): Promise<postChatResponse> => {
+  
+  return customInstance<postChatResponse>(getPostChatUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      postChatBody,)
+  }
+);}
+
+
+export type postChatStreamResponse200 = {
+  data: unknown
+  status: 200
+}
+
+export type postChatStreamResponse400 = {
+  data: PostChatStream400
+  status: 400
+}
+
+export type postChatStreamResponse401 = {
+  data: PostChatStream401
+  status: 401
+}
+
+export type postChatStreamResponse429 = {
+  data: PostChatStream429
+  status: 429
+}
+    
+export type postChatStreamResponseSuccess = (postChatStreamResponse200) & {
+  headers: Headers;
+};
+export type postChatStreamResponseError = (postChatStreamResponse400 | postChatStreamResponse401 | postChatStreamResponse429) & {
+  headers: Headers;
+};
+
+export type postChatStreamResponse = (postChatStreamResponseSuccess | postChatStreamResponseError)
+
+export const getPostChatStreamUrl = () => {
+
+
+  
+
+  return `/chat/stream`
+}
+
+export const postChatStream = async (postChatStreamBody: PostChatStreamBody, options?: RequestInit): Promise<postChatStreamResponse> => {
+  
+  return customInstance<postChatStreamResponse>(getPostChatStreamUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      postChatStreamBody,)
+  }
+);}
+
+
 export type getXAccountResponse200 = {
   data: void
   status: 200
@@ -448,105 +615,6 @@ export const deleteXAccount = async ( options?: RequestInit): Promise<deleteXAcc
     method: 'DELETE'
     
     
-  }
-);}
-
-
-export type postEmailChatResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type postEmailChatResponseSuccess = (postEmailChatResponse200) & {
-  headers: Headers;
-};
-;
-
-export type postEmailChatResponse = (postEmailChatResponseSuccess)
-
-export const getPostEmailChatUrl = () => {
-
-
-  
-
-  return `/email/chat`
-}
-
-export const postEmailChat = async (postEmailChatBody: PostEmailChatBody, options?: RequestInit): Promise<postEmailChatResponse> => {
-  
-  return customInstance<postEmailChatResponse>(getPostEmailChatUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      postEmailChatBody,)
-  }
-);}
-
-
-export type postXChatResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type postXChatResponseSuccess = (postXChatResponse200) & {
-  headers: Headers;
-};
-;
-
-export type postXChatResponse = (postXChatResponseSuccess)
-
-export const getPostXChatUrl = () => {
-
-
-  
-
-  return `/x/chat`
-}
-
-export const postXChat = async (postXChatBody: PostXChatBody, options?: RequestInit): Promise<postXChatResponse> => {
-  
-  return customInstance<postXChatResponse>(getPostXChatUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      postXChatBody,)
-  }
-);}
-
-
-export type postNatieChatResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type postNatieChatResponseSuccess = (postNatieChatResponse200) & {
-  headers: Headers;
-};
-;
-
-export type postNatieChatResponse = (postNatieChatResponseSuccess)
-
-export const getPostNatieChatUrl = () => {
-
-
-  
-
-  return `/natie/chat`
-}
-
-export const postNatieChat = async (postNatieChatBody: PostNatieChatBody, options?: RequestInit): Promise<postNatieChatResponse> => {
-  
-  return customInstance<postNatieChatResponse>(getPostNatieChatUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      postNatieChatBody,)
   }
 );}
 

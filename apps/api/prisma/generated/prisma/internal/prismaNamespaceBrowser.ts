@@ -164,14 +164,13 @@ export const MessageScalarFieldEnum = {
   conversationId: 'conversationId',
   type: 'type',
   content: 'content',
-  name: 'name',
-  additionalKwargs: 'additionalKwargs',
   responseMetadata: 'responseMetadata',
+  name: 'name',
   toolCallId: 'toolCallId',
-  toolName: 'toolName',
+  toolCalls: 'toolCalls',
+  invalidToolCalls: 'invalidToolCalls',
   channel: 'channel',
-  createdAt: 'createdAt',
-  seq: 'seq'
+  createdAt: 'createdAt'
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
@@ -194,13 +193,6 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
-
-
-export const JsonNullValueInput = {
-  JsonNull: JsonNull
-} as const
-
-export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
 
 
 export const NullableJsonNullValueInput = {

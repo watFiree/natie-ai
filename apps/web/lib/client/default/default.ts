@@ -33,20 +33,31 @@ import type {
   GetGmailAccounts200Item,
   GetGmailAccounts401,
   GetGmailAccounts500,
+  GetMessages200,
+  GetMessages400,
+  GetMessages401,
+  GetMessages500,
+  GetMessagesParams,
   GetOauthGoogleCallback401,
   GetOauthGoogleCallbackParams,
   GetTelegram200,
   GetTelegram401,
   GetTelegram404,
   GetTelegram500,
-  PostEmailChatBody,
-  PostNatieChatBody,
+  PostChat200,
+  PostChat400,
+  PostChat401,
+  PostChat429,
+  PostChatBody,
+  PostChatStream400,
+  PostChatStream401,
+  PostChatStream429,
+  PostChatStreamBody,
   PostTelegram200,
   PostTelegram401,
   PostTelegram500,
   PostTelegramBody,
-  PostXAccountBody,
-  PostXChatBody
+  PostXAccountBody
 } from '../../api/models';
 
 import { customInstance } from '../../custom-client';
@@ -554,6 +565,238 @@ export const useDeleteGmailAccounts = <TError = DeleteGmailAccounts401 | DeleteG
     ...query
   }
 }
+export type getMessagesResponse200 = {
+  data: GetMessages200
+  status: 200
+}
+
+export type getMessagesResponse400 = {
+  data: GetMessages400
+  status: 400
+}
+
+export type getMessagesResponse401 = {
+  data: GetMessages401
+  status: 401
+}
+
+export type getMessagesResponse500 = {
+  data: GetMessages500
+  status: 500
+}
+    
+export type getMessagesResponseSuccess = (getMessagesResponse200) & {
+  headers: Headers;
+};
+export type getMessagesResponseError = (getMessagesResponse400 | getMessagesResponse401 | getMessagesResponse500) & {
+  headers: Headers;
+};
+
+export type getMessagesResponse = (getMessagesResponseSuccess | getMessagesResponseError)
+
+export const getGetMessagesUrl = (params: GetMessagesParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/messages?${stringifiedParams}` : `/messages`
+}
+
+export const getMessages = async (params: GetMessagesParams, options?: RequestInit): Promise<getMessagesResponse> => {
+  
+  return customInstance<getMessagesResponse>(getGetMessagesUrl(params),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+
+export const getGetMessagesKey = (params: GetMessagesParams,) => [`/messages`, ...(params ? [params]: [])] as const;
+
+export type GetMessagesQueryResult = NonNullable<Awaited<ReturnType<typeof getMessages>>>
+
+export const useGetMessages = <TError = GetMessages400 | GetMessages401 | GetMessages500>(
+  params: GetMessagesParams, options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getMessages>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
+) => {
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetMessagesKey(params) : null);
+  const swrFn = () => getMessages(params, requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
+export type postChatResponse200 = {
+  data: PostChat200
+  status: 200
+}
+
+export type postChatResponse400 = {
+  data: PostChat400
+  status: 400
+}
+
+export type postChatResponse401 = {
+  data: PostChat401
+  status: 401
+}
+
+export type postChatResponse429 = {
+  data: PostChat429
+  status: 429
+}
+    
+export type postChatResponseSuccess = (postChatResponse200) & {
+  headers: Headers;
+};
+export type postChatResponseError = (postChatResponse400 | postChatResponse401 | postChatResponse429) & {
+  headers: Headers;
+};
+
+export type postChatResponse = (postChatResponseSuccess | postChatResponseError)
+
+export const getPostChatUrl = () => {
+
+
+  
+
+  return `/chat`
+}
+
+export const postChat = async (postChatBody: PostChatBody, options?: RequestInit): Promise<postChatResponse> => {
+  
+  return customInstance<postChatResponse>(getPostChatUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      postChatBody,)
+  }
+);}
+
+
+
+
+export const getPostChatMutationFetcher = ( options?: SecondParameter<typeof customInstance>) => {
+  return (_: Key, { arg }: { arg: PostChatBody }) => {
+    return postChat(arg, options);
+  }
+}
+export const getPostChatMutationKey = () => [`/chat`] as const;
+
+export type PostChatMutationResult = NonNullable<Awaited<ReturnType<typeof postChat>>>
+
+export const usePostChat = <TError = PostChat400 | PostChat401 | PostChat429>(
+   options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof postChat>>, TError, Key, PostChatBody, Awaited<ReturnType<typeof postChat>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
+) => {
+
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getPostChatMutationKey();
+  const swrFn = getPostChatMutationFetcher(requestOptions);
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
+export type postChatStreamResponse200 = {
+  data: unknown
+  status: 200
+}
+
+export type postChatStreamResponse400 = {
+  data: PostChatStream400
+  status: 400
+}
+
+export type postChatStreamResponse401 = {
+  data: PostChatStream401
+  status: 401
+}
+
+export type postChatStreamResponse429 = {
+  data: PostChatStream429
+  status: 429
+}
+    
+export type postChatStreamResponseSuccess = (postChatStreamResponse200) & {
+  headers: Headers;
+};
+export type postChatStreamResponseError = (postChatStreamResponse400 | postChatStreamResponse401 | postChatStreamResponse429) & {
+  headers: Headers;
+};
+
+export type postChatStreamResponse = (postChatStreamResponseSuccess | postChatStreamResponseError)
+
+export const getPostChatStreamUrl = () => {
+
+
+  
+
+  return `/chat/stream`
+}
+
+export const postChatStream = async (postChatStreamBody: PostChatStreamBody, options?: RequestInit): Promise<postChatStreamResponse> => {
+  
+  return customInstance<postChatStreamResponse>(getPostChatStreamUrl(),
+  {      
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      postChatStreamBody,)
+  }
+);}
+
+
+
+
+export const getPostChatStreamMutationFetcher = ( options?: SecondParameter<typeof customInstance>) => {
+  return (_: Key, { arg }: { arg: PostChatStreamBody }) => {
+    return postChatStream(arg, options);
+  }
+}
+export const getPostChatStreamMutationKey = () => [`/chat/stream`] as const;
+
+export type PostChatStreamMutationResult = NonNullable<Awaited<ReturnType<typeof postChatStream>>>
+
+export const usePostChatStream = <TError = PostChatStream400 | PostChatStream401 | PostChatStream429>(
+   options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof postChatStream>>, TError, Key, PostChatStreamBody, Awaited<ReturnType<typeof postChatStream>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
+) => {
+
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getPostChatStreamMutationKey();
+  const swrFn = getPostChatStreamMutationFetcher(requestOptions);
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
 export type getXAccountResponse200 = {
   data: void
   status: 200
@@ -719,186 +962,6 @@ export const useDeleteXAccount = <TError = unknown>(
 
   const swrKey = swrOptions?.swrKey ?? getDeleteXAccountMutationKey();
   const swrFn = getDeleteXAccountMutationFetcher(requestOptions);
-
-  const query = useSWRMutation(swrKey, swrFn, swrOptions)
-
-  return {
-    swrKey,
-    ...query
-  }
-}
-export type postEmailChatResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type postEmailChatResponseSuccess = (postEmailChatResponse200) & {
-  headers: Headers;
-};
-;
-
-export type postEmailChatResponse = (postEmailChatResponseSuccess)
-
-export const getPostEmailChatUrl = () => {
-
-
-  
-
-  return `/email/chat`
-}
-
-export const postEmailChat = async (postEmailChatBody: PostEmailChatBody, options?: RequestInit): Promise<postEmailChatResponse> => {
-  
-  return customInstance<postEmailChatResponse>(getPostEmailChatUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      postEmailChatBody,)
-  }
-);}
-
-
-
-
-export const getPostEmailChatMutationFetcher = ( options?: SecondParameter<typeof customInstance>) => {
-  return (_: Key, { arg }: { arg: PostEmailChatBody }) => {
-    return postEmailChat(arg, options);
-  }
-}
-export const getPostEmailChatMutationKey = () => [`/email/chat`] as const;
-
-export type PostEmailChatMutationResult = NonNullable<Awaited<ReturnType<typeof postEmailChat>>>
-
-export const usePostEmailChat = <TError = unknown>(
-   options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof postEmailChat>>, TError, Key, PostEmailChatBody, Awaited<ReturnType<typeof postEmailChat>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
-) => {
-
-  const {swr: swrOptions, request: requestOptions} = options ?? {}
-
-  const swrKey = swrOptions?.swrKey ?? getPostEmailChatMutationKey();
-  const swrFn = getPostEmailChatMutationFetcher(requestOptions);
-
-  const query = useSWRMutation(swrKey, swrFn, swrOptions)
-
-  return {
-    swrKey,
-    ...query
-  }
-}
-export type postXChatResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type postXChatResponseSuccess = (postXChatResponse200) & {
-  headers: Headers;
-};
-;
-
-export type postXChatResponse = (postXChatResponseSuccess)
-
-export const getPostXChatUrl = () => {
-
-
-  
-
-  return `/x/chat`
-}
-
-export const postXChat = async (postXChatBody: PostXChatBody, options?: RequestInit): Promise<postXChatResponse> => {
-  
-  return customInstance<postXChatResponse>(getPostXChatUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      postXChatBody,)
-  }
-);}
-
-
-
-
-export const getPostXChatMutationFetcher = ( options?: SecondParameter<typeof customInstance>) => {
-  return (_: Key, { arg }: { arg: PostXChatBody }) => {
-    return postXChat(arg, options);
-  }
-}
-export const getPostXChatMutationKey = () => [`/x/chat`] as const;
-
-export type PostXChatMutationResult = NonNullable<Awaited<ReturnType<typeof postXChat>>>
-
-export const usePostXChat = <TError = unknown>(
-   options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof postXChat>>, TError, Key, PostXChatBody, Awaited<ReturnType<typeof postXChat>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
-) => {
-
-  const {swr: swrOptions, request: requestOptions} = options ?? {}
-
-  const swrKey = swrOptions?.swrKey ?? getPostXChatMutationKey();
-  const swrFn = getPostXChatMutationFetcher(requestOptions);
-
-  const query = useSWRMutation(swrKey, swrFn, swrOptions)
-
-  return {
-    swrKey,
-    ...query
-  }
-}
-export type postNatieChatResponse200 = {
-  data: void
-  status: 200
-}
-    
-export type postNatieChatResponseSuccess = (postNatieChatResponse200) & {
-  headers: Headers;
-};
-;
-
-export type postNatieChatResponse = (postNatieChatResponseSuccess)
-
-export const getPostNatieChatUrl = () => {
-
-
-  
-
-  return `/natie/chat`
-}
-
-export const postNatieChat = async (postNatieChatBody: PostNatieChatBody, options?: RequestInit): Promise<postNatieChatResponse> => {
-  
-  return customInstance<postNatieChatResponse>(getPostNatieChatUrl(),
-  {      
-    ...options,
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', ...options?.headers },
-    body: JSON.stringify(
-      postNatieChatBody,)
-  }
-);}
-
-
-
-
-export const getPostNatieChatMutationFetcher = ( options?: SecondParameter<typeof customInstance>) => {
-  return (_: Key, { arg }: { arg: PostNatieChatBody }) => {
-    return postNatieChat(arg, options);
-  }
-}
-export const getPostNatieChatMutationKey = () => [`/natie/chat`] as const;
-
-export type PostNatieChatMutationResult = NonNullable<Awaited<ReturnType<typeof postNatieChat>>>
-
-export const usePostNatieChat = <TError = unknown>(
-   options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof postNatieChat>>, TError, Key, PostNatieChatBody, Awaited<ReturnType<typeof postNatieChat>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
-) => {
-
-  const {swr: swrOptions, request: requestOptions} = options ?? {}
-
-  const swrKey = swrOptions?.swrKey ?? getPostNatieChatMutationKey();
-  const swrFn = getPostNatieChatMutationFetcher(requestOptions);
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 

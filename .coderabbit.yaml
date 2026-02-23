@@ -1,0 +1,6 @@
+reviews:
+  path_filters:
+    - '!apps/api/prisma/generated/**'
+    - '!apps/api/prisma/migrations/**'
+    - '!apps/web/lib/api/**'
+    - '!apps/web/lib/client/**'
