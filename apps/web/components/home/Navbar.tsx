@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { Github, ArrowRight } from "lucide-react";
+import Image from 'next/image';
+import { Github, ArrowRight } from 'lucide-react';
 
 export function Navbar() {
   return (

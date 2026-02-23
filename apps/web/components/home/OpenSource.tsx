@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { Github, Code2 } from "lucide-react";
+import { Github, Code2 } from 'lucide-react';
 
 export function OpenSource() {
   return (

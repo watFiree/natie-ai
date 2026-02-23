@@ -3,4 +3,4 @@ export default {
   gmail: 'Gmail',
   telegram: 'Telegram',
   workos: 'WorkOS',
-}
+};

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { Zap, Code2, ArrowRight, Check } from "lucide-react";
-import { AnimatedGradient } from "./AnimatedGradient";
+import { Zap, Code2, ArrowRight, Check } from 'lucide-react';
+import { AnimatedGradient } from './AnimatedGradient';
 
 export function Hero() {
   return (
@@ -23,9 +23,9 @@ export function Hero() {
         </h1>
 
         <p className="max-w-2xl mx-auto text-lg sm:text-xl text-muted-foreground mb-10 leading-relaxed">
-          Natie AI handles your daily routines automatically. Stay on top of your
-          todos, catch up on news, manage emails, and more — all without lifting
-          a finger.
+          Natie AI handles your daily routines automatically. Stay on top of
+          your todos, catch up on news, manage emails, and more — all without
+          lifting a finger.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

@@ -1,18 +1,18 @@
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
 import {
   AuiIf,
   ThreadListItemMorePrimitive,
   ThreadListItemPrimitive,
   ThreadListPrimitive,
-} from "@assistant-ui/react";
+} from '@assistant-ui/react';
 import {
   ArchiveIcon,
   MoreHorizontalIcon,
   PlusIcon,
   TrashIcon,
-} from "lucide-react";
-import type { FC } from "react";
+} from 'lucide-react';
+import type { FC } from 'react';
 
 export const ThreadList: FC = () => {
   return (

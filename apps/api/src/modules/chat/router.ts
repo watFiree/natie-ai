@@ -260,7 +260,11 @@ export const ChatRouter = async (fastify: FastifyInstance) => {
 
           const safeRelease = () => {
             releaseLock().catch((err) => {
-              fastify.log.error(err, 'Failed to release agent lock for user %s', userId);
+              fastify.log.error(
+                err,
+                'Failed to release agent lock for user %s',
+                userId
+              );
             });
           };
 

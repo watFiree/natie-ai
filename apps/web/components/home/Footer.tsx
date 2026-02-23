@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import Image from "next/image";
+import Image from 'next/image';
 
 const links = [
-  { label: "Documentation", href: "https://docs.natie.ai" },
-  { label: "GitHub", href: "https://github.com/watFiree/natie-ai" },
-  { label: "Discord", href: "https://discord.gg/natie-ai" },
-  { label: "Twitter", href: "https://twitter.com/natie-ai" },
+  { label: 'Documentation', href: 'https://docs.natie.ai' },
+  { label: 'GitHub', href: 'https://github.com/watFiree/natie-ai' },
+  { label: 'Discord', href: 'https://discord.gg/natie-ai' },
+  { label: 'Twitter', href: 'https://twitter.com/natie-ai' },
 ];
 
 export function Footer() {

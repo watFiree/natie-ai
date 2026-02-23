@@ -119,7 +119,7 @@ export const historyAdapter = (
       }
 
       return { messages: [] };
-    } catch (error) {
+    } catch {
       return { messages: [] };
     }
   },

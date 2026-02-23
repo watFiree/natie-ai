@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import { CheckCircle, Newspaper, Mail, Calendar, Check } from "lucide-react";
+import { CheckCircle, Newspaper, Mail, Calendar, Check } from 'lucide-react';
 
 const dailyFlow = [
-  { title: "Morning Briefing", desc: "News & todos" },
-  { title: "Email Summary", desc: "What needs reply" },
-  { title: "Day Planning", desc: "Calendar & tasks" },
-  { title: "Evening Wrap", desc: "Progress & tomorrow" },
+  { title: 'Morning Briefing', desc: 'News & todos' },
+  { title: 'Email Summary', desc: 'What needs reply' },
+  { title: 'Day Planning', desc: 'Calendar & tasks' },
+  { title: 'Evening Wrap', desc: 'Progress & tomorrow' },
 ];
 
 const workflowFeatures = [
-  "Connect your favorite apps in one click",
-  "AI curates what matters to you",
-  "Works with Notion, Gmail, Calendar, RSS",
-  "New automations added regularly",
+  'Connect your favorite apps in one click',
+  'AI curates what matters to you',
+  'Works with Notion, Gmail, Calendar, RSS',
+  'New automations added regularly',
 ];
 
 export function WorkflowDemo() {
@@ -109,9 +109,7 @@ export function WorkflowDemo() {
                     </div>
                     <div className="flex-1">
                       <div className="text-sm font-medium">4 meetings</div>
-                      <div className="text-xs text-muted-foreground">
-                        Today
-                      </div>
+                      <div className="text-xs text-muted-foreground">Today</div>
                     </div>
                   </div>
                 </div>

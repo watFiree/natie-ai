@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   CheckCircle,
@@ -7,51 +7,51 @@ import {
   Calendar,
   Lock,
   Zap,
-} from "lucide-react";
-import { FeatureCard } from "./FeatureCard";
+} from 'lucide-react';
+import { FeatureCard } from './FeatureCard';
 
 const features = [
   {
     icon: CheckCircle,
-    title: "Todo Management",
+    title: 'Todo Management',
     description:
-      "Automatically organize and prioritize your tasks. Get smart reminders and daily summaries of what needs your attention.",
-    gradient: "bg-gradient-to-br from-emerald-500 to-teal-500",
+      'Automatically organize and prioritize your tasks. Get smart reminders and daily summaries of what needs your attention.',
+    gradient: 'bg-gradient-to-br from-emerald-500 to-teal-500',
   },
   {
     icon: Newspaper,
-    title: "Daily News Digest",
+    title: 'Daily News Digest',
     description:
-      "Get a personalized news briefing every morning. Curated from your favorite sources, summarized by AI.",
-    gradient: "bg-gradient-to-br from-blue-500 to-cyan-500",
+      'Get a personalized news briefing every morning. Curated from your favorite sources, summarized by AI.',
+    gradient: 'bg-gradient-to-br from-blue-500 to-cyan-500',
   },
   {
     icon: Mail,
-    title: "Email Assistant",
+    title: 'Email Assistant',
     description:
-      "Summarize long threads, draft quick replies, and never miss important messages. Your inbox, tamed.",
-    gradient: "bg-gradient-to-br from-violet-500 to-purple-500",
+      'Summarize long threads, draft quick replies, and never miss important messages. Your inbox, tamed.',
+    gradient: 'bg-gradient-to-br from-violet-500 to-purple-500',
   },
   {
     icon: Calendar,
-    title: "Smart Scheduling",
+    title: 'Smart Scheduling',
     description:
-      "Manage your calendar effortlessly. Get daily briefings, meeting prep, and reminders for what matters.",
-    gradient: "bg-gradient-to-br from-amber-500 to-orange-500",
+      'Manage your calendar effortlessly. Get daily briefings, meeting prep, and reminders for what matters.',
+    gradient: 'bg-gradient-to-br from-amber-500 to-orange-500',
   },
   {
     icon: Zap,
-    title: "Ready-Made Workflows",
+    title: 'Ready-Made Workflows',
     description:
-      "Pre-configured automations that just work. Connect your apps once, let Natie handle the rest.",
-    gradient: "bg-gradient-to-br from-rose-500 to-pink-500",
+      'Pre-configured automations that just work. Connect your apps once, let Natie handle the rest.',
+    gradient: 'bg-gradient-to-br from-rose-500 to-pink-500',
   },
   {
     icon: Lock,
-    title: "Your Data, Yours",
+    title: 'Your Data, Yours',
     description:
-      "Self-host for complete privacy or use our secure cloud. Your personal data never leaves your control.",
-    gradient: "bg-gradient-to-br from-indigo-500 to-blue-500",
+      'Self-host for complete privacy or use our secure cloud. Your personal data never leaves your control.',
+    gradient: 'bg-gradient-to-br from-indigo-500 to-blue-500',
   },
 ];
 
