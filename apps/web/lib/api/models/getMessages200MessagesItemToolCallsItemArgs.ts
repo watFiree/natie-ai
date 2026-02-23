@@ -6,6 +6,4 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type GetMessages200MessagesItemToolCallsItemArgs = {
-  query: string;
-};
+export type GetMessages200MessagesItemToolCallsItemArgs = {[key: string]: unknown};

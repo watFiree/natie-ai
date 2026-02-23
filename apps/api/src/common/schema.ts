@@ -10,9 +10,7 @@ export const ErrorResponseSchema = z.object({
 
 const ToolCallSchema = z.object({
   name: z.string(),
-  args: z.object({
-    query: z.string(),
-  }),
+  args: z.record(z.string(), z.unknown()),
   type: z.string(),
   id: z.string(),
 });

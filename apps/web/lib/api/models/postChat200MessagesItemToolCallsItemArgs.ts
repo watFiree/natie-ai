@@ -6,6 +6,4 @@
  * OpenAPI spec version: 1.0.0
  */
 
-export type PostChat200MessagesItemToolCallsItemArgs = {
-  query: string;
-};
+export type PostChat200MessagesItemToolCallsItemArgs = {[key: string]: unknown};

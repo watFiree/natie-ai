@@ -262,16 +262,16 @@ export const ChatRouter = async (fastify: FastifyInstance) => {
             await fastify.agentLockService.release(userId);
           };
 
+          const safeRelease = () => {
+            releaseLock().catch((err) => {
+              fastify.log.error(err, 'Failed to release agent lock for user %s', userId);
+            });
+          };
+
           const streamResult: Readable = result;
-          streamResult.once('end', () => {
-            void releaseLock();
-          });
-          streamResult.once('close', () => {
-            void releaseLock();
-          });
-          streamResult.once('error', () => {
-            void releaseLock();
-          });
+          streamResult.once('end', safeRelease);
+          streamResult.once('close', safeRelease);
+          streamResult.once('error', safeRelease);
           shouldReleaseLockInFinally = false;
         }
 

@@ -4,6 +4,7 @@ import {
   ChatModelAdapter,
   ThreadAssistantMessagePart,
 } from '@assistant-ui/react';
+import { areToolArgsValid } from './helpers';
 
 const mapAssistantParts = (
   message: PostChat200MessagesItem
@@ -23,7 +24,7 @@ const mapAssistantParts = (
         type: 'tool-call',
         toolCallId: toolCall.id || 'unkown-tool-call-id',
         toolName: toolCall.name || 'unkown-tool-name',
-        args: toolCall.args,
+        args: areToolArgsValid(toolCall.args) ? toolCall.args : {},
         argsText: JSON.stringify(toolCall.args),
       });
     }

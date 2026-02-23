@@ -1,16 +1,17 @@
 import { getMessages } from '@/lib/api/default/default';
 import {
   GetMessagesChatType,
-  GetXMessages200MessagesItem,
+  GetMessages200MessagesItem,
 } from '@/lib/api/models';
 import {
   ThreadAssistantMessagePart,
   ThreadHistoryAdapter,
   ThreadMessage,
 } from '@assistant-ui/react';
+import { areToolArgsValid } from './helpers';
 
 const mapMessageToThreadMessage = (
-  message: GetXMessages200MessagesItem
+  message: GetMessages200MessagesItem
 ): ThreadMessage => {
   if (message.type === 'human') {
     return {
@@ -44,7 +45,7 @@ const mapMessageToThreadMessage = (
         type: 'tool-call',
         toolCallId: toolCall.id || 'unkown-tool-call-id',
         toolName: toolCall.name || 'unkown-tool-name',
-        args: toolCall.args,
+        args: areToolArgsValid(toolCall.args) ? toolCall.args : {},
         argsText: JSON.stringify(toolCall.args),
       });
     }
@@ -62,9 +63,9 @@ const mapMessageToThreadMessage = (
     metadata: {
       custom: {},
       unstable_state: null,
-      unstable_annotations: [null],
-      unstable_data: [null],
-      steps: [{}],
+      unstable_annotations: [],
+      unstable_data: [],
+      steps: [],
       submittedFeedback: undefined,
     },
   };
