@@ -30,8 +30,12 @@ export const TokenUsageRouter = async (fastify: FastifyInstance) => {
         const records = await tokenUsageRepo.getSummaryByUser(req.user.id);
 
         const usage = records.map((record) => {
-          const inputCost = record.modelPricing.inputPricePerToken.mul(record.promptTokens);
-          const outputCost = record.modelPricing.outputPricePerToken.mul(record.completionTokens);
+          const inputCost = record.modelPricing.inputPricePerToken.mul(
+            record.promptTokens
+          );
+          const outputCost = record.modelPricing.outputPricePerToken.mul(
+            record.completionTokens
+          );
           const estimatedCost = inputCost.add(outputCost);
 
           return {
@@ -43,8 +47,10 @@ export const TokenUsageRouter = async (fastify: FastifyInstance) => {
             totalTokens: record.totalTokens,
             cachedTokens: record.cachedTokens,
             reasoningTokens: record.reasoningTokens,
-            inputPricePerToken: record.modelPricing.inputPricePerToken.toString(),
-            outputPricePerToken: record.modelPricing.outputPricePerToken.toString(),
+            inputPricePerToken:
+              record.modelPricing.inputPricePerToken.toString(),
+            outputPricePerToken:
+              record.modelPricing.outputPricePerToken.toString(),
             estimatedCost: estimatedCost.toString(),
           };
         });

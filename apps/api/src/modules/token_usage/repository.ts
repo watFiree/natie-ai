@@ -1,9 +1,16 @@
-import { PrismaClient, TokenUsageRecord, ModelPricing } from '../../../prisma/generated/prisma/client';
+import {
+  PrismaClient,
+  TokenUsageRecord,
+  ModelPricing,
+} from '../../../prisma/generated/prisma/client';
 
 export class ModelPricingRepository {
   constructor(private readonly prisma: PrismaClient) {}
 
-  async findByModelAndProvider(modelName: string, modelProvider: string): Promise<ModelPricing | null> {
+  async findByModelAndProvider(
+    modelName: string,
+    modelProvider: string
+  ): Promise<ModelPricing | null> {
     return this.prisma.modelPricing.findUnique({
       where: { modelName_modelProvider: { modelName, modelProvider } },
     });

@@ -1,6 +1,13 @@
 import { Message } from '../../../prisma/generated/prisma/client';
-import { ModelPricingRepository, TokenUsageRepository, TokenUsageUpsertInput } from './repository';
-import { isResponseMetadataWithUsage, ResponseMetadataWithUsage } from './helpers';
+import {
+  ModelPricingRepository,
+  TokenUsageRepository,
+  TokenUsageUpsertInput,
+} from './repository';
+import {
+  isResponseMetadataWithUsage,
+  ResponseMetadataWithUsage,
+} from './helpers';
 
 interface ParsedTokenUsage {
   modelName: string;
@@ -15,19 +22,24 @@ interface ParsedTokenUsage {
 export class TokenUsageService {
   constructor(
     private readonly modelPricingRepo: ModelPricingRepository,
-    private readonly tokenUsageRepo: TokenUsageRepository,
+    private readonly tokenUsageRepo: TokenUsageRepository
   ) {}
 
-  async recordUsageFromMessages(userId: string, savedMessages: Message[]): Promise<void> {
+  async recordUsageFromMessages(
+    userId: string,
+    savedMessages: Message[],
+    modelName?: string
+  ): Promise<void> {
     const parsed = this.extractTokenUsageFromMessages(savedMessages);
     if (parsed.length === 0) return;
 
     const upserts: TokenUsageUpsertInput[] = [];
 
     for (const usage of parsed) {
+      const resolvedModelName = modelName ?? usage.modelName;
       const pricing = await this.modelPricingRepo.findByModelAndProvider(
-        usage.modelName,
-        usage.modelProvider,
+        resolvedModelName,
+        usage.modelProvider
       );
 
       if (!pricing) continue;
@@ -44,11 +56,17 @@ export class TokenUsageService {
     }
 
     if (upserts.length > 0) {
-      await this.tokenUsageRepo.upsertMany(upserts);
+      try {
+        await this.tokenUsageRepo.upsertMany(upserts);
+      } catch (err) {
+        console.error('Failed to upsert token usage:', err);
+      }
     }
   }
 
-  private extractTokenUsageFromMessages(messages: Message[]): ParsedTokenUsage[] {
+  private extractTokenUsageFromMessages(
+    messages: Message[]
+  ): ParsedTokenUsage[] {
     const results: ParsedTokenUsage[] = [];
 
     for (const message of messages) {
@@ -63,7 +81,8 @@ export class TokenUsageService {
         completionTokens: metadata.tokenUsage.completionTokens,
         totalTokens: metadata.tokenUsage.totalTokens,
         cachedTokens: metadata.usage?.prompt_tokens_details?.cached_tokens ?? 0,
-        reasoningTokens: metadata.usage?.completion_tokens_details?.reasoning_tokens ?? 0,
+        reasoningTokens:
+          metadata.usage?.completion_tokens_details?.reasoning_tokens ?? 0,
       });
     }
 

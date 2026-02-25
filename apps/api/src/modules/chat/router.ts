@@ -12,7 +12,10 @@ import { MessageRepository } from '../messages/repository';
 import { ChatRequestSchema, ChatMessageRequestSchema } from './schema';
 import { AgentRunner } from '../../integrations/common/runner';
 import { TokenUsageService } from '../token_usage/service';
-import { ModelPricingRepository, TokenUsageRepository } from '../token_usage/repository';
+import {
+  ModelPricingRepository,
+  TokenUsageRepository,
+} from '../token_usage/repository';
 import { NatieService } from '../natie/service';
 import { XAgentService } from '../x_account/service';
 import { GmailAgentService } from '../gmail/agentService';
@@ -39,8 +42,15 @@ export const ChatRouter = async (fastify: FastifyInstance) => {
   const gmailService = new GmailOAuthService(gmailAccountRepo);
   const modelPricingRepo = new ModelPricingRepository(fastify.prisma);
   const tokenUsageRepo = new TokenUsageRepository(fastify.prisma);
-  const tokenUsageService = new TokenUsageService(modelPricingRepo, tokenUsageRepo);
-  const agentRunner = new AgentRunner({ prisma: fastify.prisma, messageRepo, tokenUsageService });
+  const tokenUsageService = new TokenUsageService(
+    modelPricingRepo,
+    tokenUsageRepo
+  );
+  const agentRunner = new AgentRunner({
+    prisma: fastify.prisma,
+    messageRepo,
+    tokenUsageService,
+  });
 
   // Agent services
   const natieService = new NatieService(

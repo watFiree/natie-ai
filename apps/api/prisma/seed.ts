@@ -36,7 +36,9 @@ async function main() {
       },
       create: pricing,
     });
-    console.log(`Upserted model pricing: ${result.modelName} (${result.modelProvider})`);
+    console.log(
+      `Upserted model pricing: ${result.modelName} (${result.modelProvider})`
+    );
   }
 
   console.log('Seeding finished.');

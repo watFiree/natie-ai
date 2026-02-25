@@ -56,8 +56,6 @@ export class NatieService {
       subagentTools.push(createXSubagentTool(xDeps));
     }
 
-    console.log(subagentTools);
-
     return createLangChainAgent({
       model,
       systemPrompt: SUPERVISOR_SYSTEM_PROMPT,

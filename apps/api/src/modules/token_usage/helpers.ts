@@ -42,19 +42,33 @@ function isPromptTokensDetails(value: unknown): value is PromptTokensDetails {
   return typeof value.cached_tokens === 'number';
 }
 
-function isCompletionTokensDetails(value: unknown): value is CompletionTokensDetails {
+function isCompletionTokensDetails(
+  value: unknown
+): value is CompletionTokensDetails {
   if (!isRecord(value)) return false;
   return typeof value.reasoning_tokens === 'number';
 }
 
 function isUsageBlock(value: unknown): value is UsageBlock {
   if (!isRecord(value)) return false;
-  if ('prompt_tokens_details' in value && value.prompt_tokens_details != null && !isPromptTokensDetails(value.prompt_tokens_details)) return false;
-  if ('completion_tokens_details' in value && value.completion_tokens_details != null && !isCompletionTokensDetails(value.completion_tokens_details)) return false;
+  if (
+    'prompt_tokens_details' in value &&
+    value.prompt_tokens_details != null &&
+    !isPromptTokensDetails(value.prompt_tokens_details)
+  )
+    return false;
+  if (
+    'completion_tokens_details' in value &&
+    value.completion_tokens_details != null &&
+    !isCompletionTokensDetails(value.completion_tokens_details)
+  )
+    return false;
   return true;
 }
 
-export function isResponseMetadataWithUsage(value: unknown): value is ResponseMetadataWithUsage {
+export function isResponseMetadataWithUsage(
+  value: unknown
+): value is ResponseMetadataWithUsage {
   if (!isRecord(value)) return false;
   return (
     typeof value.model_name === 'string' &&
