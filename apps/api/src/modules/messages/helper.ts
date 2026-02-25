@@ -115,7 +115,7 @@ const buildResponseMetadataFromChunk = (
   const outputTokens =
     typeof usageMeta.output_tokens === 'number' ? usageMeta.output_tokens : 0;
   const totalTokens =
-    typeof usageMeta.total_tokens === 'number' ? usageMeta.total_tokens : 0;
+    typeof usageMeta.total_tokens === 'number' ? usageMeta.total_tokens : inputTokens + outputTokens;
 
   const inputDetails = isRecord(usageMeta.input_token_details)
     ? usageMeta.input_token_details
@@ -131,8 +131,6 @@ const buildResponseMetadataFromChunk = (
   const rawCompletionDetails = isRecord(rawUsage.completion_tokens_details)
     ? rawUsage.completion_tokens_details
     : {};
-
-  if (!modelProvider) return undefined;
 
   return {
     tokenUsage: {
