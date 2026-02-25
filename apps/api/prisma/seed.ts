@@ -12,6 +12,12 @@ const modelPricingData = [
     outputPricePerToken: '0.00001',
   },
   {
+    modelName: 'gpt-5-mini',
+    modelProvider: 'openai',
+    inputPricePerToken: '0.00000025',
+    outputPricePerToken: '0.000002',
+  },
+  {
     modelName: 'gpt-4o-mini',
     modelProvider: 'openai',
     inputPricePerToken: '0.00000015',
