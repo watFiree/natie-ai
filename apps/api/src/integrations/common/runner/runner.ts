@@ -24,31 +24,17 @@ export class AgentRunner {
     currentMessage: string,
     historyLimit: number = 10
   ): Promise<BaseMessage[]> {
-    // Fetch one extra message to handle edge case where last message is a tool response
     const dbMessages = await this.context.messageRepo.findByConversationId(
       conversationId,
-      historyLimit + 1
+      historyLimit
     );
 
     const messages = dbMessages
       .map((msg) => mapInternalMessageToLangChain(msg))
       .reverse();
 
-    // If the last message before current user message is a tool response,
-    // we need to ensure we also have the preceding AI message with tool_calls.
-    // If we fetched extra messages and the last one is still a tool message,
-    // we keep it - otherwise we trim to the requested limit.
-    const lastMsgIndex = messages.length - 1;
-    if (
-      lastMsgIndex >= 0 &&
-      messages[lastMsgIndex] instanceof ToolMessage &&
-      messages.length > historyLimit
-    ) {
-      // Last message is tool response and we have extra messages,
-      // keep all (limit+1) to preserve the AI message with tool_calls
-    } else if (messages.length > historyLimit) {
-      // Trim to requested limit
-      messages.splice(0, messages.length - historyLimit);
+    if (messages.length > 0 && messages[0].type === 'tool') {
+      messages.slice(1);
     }
 
     messages.push(new HumanMessage(currentMessage));

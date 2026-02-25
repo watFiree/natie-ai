@@ -1,37 +1,7 @@
 import { postChat } from '@/lib/api/default/default';
-import { GetMessagesChatType, PostChat200MessagesItem } from '@/lib/api/models';
-import {
-  ChatModelAdapter,
-  ThreadAssistantMessagePart,
-} from '@assistant-ui/react';
-import { areToolArgsValid } from './helpers';
-
-const mapAssistantParts = (
-  message: PostChat200MessagesItem
-): ThreadAssistantMessagePart[] => {
-  const content: ThreadAssistantMessagePart[] = [];
-
-  if (message.content) {
-    content.push({
-      type: 'text',
-      text: message.content,
-    });
-  }
-
-  if (message.toolCalls !== null) {
-    for (const toolCall of message.toolCalls) {
-      content.push({
-        type: 'tool-call',
-        toolCallId: toolCall.id || 'unkown-tool-call-id',
-        toolName: toolCall.name || 'unkown-tool-name',
-        args: areToolArgsValid(toolCall.args) ? toolCall.args : {},
-        argsText: JSON.stringify(toolCall.args),
-      });
-    }
-  }
-
-  return content;
-};
+import { GetMessagesChatType } from '@/lib/api/models';
+import { ChatModelAdapter } from '@assistant-ui/react';
+import { mapToAssistantContent } from './helpers';
 
 export const assistantAdapter = (
   chatType: GetMessagesChatType
@@ -48,9 +18,7 @@ export const assistantAdapter = (
     );
 
     if (result.status === 200) {
-      const assistantContent = result.data.messages
-        .filter((message) => message.type !== 'human')
-        .flatMap(mapAssistantParts);
+      const assistantContent = mapToAssistantContent(result.data.messages);
 
       return {
         content:

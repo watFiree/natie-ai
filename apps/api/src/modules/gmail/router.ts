@@ -174,18 +174,14 @@ export const GmailRouter = async (fastify: FastifyInstance) => {
 
         const tokenToRevoke = account.refreshToken ?? account.accessToken;
         if (tokenToRevoke) {
-          const oauth2Client = createOAuth2Client();
-          const { status, data } =
+          try {
+            const oauth2Client = createOAuth2Client();
             await oauth2Client.revokeToken(tokenToRevoke);
-
-          if (status !== 200) {
-            req.log.error(
-              { status, data, email: req.query.email },
-              'Failed to revoke Google token'
+          } catch (revokeErr) {
+            req.log.warn(
+              { err: revokeErr, email: req.query.email },
+              'Failed to revoke Google token — continuing with account deletion'
             );
-            return reply
-              .code(500)
-              .send({ error: 'Failed to revoke Google token' });
           }
         }
 

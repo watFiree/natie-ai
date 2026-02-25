@@ -96,9 +96,25 @@ export class GmailOAuthService {
         access_token: account.accessToken,
         refresh_token: account.refreshToken,
       });
-      const { credentials } = await oauth2.refreshAccessToken();
-      await this.repository.updateTokens(userId, email, credentials);
-      return credentials.access_token ?? '';
+      try {
+        const { credentials } = await oauth2.refreshAccessToken();
+        await this.repository.updateTokens(userId, email, credentials);
+        return credentials.access_token ?? '';
+      } catch (err) {
+        const isInvalidGrant =
+          typeof err === 'object' &&
+          err !== null &&
+          'message' in err &&
+          typeof err.message === 'string' &&
+          err.message.includes('invalid_grant');
+
+        if (isInvalidGrant) {
+          throw new Error(
+            `Gmail account ${email} needs to be reconnected. The authorization has been revoked or expired. Please remove and re-add this account.`
+          );
+        }
+        throw err;
+      }
     }
     return account.accessToken;
   }
