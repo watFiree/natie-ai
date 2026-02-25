@@ -31,39 +31,22 @@ export function EmailIntegrationShell({
   const hasAccounts = accounts.length > 0;
 
   return (
-    <div className="flex flex-1 flex-col">
-      <div className="@container/main flex flex-1 flex-col gap-2">
-        <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-          <div className="px-4 lg:px-6">
-            <h1 className="mb-2 text-2xl font-bold">Email Integration</h1>
-            <p className="text-muted-foreground">
-              Connect your email accounts and chat with Natie about your
-              messages.
-            </p>
-          </div>
-
-          <div className="space-y-4 px-4 lg:px-6">
-            {hasAccounts ? (
-              <>
-                <div className="flex justify-end">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    onClick={() => setIsAccountsSheetOpen(true)}
-                  >
-                    Accounts
-                  </Button>
-                </div>
-                <EmailChatView />
-              </>
-            ) : (
-              <EmailSetupView
-                onAddAccount={() => setIsIntegrationModalOpen(true)}
-              />
-            )}
-          </div>
-        </div>
+    <div className="flex flex-col h-full max-h-[calc(100dvh-(var(--header-height))-(var(--spacing)*4))] overflow-hidden">
+      <div className="flex shrink-0 w-full items-center px-4 py-2 justify-between">
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => setIsAccountsSheetOpen(true)}
+          className="ml-auto"
+        >
+          Your accounts
+        </Button>
       </div>
+      {hasAccounts ? (
+        <EmailChatView className="flex-1 min-h-0" />
+      ) : (
+        <EmailSetupView onAddAccount={() => setIsIntegrationModalOpen(true)} />
+      )}
 
       <EmailAccountsSheet
         open={hasAccounts && isAccountsSheetOpen}
