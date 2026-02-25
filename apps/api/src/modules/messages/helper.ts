@@ -115,7 +115,9 @@ const buildResponseMetadataFromChunk = (
   const outputTokens =
     typeof usageMeta.output_tokens === 'number' ? usageMeta.output_tokens : 0;
   const totalTokens =
-    typeof usageMeta.total_tokens === 'number' ? usageMeta.total_tokens : inputTokens + outputTokens;
+    typeof usageMeta.total_tokens === 'number'
+      ? usageMeta.total_tokens
+      : inputTokens + outputTokens;
 
   const inputDetails = isRecord(usageMeta.input_token_details)
     ? usageMeta.input_token_details
