@@ -13,7 +13,7 @@ import type { GmailOAuthService } from '../gmail/service';
 import type { GmailAccountRepository } from '../gmail/repository';
 import type { XAccountRepository } from '../../modules/x_account/repository';
 import { model } from './model';
-import { SUPERVISOR_SYSTEM_PROMPT } from './system';
+import { createSystemPrompt } from './system';
 
 export class NatieService {
   constructor(
@@ -58,7 +58,7 @@ export class NatieService {
 
     return createLangChainAgent({
       model,
-      systemPrompt: SUPERVISOR_SYSTEM_PROMPT,
+      systemPrompt: createSystemPrompt(),
       tools: subagentTools,
     });
   }
