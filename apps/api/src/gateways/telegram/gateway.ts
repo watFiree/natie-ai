@@ -7,6 +7,11 @@ import { XAccountRepository } from '../../modules/x_account/repository';
 import { MessageRepository } from '../../modules/messages/repository';
 import { ChatRepository } from '../../modules/chat/repository';
 import { AgentRunner } from '../../integrations/common/runner';
+import { TokenUsageService } from '../../modules/token_usage/service';
+import {
+  ModelPricingRepository,
+  TokenUsageRepository,
+} from '../../modules/token_usage/repository';
 import { NatieService } from '../../modules/natie/service';
 import type { FastifyInstance } from 'fastify';
 import type { AgentLockService } from '../../modules/agent_lock/service';
@@ -37,9 +42,16 @@ export class TelegramGateway {
     this.agentLockService = agentLockService;
     this.chatRepo = new ChatRepository(this.prisma);
     const messageRepo = new MessageRepository(this.prisma);
+    const modelPricingRepo = new ModelPricingRepository(this.prisma);
+    const tokenUsageRepo = new TokenUsageRepository(this.prisma);
+    const tokenUsageService = new TokenUsageService(
+      modelPricingRepo,
+      tokenUsageRepo
+    );
     this.agentRunner = new AgentRunner({
       prisma: this.prisma,
       messageRepo,
+      tokenUsageService,
     });
 
     const gmailAccountRepo = new GmailAccountRepository(this.prisma);
@@ -206,6 +218,7 @@ export class TelegramGateway {
 
       const result = await this.agentRunner.invoke(mainAgent, {
         conversationId,
+        userId,
         message,
         abortController,
         channel: 'telegram',

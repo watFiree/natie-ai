@@ -78,6 +78,12 @@ export class AgentRunner {
     return { messages };
   }
 
+  private getModelName(agent: ReactAgent): string | undefined {
+    return typeof agent.options.model === 'string'
+      ? agent.options.model
+      : agent.options.model.lc_kwargs.model;
+  }
+
   async invoke(
     agent: ReactAgent,
     options: AgentRunCommonOptions
@@ -93,6 +99,17 @@ export class AgentRunner {
     );
     const savedMessages =
       await this.context.messageRepo.createMany(internalMessages);
+
+    try {
+      await this.context.tokenUsageService.recordUsageFromMessages(
+        options.userId,
+        savedMessages,
+        this.getModelName(agent)
+      );
+    } catch (err) {
+      console.error('Failed to record token usage:', err);
+    }
+
     return { messages: savedMessages };
   }
 
@@ -100,7 +117,6 @@ export class AgentRunner {
     agent: ReactAgent,
     options: AgentRunCommonOptions
   ): Promise<Readable> {
-    console.log('stream', options);
     const { messages } = await this.prepareRun(options);
 
     const sseGenerator = async function* (this: AgentRunner) {
@@ -123,6 +139,16 @@ export class AgentRunner {
           );
           const savedMessages =
             await this.context.messageRepo.createMany(internalMessages);
+
+          try {
+            await this.context.tokenUsageService.recordUsageFromMessages(
+              options.userId,
+              savedMessages,
+              this.getModelName(agent)
+            );
+          } catch (err) {
+            console.error('Failed to record token usage:', err);
+          }
         }
       }
 

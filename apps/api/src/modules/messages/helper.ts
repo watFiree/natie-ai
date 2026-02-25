@@ -96,6 +96,102 @@ const toInvalidToolCalls = (
   return value.filter(isInvalidToolCallItem);
 };
 
+const buildResponseMetadataFromChunk = (
+  message: InstanceType<typeof AIMessageChunk>
+): ResponseMetadata | undefined => {
+  const directMeta = toResponseMetadata(message.response_metadata);
+  if (directMeta) return directMeta;
+
+  const meta = message.response_metadata;
+  const usageMeta = message.usage_metadata;
+  if (!isRecord(meta) || !isRecord(usageMeta)) return undefined;
+
+  const modelProvider =
+    typeof meta.model_provider === 'string' ? meta.model_provider : '';
+  const modelName = typeof meta.model_name === 'string' ? meta.model_name : '';
+
+  const inputTokens =
+    typeof usageMeta.input_tokens === 'number' ? usageMeta.input_tokens : 0;
+  const outputTokens =
+    typeof usageMeta.output_tokens === 'number' ? usageMeta.output_tokens : 0;
+  const totalTokens =
+    typeof usageMeta.total_tokens === 'number'
+      ? usageMeta.total_tokens
+      : inputTokens + outputTokens;
+
+  const inputDetails = isRecord(usageMeta.input_token_details)
+    ? usageMeta.input_token_details
+    : {};
+  const outputDetails = isRecord(usageMeta.output_token_details)
+    ? usageMeta.output_token_details
+    : {};
+
+  const rawUsage = isRecord(meta.usage) ? meta.usage : {};
+  const rawPromptDetails = isRecord(rawUsage.prompt_tokens_details)
+    ? rawUsage.prompt_tokens_details
+    : {};
+  const rawCompletionDetails = isRecord(rawUsage.completion_tokens_details)
+    ? rawUsage.completion_tokens_details
+    : {};
+
+  return {
+    tokenUsage: {
+      promptTokens: inputTokens,
+      completionTokens: outputTokens,
+      totalTokens,
+    },
+    finish_reason:
+      typeof meta.finish_reason === 'string' ? meta.finish_reason : '',
+    model_provider: modelProvider,
+    model_name: modelName,
+    usage: {
+      prompt_tokens: inputTokens,
+      completion_tokens: outputTokens,
+      total_tokens: totalTokens,
+      prompt_tokens_details: {
+        cached_tokens:
+          typeof rawPromptDetails.cached_tokens === 'number'
+            ? rawPromptDetails.cached_tokens
+            : typeof inputDetails.cache_read === 'number'
+              ? inputDetails.cache_read
+              : 0,
+        audio_tokens:
+          typeof rawPromptDetails.audio_tokens === 'number'
+            ? rawPromptDetails.audio_tokens
+            : typeof inputDetails.audio === 'number'
+              ? inputDetails.audio
+              : 0,
+      },
+      completion_tokens_details: {
+        reasoning_tokens:
+          typeof rawCompletionDetails.reasoning_tokens === 'number'
+            ? rawCompletionDetails.reasoning_tokens
+            : typeof outputDetails.reasoning === 'number'
+              ? outputDetails.reasoning
+              : 0,
+        audio_tokens:
+          typeof rawCompletionDetails.audio_tokens === 'number'
+            ? rawCompletionDetails.audio_tokens
+            : typeof outputDetails.audio === 'number'
+              ? outputDetails.audio
+              : 0,
+        accepted_prediction_tokens:
+          typeof rawCompletionDetails.accepted_prediction_tokens === 'number'
+            ? rawCompletionDetails.accepted_prediction_tokens
+            : 0,
+        rejected_prediction_tokens:
+          typeof rawCompletionDetails.rejected_prediction_tokens === 'number'
+            ? rawCompletionDetails.rejected_prediction_tokens
+            : 0,
+      },
+    },
+    system_fingerprint:
+      typeof meta.system_fingerprint === 'string'
+        ? meta.system_fingerprint
+        : '',
+  };
+};
+
 export const mapLangChainUpdateChunkToInternal = (
   conversationId: string,
   channel: MessageChannel,
@@ -118,7 +214,7 @@ export const mapLangChainUpdateChunkToInternal = (
               content: String(message.content),
               toolCallId: '',
               name: message.name,
-              responseMetadata: toResponseMetadata(message.response_metadata),
+              responseMetadata: buildResponseMetadataFromChunk(message),
               toolCalls: toToolCalls(message.tool_calls),
               invalidToolCalls: toInvalidToolCalls(message.invalid_tool_calls),
             } satisfies MessageTyped;
