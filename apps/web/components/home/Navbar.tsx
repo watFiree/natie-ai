@@ -30,6 +30,18 @@ export function Navbar() {
               Features
             </a>
             <a
+              href="#demo"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Demo
+            </a>
+            <a
+              href="#integrations"
+              className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Integrations
+            </a>
+            <a
               href="#workflows"
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
