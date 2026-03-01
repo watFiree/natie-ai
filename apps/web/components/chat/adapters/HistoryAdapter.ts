@@ -14,7 +14,7 @@ const mapHumanMessage = (
   message: GetMessages200MessagesItem
 ): ThreadMessage => ({
   role: 'user',
-  content: [{ type: 'text', text: message.content }],
+  content: [{ type: 'text', text: message.content ?? '' }],
   attachments: [],
   createdAt: new Date(message.createdAt),
   id: message.id,

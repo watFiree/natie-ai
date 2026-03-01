@@ -99,7 +99,12 @@ export class GmailOAuthService {
       try {
         const { credentials } = await oauth2.refreshAccessToken();
         await this.repository.updateTokens(userId, email, credentials);
-        return credentials.access_token ?? '';
+        if (!credentials.access_token) {
+          throw new Error(
+            `Gmail account ${email} needs to be reconnected. The authorization has not worked. Please remove and re-add this account.`
+          );
+        }
+        return credentials.access_token;
       } catch (err) {
         const isInvalidGrant =
           typeof err === 'object' &&
