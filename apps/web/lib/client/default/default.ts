@@ -27,7 +27,16 @@ import type {
   DeleteTelegram401,
   DeleteTelegram404,
   DeleteTelegram500,
+  DeleteXAccount200,
+  DeleteXAccount401,
+  DeleteXAccount404,
+  DeleteXAccount500,
+  GetAuthCallback400,
+  GetAuthCallback500,
+  GetAuthCallbackParams,
   GetAuthGoogle401,
+  GetAuthLogin500,
+  GetAuthLogout500,
   GetAuthStatus200,
   GetAuthStatus401,
   GetGmailAccounts200Item,
@@ -44,6 +53,10 @@ import type {
   GetTelegram401,
   GetTelegram404,
   GetTelegram500,
+  GetXAccount200,
+  GetXAccount401,
+  GetXAccount404,
+  GetXAccount500,
   PostChat200,
   PostChat400,
   PostChat401,
@@ -57,6 +70,9 @@ import type {
   PostTelegram401,
   PostTelegram500,
   PostTelegramBody,
+  PostXAccount200,
+  PostXAccount401,
+  PostXAccount500,
   PostXAccountBody
 } from '../../api/models';
 
@@ -68,17 +84,22 @@ import { customInstance } from '../../custom-client';
 
 
   
-export type getAuthLoginResponse200 = {
-  data: void
-  status: 200
+export type getAuthLoginResponse302 = {
+  data: unknown
+  status: 302
+}
+
+export type getAuthLoginResponse500 = {
+  data: GetAuthLogin500
+  status: 500
 }
     
-export type getAuthLoginResponseSuccess = (getAuthLoginResponse200) & {
+;
+export type getAuthLoginResponseError = (getAuthLoginResponse302 | getAuthLoginResponse500) & {
   headers: Headers;
 };
-;
 
-export type getAuthLoginResponse = (getAuthLoginResponseSuccess)
+export type getAuthLoginResponse = (getAuthLoginResponseError)
 
 export const getGetAuthLoginUrl = () => {
 
@@ -106,7 +127,7 @@ export const getGetAuthLoginKey = () => [`/auth/login`] as const;
 
 export type GetAuthLoginQueryResult = NonNullable<Awaited<ReturnType<typeof getAuthLogin>>>
 
-export const useGetAuthLogin = <TError = unknown>(
+export const useGetAuthLogin = <TError = unknown | GetAuthLogin500>(
    options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getAuthLogin>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
 ) => {
   const {swr: swrOptions, request: requestOptions} = options ?? {}
@@ -122,29 +143,46 @@ export const useGetAuthLogin = <TError = unknown>(
     ...query
   }
 }
-export type getAuthCallbackResponse200 = {
-  data: void
-  status: 200
+export type getAuthCallbackResponse302 = {
+  data: unknown
+  status: 302
+}
+
+export type getAuthCallbackResponse400 = {
+  data: GetAuthCallback400
+  status: 400
+}
+
+export type getAuthCallbackResponse500 = {
+  data: GetAuthCallback500
+  status: 500
 }
     
-export type getAuthCallbackResponseSuccess = (getAuthCallbackResponse200) & {
+;
+export type getAuthCallbackResponseError = (getAuthCallbackResponse302 | getAuthCallbackResponse400 | getAuthCallbackResponse500) & {
   headers: Headers;
 };
-;
 
-export type getAuthCallbackResponse = (getAuthCallbackResponseSuccess)
+export type getAuthCallbackResponse = (getAuthCallbackResponseError)
 
-export const getGetAuthCallbackUrl = () => {
+export const getGetAuthCallbackUrl = (params?: GetAuthCallbackParams,) => {
+  const normalizedParams = new URLSearchParams();
 
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
 
-  
+  const stringifiedParams = normalizedParams.toString();
 
-  return `/auth/callback`
+  return stringifiedParams.length > 0 ? `/auth/callback?${stringifiedParams}` : `/auth/callback`
 }
 
-export const getAuthCallback = async ( options?: RequestInit): Promise<getAuthCallbackResponse> => {
+export const getAuthCallback = async (params?: GetAuthCallbackParams, options?: RequestInit): Promise<getAuthCallbackResponse> => {
   
-  return customInstance<getAuthCallbackResponse>(getGetAuthCallbackUrl(),
+  return customInstance<getAuthCallbackResponse>(getGetAuthCallbackUrl(params),
   {      
     ...options,
     method: 'GET'
@@ -156,18 +194,18 @@ export const getAuthCallback = async ( options?: RequestInit): Promise<getAuthCa
 
 
 
-export const getGetAuthCallbackKey = () => [`/auth/callback`] as const;
+export const getGetAuthCallbackKey = (params?: GetAuthCallbackParams,) => [`/auth/callback`, ...(params ? [params]: [])] as const;
 
 export type GetAuthCallbackQueryResult = NonNullable<Awaited<ReturnType<typeof getAuthCallback>>>
 
-export const useGetAuthCallback = <TError = unknown>(
-   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getAuthCallback>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
+export const useGetAuthCallback = <TError = unknown | GetAuthCallback400 | GetAuthCallback500>(
+  params?: GetAuthCallbackParams, options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getAuthCallback>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
 ) => {
   const {swr: swrOptions, request: requestOptions} = options ?? {}
 
   const isEnabled = swrOptions?.enabled !== false
-  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetAuthCallbackKey() : null);
-  const swrFn = () => getAuthCallback(requestOptions)
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetAuthCallbackKey(params) : null);
+  const swrFn = () => getAuthCallback(params, requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
 
@@ -237,17 +275,22 @@ export const useGetAuthStatus = <TError = GetAuthStatus401>(
     ...query
   }
 }
-export type getAuthLogoutResponse200 = {
-  data: void
-  status: 200
+export type getAuthLogoutResponse302 = {
+  data: unknown
+  status: 302
+}
+
+export type getAuthLogoutResponse500 = {
+  data: GetAuthLogout500
+  status: 500
 }
     
-export type getAuthLogoutResponseSuccess = (getAuthLogoutResponse200) & {
+;
+export type getAuthLogoutResponseError = (getAuthLogoutResponse302 | getAuthLogoutResponse500) & {
   headers: Headers;
 };
-;
 
-export type getAuthLogoutResponse = (getAuthLogoutResponseSuccess)
+export type getAuthLogoutResponse = (getAuthLogoutResponseError)
 
 export const getGetAuthLogoutUrl = () => {
 
@@ -275,7 +318,7 @@ export const getGetAuthLogoutKey = () => [`/auth/logout`] as const;
 
 export type GetAuthLogoutQueryResult = NonNullable<Awaited<ReturnType<typeof getAuthLogout>>>
 
-export const useGetAuthLogout = <TError = unknown>(
+export const useGetAuthLogout = <TError = unknown | GetAuthLogout500>(
    options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getAuthLogout>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
 ) => {
   const {swr: swrOptions, request: requestOptions} = options ?? {}
@@ -798,16 +841,33 @@ export const usePostChatStream = <TError = PostChatStream400 | PostChatStream401
   }
 }
 export type getXAccountResponse200 = {
-  data: void
+  data: GetXAccount200
   status: 200
+}
+
+export type getXAccountResponse401 = {
+  data: GetXAccount401
+  status: 401
+}
+
+export type getXAccountResponse404 = {
+  data: GetXAccount404
+  status: 404
+}
+
+export type getXAccountResponse500 = {
+  data: GetXAccount500
+  status: 500
 }
     
 export type getXAccountResponseSuccess = (getXAccountResponse200) & {
   headers: Headers;
 };
-;
+export type getXAccountResponseError = (getXAccountResponse401 | getXAccountResponse404 | getXAccountResponse500) & {
+  headers: Headers;
+};
 
-export type getXAccountResponse = (getXAccountResponseSuccess)
+export type getXAccountResponse = (getXAccountResponseSuccess | getXAccountResponseError)
 
 export const getGetXAccountUrl = () => {
 
@@ -835,7 +895,7 @@ export const getGetXAccountKey = () => [`/x-account/`] as const;
 
 export type GetXAccountQueryResult = NonNullable<Awaited<ReturnType<typeof getXAccount>>>
 
-export const useGetXAccount = <TError = unknown>(
+export const useGetXAccount = <TError = GetXAccount401 | GetXAccount404 | GetXAccount500>(
    options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getXAccount>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
 ) => {
   const {swr: swrOptions, request: requestOptions} = options ?? {}
@@ -852,16 +912,28 @@ export const useGetXAccount = <TError = unknown>(
   }
 }
 export type postXAccountResponse200 = {
-  data: void
+  data: PostXAccount200
   status: 200
+}
+
+export type postXAccountResponse401 = {
+  data: PostXAccount401
+  status: 401
+}
+
+export type postXAccountResponse500 = {
+  data: PostXAccount500
+  status: 500
 }
     
 export type postXAccountResponseSuccess = (postXAccountResponse200) & {
   headers: Headers;
 };
-;
+export type postXAccountResponseError = (postXAccountResponse401 | postXAccountResponse500) & {
+  headers: Headers;
+};
 
-export type postXAccountResponse = (postXAccountResponseSuccess)
+export type postXAccountResponse = (postXAccountResponseSuccess | postXAccountResponseError)
 
 export const getPostXAccountUrl = () => {
 
@@ -895,7 +967,7 @@ export const getPostXAccountMutationKey = () => [`/x-account/`] as const;
 
 export type PostXAccountMutationResult = NonNullable<Awaited<ReturnType<typeof postXAccount>>>
 
-export const usePostXAccount = <TError = unknown>(
+export const usePostXAccount = <TError = PostXAccount401 | PostXAccount500>(
    options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof postXAccount>>, TError, Key, PostXAccountBody, Awaited<ReturnType<typeof postXAccount>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
 ) => {
 
@@ -912,16 +984,33 @@ export const usePostXAccount = <TError = unknown>(
   }
 }
 export type deleteXAccountResponse200 = {
-  data: void
+  data: DeleteXAccount200
   status: 200
+}
+
+export type deleteXAccountResponse401 = {
+  data: DeleteXAccount401
+  status: 401
+}
+
+export type deleteXAccountResponse404 = {
+  data: DeleteXAccount404
+  status: 404
+}
+
+export type deleteXAccountResponse500 = {
+  data: DeleteXAccount500
+  status: 500
 }
     
 export type deleteXAccountResponseSuccess = (deleteXAccountResponse200) & {
   headers: Headers;
 };
-;
+export type deleteXAccountResponseError = (deleteXAccountResponse401 | deleteXAccountResponse404 | deleteXAccountResponse500) & {
+  headers: Headers;
+};
 
-export type deleteXAccountResponse = (deleteXAccountResponseSuccess)
+export type deleteXAccountResponse = (deleteXAccountResponseSuccess | deleteXAccountResponseError)
 
 export const getDeleteXAccountUrl = () => {
 
@@ -954,7 +1043,7 @@ export const getDeleteXAccountMutationKey = () => [`/x-account/`] as const;
 
 export type DeleteXAccountMutationResult = NonNullable<Awaited<ReturnType<typeof deleteXAccount>>>
 
-export const useDeleteXAccount = <TError = unknown>(
+export const useDeleteXAccount = <TError = DeleteXAccount401 | DeleteXAccount404 | DeleteXAccount500>(
    options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof deleteXAccount>>, TError, Key, Arguments, Awaited<ReturnType<typeof deleteXAccount>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
 ) => {
 

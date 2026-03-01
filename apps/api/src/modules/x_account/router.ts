@@ -40,8 +40,8 @@ export const XAccountRouter = async (fastify: FastifyInstance) => {
 
         return reply.send({
           id: account.id,
-          createdAt: account.createdAt,
-          updatedAt: account.updatedAt,
+          createdAt: account.createdAt.toISOString(),
+          updatedAt: account.updatedAt.toISOString(),
         });
       } catch (err) {
         req.log.error(err, 'Failed to get X account');
@@ -79,8 +79,8 @@ export const XAccountRouter = async (fastify: FastifyInstance) => {
 
         return reply.send({
           id: account.id,
-          createdAt: account.createdAt,
-          updatedAt: account.updatedAt,
+          createdAt: account.createdAt.toISOString(),
+          updatedAt: account.updatedAt.toISOString(),
         });
       } catch (err) {
         req.log.error(err, 'Failed to save X account');

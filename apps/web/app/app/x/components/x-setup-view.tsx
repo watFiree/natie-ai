@@ -36,12 +36,12 @@ export function XSetupView({
   const [isInstructionsOpen, setIsInstructionsOpen] = useState(false);
 
   return (
-    <div className="grid gap-4 xl:grid-cols-[1.3fr_1fr]">
+    <div className="grid p-4 md:p-6 gap-4 xl:grid-cols-[1.3fr_1fr]">
       <Card className="hidden xl:block">
         <CardHeader>
-          <CardTitle>How to get required variables</CardTitle>
+          <CardTitle>How to connect X</CardTitle>
           <CardDescription>
-            Follow the steps below to extract cookie values from x.com.
+            Follow the steps below to connect your X account to Natie.
           </CardDescription>
         </CardHeader>
         <CardContent>

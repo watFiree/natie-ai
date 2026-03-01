@@ -7,8 +7,8 @@ export const SaveXAccountSchema = z.object({
 
 export const XAccountResponseSchema = z.object({
   id: z.string(),
-  createdAt: z.coerce.date(),
-  updatedAt: z.coerce.date(),
+  createdAt: z.iso.datetime(),
+  updatedAt: z.iso.datetime(),
 });
 
 export const DeleteXAccountResponseSchema = z.object({

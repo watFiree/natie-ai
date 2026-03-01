@@ -1,25 +1,12 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+'use client';
 
-export function EmailChatView() {
+import { ChatRuntimeProvider } from '@/components/chat/chat';
+import { Thread } from '@/components/assistant-ui/thread';
+
+export function EmailChatView({ className }: { className?: string }) {
   return (
-    <Card className="min-h-[420px]">
-      <CardHeader>
-        <CardTitle>Email chat</CardTitle>
-        <CardDescription>
-          Email accounts are connected. Chat UI will be added next.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="text-muted-foreground flex min-h-[280px] items-center justify-center rounded-md border border-dashed text-center text-sm">
-          Empty chat view for email integration.
-        </div>
-      </CardContent>
-    </Card>
+    <ChatRuntimeProvider chatType="email">
+      <Thread className={className} />
+    </ChatRuntimeProvider>
   );
 }
