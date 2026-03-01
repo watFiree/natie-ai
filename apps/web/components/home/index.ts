@@ -5,5 +5,7 @@ export { FeatureCard } from './FeatureCard';
 export { Features } from './Features';
 export { Integrations } from './Integrations';
 export { WorkflowDemo } from './WorkflowDemo';
+export { ChatDemo } from './ChatDemo';
+export { ScrollReveal } from './ScrollReveal';
 export { OpenSource } from './OpenSource';
 export { Footer } from './Footer';

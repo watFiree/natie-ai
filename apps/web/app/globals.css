@@ -5,9 +5,7 @@
 
 body {
   @apply m-0;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
-    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -74,7 +72,7 @@ code {
     0px 2px 3px 0px hsl(0 0% 0% / 0.2), 0px 8px 10px -1px hsl(0 0% 0% / 0.2);
   --shadow-2xl: 0px 2px 3px 0px hsl(0 0% 0% / 0.5);
   --tracking-normal: 0em;
-  --spacing: 0.22rem;
+  --spacing: 0.24rem;
 }
 
 .dark {
@@ -86,12 +84,12 @@ code {
   --popover-foreground: #f0f0f0;
   --primary: #8c5cff;
   --primary-foreground: #ffffff;
-  --secondary: #2a2c33;
+  --secondary: #2a1e3f;
   --secondary-foreground: #f0f0f0;
   --muted: #2a2c33;
   --muted-foreground: #a0a0a0;
-  --accent: #1e293b;
-  --accent-foreground: #79c0ff;
+  --accent: #2a1e3f;
+  --accent-foreground: #c4b5fd;
   --destructive: #f87171;
   --destructive-foreground: #ffffff;
   --border: #33353a;
@@ -186,6 +184,10 @@ code {
   --shadow-lg: var(--shadow-lg);
   --shadow-xl: var(--shadow-xl);
   --shadow-2xl: var(--shadow-2xl);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 @layer base {

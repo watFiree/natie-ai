@@ -67,7 +67,7 @@ const integrations = [
 
 export function Integrations() {
   return (
-    <section className="py-24 relative">
+    <section id="integrations" className="py-24 relative">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border bg-card/50 text-xs text-muted-foreground mb-4">
