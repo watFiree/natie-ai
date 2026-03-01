@@ -48,17 +48,23 @@ export function TelegramSettingsForm({
       if (response.status !== 200) {
         setError('root', {
           type: 'manual',
-          message: 'Could not save Telegram settings. Please try again.',
+          message:
+            response.data.error ||
+            'Could not save Telegram settings. Please try again.',
         });
         return;
       }
 
       setIsConfigured(true);
       reset({ telegramUserId: response.data.telegramUserId });
-    } catch {
+    } catch (error) {
+      console.log(error instanceof Error ? error.message : 'Unknown error');
       setError('root', {
         type: 'manual',
-        message: 'Could not save Telegram settings. Please try again.',
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Could not save Telegram settings. Please try again.',
       });
     }
   });

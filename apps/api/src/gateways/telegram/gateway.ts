@@ -238,19 +238,42 @@ export class TelegramGateway {
     }
   }
 
+  public async sendMessage(
+    telegramUserId: string,
+    text: string
+  ): Promise<boolean> {
+    try {
+      await this.bot.telegram.sendMessage(telegramUserId, text);
+      return true;
+    } catch (error) {
+      console.error('Error sending Telegram message:', error);
+      return false;
+    }
+  }
+
+  public async sendMessageToUser(
+    userId: string,
+    text: string
+  ): Promise<boolean> {
+    const telegramSettings = await this.prisma.telegramSettings.findUnique({
+      where: { userId },
+    });
+
+    if (!telegramSettings) {
+      return false;
+    }
+
+    return this.sendMessage(telegramSettings.telegramUserId, text);
+  }
+
   public start() {
     this.setupListeners();
     this.bot.launch();
     console.log('🤖 Telegram bot started');
+  }
 
-    // Graceful shutdown
-    process.once('SIGINT', () => {
-      this.bot.stop('SIGINT');
-      void this.prisma.$disconnect();
-    });
-    process.once('SIGTERM', () => {
-      this.bot.stop('SIGTERM');
-      void this.prisma.$disconnect();
-    });
+  public stop() {
+    this.bot.stop();
+    console.log('🤖 Telegram bot stopped');
   }
 }
