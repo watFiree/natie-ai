@@ -212,7 +212,7 @@ const features = [
     description:
       'Organize and prioritize tasks automatically. Smart reminders keep you on track.',
     gradient: 'bg-gradient-to-br from-emerald-500 to-teal-500',
-    span: 'default' as const,
+    span: 'default' satisfies 'default' | 'wide' | 'tall',
     demo: TodoDemo,
   },
   {
@@ -221,7 +221,7 @@ const features = [
     description:
       'Personalized news briefing every morning, curated and summarized by AI.',
     gradient: 'bg-gradient-to-br from-blue-500 to-cyan-500',
-    span: 'default' as const,
+    span: 'default' satisfies 'default' | 'wide' | 'tall',
     demo: NewsDemo,
   },
   {
@@ -230,7 +230,7 @@ const features = [
     description:
       'Summarize threads, draft replies, and never miss important messages.',
     gradient: 'bg-gradient-to-br from-violet-500 to-purple-500',
-    span: 'default' as const,
+    span: 'default' satisfies 'default' | 'wide' | 'tall',
     demo: EmailDemo,
   },
   {
@@ -239,7 +239,7 @@ const features = [
     description:
       'Daily briefings, meeting prep, and reminders for what matters.',
     gradient: 'bg-gradient-to-br from-amber-500 to-orange-500',
-    span: 'default' as const,
+    span: 'default' satisfies 'default' | 'wide' | 'tall',
     demo: CalendarDemo,
   },
   {
@@ -248,7 +248,7 @@ const features = [
     description:
       'Pre-configured automations that just work. Connect once, automate forever.',
     gradient: 'bg-gradient-to-br from-rose-500 to-pink-500',
-    span: 'default' as const,
+    span: 'default' satisfies 'default' | 'wide' | 'tall',
     demo: WorkflowMiniDemo,
   },
   {
@@ -257,7 +257,7 @@ const features = [
     description:
       'Self-host for complete privacy or use our secure cloud. Full control, always.',
     gradient: 'bg-gradient-to-br from-indigo-500 to-blue-500',
-    span: 'default' as const,
+    span: 'default' satisfies 'default' | 'wide' | 'tall',
     demo: PrivacyDemo,
   },
 ];
