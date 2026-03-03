@@ -32,12 +32,25 @@ export const customInstance = async <T>(
   const response = await fetch(requestUrl, requestInit);
 
   if (!response.ok) {
-    const errorBody = await response.json();
-    if (typeof errorBody.error === 'string') {
+    let errorBody: unknown;
+    let rawText = '';
+    try {
+      rawText = await response.text();
+      errorBody = JSON.parse(rawText);
+    } catch {
+      errorBody = undefined;
+    }
+    if (
+      typeof errorBody === 'object' &&
+      errorBody !== null &&
+      'error' in errorBody &&
+      typeof errorBody.error === 'string'
+    ) {
       throw new Error(errorBody.error);
     }
+    const bodyString = rawText || JSON.stringify(errorBody);
     throw new Error(
-      `Request failed with status ${response.status}: ${errorBody}`
+      `Request failed with status ${response.status}: ${bodyString}`
     );
   }
 

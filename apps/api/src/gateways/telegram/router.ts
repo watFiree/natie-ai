@@ -60,6 +60,7 @@ export const TelegramSettingsRouter = async (fastify: FastifyInstance) => {
         body: SaveTelegramSettingsSchema,
         response: {
           200: TelegramSettingsResponseSchema,
+          400: ErrorResponseSchema,
           401: ErrorResponseSchema,
           500: ErrorResponseSchema,
         },
@@ -72,6 +73,25 @@ export const TelegramSettingsRouter = async (fastify: FastifyInstance) => {
 
       try {
         const { telegramUserId } = req.body;
+
+        const { telegramGateway } = fastify;
+        if (!telegramGateway) {
+          return reply
+            .code(400)
+            .send({ error: 'Telegram bot is not configured' });
+        }
+
+        const confirmationSent = await telegramGateway.sendMessage(
+          telegramUserId,
+          `Your Telegram account has been connected to ${req.user.email}.`
+        );
+
+        if (!confirmationSent) {
+          return reply.code(400).send({
+            error:
+              'Provided Telegram user ID is not valid. Please try again with a valid user ID.',
+          });
+        }
 
         const settings = await repository.upsert({
           userId: req.user.id,

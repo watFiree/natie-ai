@@ -12,7 +12,7 @@ import { GmailRouter } from './modules/gmail/router';
 import { XAccountRouter } from './modules/x_account/router';
 import { dbPlugin } from './modules/db/plugin';
 import { AuthRouter } from './modules/auth/router';
-import { TelegramGateway } from './gateways/telegram/gateway';
+import telegramPlugin from './gateways/telegram/plugin';
 import { TelegramSettingsRouter } from './gateways/telegram/router';
 import { InMemoryAgentLockService } from './modules/agent_lock/service';
 import { ChatRouter } from './modules/chat/router';
@@ -41,25 +41,15 @@ app.register(GmailRouter);
 app.register(ChatRouter);
 app.register(XAccountRouter, { prefix: '/x-account' });
 app.register(TokenUsageRouter, { prefix: '/token-usage' });
-app.register(TelegramSettingsRouter, { prefix: '/telegram' });
+if (process.env.TELEGRAM_TOKEN) {
+  app.register(telegramPlugin);
+  app.register(TelegramSettingsRouter, { prefix: '/telegram' });
+}
 
-app.listen({ port: 3000, host: process.env.HOST || '0.0.0.0' }, async (err) => {
+app.listen({ port: 3000, host: process.env.HOST || '0.0.0.0' }, (err) => {
   if (err) {
     console.error(err);
     process.exit(1);
   }
-  console.log(`🚀 Server ready at: http://localhost:3000`);
-
-  if (process.env.TELEGRAM_TOKEN) {
-    try {
-      const gateway = new TelegramGateway(app, app.agentLockService);
-      gateway.start();
-    } catch (error) {
-      console.error('Failed to start Telegram gateway:', error);
-    }
-  } else {
-    console.log(
-      '⚠️  TELEGRAM_TOKEN not set, skipping Telegram bot initialization'
-    );
-  }
+  console.log(`Server ready at: http://localhost:3000`);
 });
