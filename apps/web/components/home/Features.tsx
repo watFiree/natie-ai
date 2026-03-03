@@ -260,7 +260,7 @@ const features = [
     span: 'default' satisfies 'default' | 'wide' | 'tall',
     demo: PrivacyDemo,
   },
-];
+] as const;
 
 export function Features() {
   return (
