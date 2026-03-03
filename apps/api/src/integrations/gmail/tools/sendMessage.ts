@@ -8,9 +8,9 @@ export class GmailSendMessageTool extends StructuredTool {
   description = 'Send a Gmail message for selected account';
 
   schema = z.object({
-    accountEmail: z.string().email(),
+    accountEmail: z.email(),
     message: z.string().optional(),
-    to: z.string().email(),
+    to: z.email(),
     subject: z.string(),
     body: z.string(),
   });

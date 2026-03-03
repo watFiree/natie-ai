@@ -8,7 +8,7 @@ export class GmailGetMessageTool extends StructuredTool {
   description = 'Get a Gmail message by ID for selected account';
 
   schema = z.object({
-    accountEmail: z.string().email(),
+    accountEmail: z.email(),
     messageId: z.string(),
   });
 

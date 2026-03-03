@@ -8,9 +8,15 @@ import {
   createXSubagentTool,
   type XSubagentDeps,
 } from '../../integrations/x/agent';
+import {
+  createCalendarSubagentTool,
+  type CalendarSubagentDeps,
+} from '../../integrations/google_calendar/agent';
 import { createClient as createXClient } from '../../integrations/x/clientFactory';
 import type { GmailOAuthService } from '../gmail/service';
 import type { GmailAccountRepository } from '../gmail/repository';
+import type { CalendarOAuthService } from '../google_calendar/service';
+import type { CalendarAccountRepository } from '../google_calendar/repository';
 import type { XAccountRepository } from '../../modules/x_account/repository';
 import { model } from './model';
 import { createSystemPrompt } from './system';
@@ -20,7 +26,9 @@ export class NatieService {
     private prisma: PrismaClient,
     private gmailService: GmailOAuthService,
     private gmailAccountRepo: GmailAccountRepository,
-    private xAccountRepo: XAccountRepository
+    private xAccountRepo: XAccountRepository,
+    private calendarService: CalendarOAuthService,
+    private calendarAccountRepo: CalendarAccountRepository
   ) {}
 
   async createMainAgent(userId: string): Promise<ReactAgent> {
@@ -54,6 +62,20 @@ export class NatieService {
 
       const xDeps: XSubagentDeps = { clientProvider };
       subagentTools.push(createXSubagentTool(xDeps));
+    }
+
+    // Google Calendar subagent (if user has calendar connected)
+    const calendarAccounts =
+      await this.calendarAccountRepo.findByUserId(userId);
+    if (calendarAccounts.length > 0) {
+      const tokenProvider = (email: string) =>
+        this.calendarService.getEnsuredAccessToken(userId, email);
+
+      const calendarDeps: CalendarSubagentDeps = {
+        tokenProvider,
+        calendarAccounts: calendarAccounts.map((a) => a.email),
+      };
+      subagentTools.push(createCalendarSubagentTool(calendarDeps));
     }
 
     return createLangChainAgent({

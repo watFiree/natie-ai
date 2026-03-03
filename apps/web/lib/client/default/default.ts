@@ -23,6 +23,11 @@ import type {
   DeleteGmailAccounts404,
   DeleteGmailAccounts500,
   DeleteGmailAccountsParams,
+  DeleteGoogleCalendarAccounts200,
+  DeleteGoogleCalendarAccounts401,
+  DeleteGoogleCalendarAccounts404,
+  DeleteGoogleCalendarAccounts500,
+  DeleteGoogleCalendarAccountsParams,
   DeleteTelegram200,
   DeleteTelegram401,
   DeleteTelegram404,
@@ -34,7 +39,6 @@ import type {
   GetAuthCallback400,
   GetAuthCallback500,
   GetAuthCallbackParams,
-  GetAuthGoogle401,
   GetAuthLogin500,
   GetAuthLogout500,
   GetAuthStatus200,
@@ -42,13 +46,18 @@ import type {
   GetGmailAccounts200Item,
   GetGmailAccounts401,
   GetGmailAccounts500,
+  GetGoogleCalendarAccounts200Item,
+  GetGoogleCalendarAccounts401,
+  GetGoogleCalendarAccounts500,
   GetMessages200,
   GetMessages400,
   GetMessages401,
   GetMessages500,
   GetMessagesParams,
+  GetOauthGoogleCalendar401,
   GetOauthGoogleCallback401,
   GetOauthGoogleCallbackParams,
+  GetOauthGoogleGmail401,
   GetTelegram200,
   GetTelegram401,
   GetTelegram404,
@@ -67,6 +76,7 @@ import type {
   PostChatStream429,
   PostChatStreamBody,
   PostTelegram200,
+  PostTelegram400,
   PostTelegram401,
   PostTelegram500,
   PostTelegramBody,
@@ -334,34 +344,34 @@ export const useGetAuthLogout = <TError = unknown | GetAuthLogout500>(
     ...query
   }
 }
-export type getAuthGoogleResponse302 = {
+export type getOauthGoogleGmailResponse302 = {
   data: unknown
   status: 302
 }
 
-export type getAuthGoogleResponse401 = {
-  data: GetAuthGoogle401
+export type getOauthGoogleGmailResponse401 = {
+  data: GetOauthGoogleGmail401
   status: 401
 }
     
 ;
-export type getAuthGoogleResponseError = (getAuthGoogleResponse302 | getAuthGoogleResponse401) & {
+export type getOauthGoogleGmailResponseError = (getOauthGoogleGmailResponse302 | getOauthGoogleGmailResponse401) & {
   headers: Headers;
 };
 
-export type getAuthGoogleResponse = (getAuthGoogleResponseError)
+export type getOauthGoogleGmailResponse = (getOauthGoogleGmailResponseError)
 
-export const getGetAuthGoogleUrl = () => {
+export const getGetOauthGoogleGmailUrl = () => {
 
 
   
 
-  return `/auth/google`
+  return `/oauth/google/gmail`
 }
 
-export const getAuthGoogle = async ( options?: RequestInit): Promise<getAuthGoogleResponse> => {
+export const getOauthGoogleGmail = async ( options?: RequestInit): Promise<getOauthGoogleGmailResponse> => {
   
-  return customInstance<getAuthGoogleResponse>(getGetAuthGoogleUrl(),
+  return customInstance<getOauthGoogleGmailResponse>(getGetOauthGoogleGmailUrl(),
   {      
     ...options,
     method: 'GET'
@@ -373,18 +383,77 @@ export const getAuthGoogle = async ( options?: RequestInit): Promise<getAuthGoog
 
 
 
-export const getGetAuthGoogleKey = () => [`/auth/google`] as const;
+export const getGetOauthGoogleGmailKey = () => [`/oauth/google/gmail`] as const;
 
-export type GetAuthGoogleQueryResult = NonNullable<Awaited<ReturnType<typeof getAuthGoogle>>>
+export type GetOauthGoogleGmailQueryResult = NonNullable<Awaited<ReturnType<typeof getOauthGoogleGmail>>>
 
-export const useGetAuthGoogle = <TError = unknown | GetAuthGoogle401>(
-   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getAuthGoogle>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
+export const useGetOauthGoogleGmail = <TError = unknown | GetOauthGoogleGmail401>(
+   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getOauthGoogleGmail>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
 ) => {
   const {swr: swrOptions, request: requestOptions} = options ?? {}
 
   const isEnabled = swrOptions?.enabled !== false
-  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetAuthGoogleKey() : null);
-  const swrFn = () => getAuthGoogle(requestOptions)
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetOauthGoogleGmailKey() : null);
+  const swrFn = () => getOauthGoogleGmail(requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
+export type getOauthGoogleCalendarResponse302 = {
+  data: unknown
+  status: 302
+}
+
+export type getOauthGoogleCalendarResponse401 = {
+  data: GetOauthGoogleCalendar401
+  status: 401
+}
+    
+;
+export type getOauthGoogleCalendarResponseError = (getOauthGoogleCalendarResponse302 | getOauthGoogleCalendarResponse401) & {
+  headers: Headers;
+};
+
+export type getOauthGoogleCalendarResponse = (getOauthGoogleCalendarResponseError)
+
+export const getGetOauthGoogleCalendarUrl = () => {
+
+
+  
+
+  return `/oauth/google/calendar`
+}
+
+export const getOauthGoogleCalendar = async ( options?: RequestInit): Promise<getOauthGoogleCalendarResponse> => {
+  
+  return customInstance<getOauthGoogleCalendarResponse>(getGetOauthGoogleCalendarUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+
+export const getGetOauthGoogleCalendarKey = () => [`/oauth/google/calendar`] as const;
+
+export type GetOauthGoogleCalendarQueryResult = NonNullable<Awaited<ReturnType<typeof getOauthGoogleCalendar>>>
+
+export const useGetOauthGoogleCalendar = <TError = unknown | GetOauthGoogleCalendar401>(
+   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getOauthGoogleCalendar>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
+) => {
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetOauthGoogleCalendarKey() : null);
+  const swrFn = () => getOauthGoogleCalendar(requestOptions)
 
   const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
 
@@ -488,7 +557,7 @@ export const getGetGmailAccountsUrl = () => {
 
   
 
-  return `/gmail-accounts`
+  return `/gmail/accounts`
 }
 
 export const getGmailAccounts = async ( options?: RequestInit): Promise<getGmailAccountsResponse> => {
@@ -505,7 +574,7 @@ export const getGmailAccounts = async ( options?: RequestInit): Promise<getGmail
 
 
 
-export const getGetGmailAccountsKey = () => [`/gmail-accounts`] as const;
+export const getGetGmailAccountsKey = () => [`/gmail/accounts`] as const;
 
 export type GetGmailAccountsQueryResult = NonNullable<Awaited<ReturnType<typeof getGmailAccounts>>>
 
@@ -566,7 +635,7 @@ export const getDeleteGmailAccountsUrl = (params: DeleteGmailAccountsParams,) =>
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/gmail-accounts?${stringifiedParams}` : `/gmail-accounts`
+  return stringifiedParams.length > 0 ? `/gmail/accounts?${stringifiedParams}` : `/gmail/accounts`
 }
 
 export const deleteGmailAccounts = async (params: DeleteGmailAccountsParams, options?: RequestInit): Promise<deleteGmailAccountsResponse> => {
@@ -588,7 +657,7 @@ export const getDeleteGmailAccountsMutationFetcher = (params: DeleteGmailAccount
     return deleteGmailAccounts(params, options);
   }
 }
-export const getDeleteGmailAccountsMutationKey = (params: DeleteGmailAccountsParams,) => [`/gmail-accounts`, ...(params ? [params]: [])] as const;
+export const getDeleteGmailAccountsMutationKey = (params: DeleteGmailAccountsParams,) => [`/gmail/accounts`, ...(params ? [params]: [])] as const;
 
 export type DeleteGmailAccountsMutationResult = NonNullable<Awaited<ReturnType<typeof deleteGmailAccounts>>>
 
@@ -600,6 +669,155 @@ export const useDeleteGmailAccounts = <TError = DeleteGmailAccounts401 | DeleteG
 
   const swrKey = swrOptions?.swrKey ?? getDeleteGmailAccountsMutationKey(params);
   const swrFn = getDeleteGmailAccountsMutationFetcher(params, requestOptions);
+
+  const query = useSWRMutation(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
+export type getGoogleCalendarAccountsResponse200 = {
+  data: GetGoogleCalendarAccounts200Item[]
+  status: 200
+}
+
+export type getGoogleCalendarAccountsResponse401 = {
+  data: GetGoogleCalendarAccounts401
+  status: 401
+}
+
+export type getGoogleCalendarAccountsResponse500 = {
+  data: GetGoogleCalendarAccounts500
+  status: 500
+}
+    
+export type getGoogleCalendarAccountsResponseSuccess = (getGoogleCalendarAccountsResponse200) & {
+  headers: Headers;
+};
+export type getGoogleCalendarAccountsResponseError = (getGoogleCalendarAccountsResponse401 | getGoogleCalendarAccountsResponse500) & {
+  headers: Headers;
+};
+
+export type getGoogleCalendarAccountsResponse = (getGoogleCalendarAccountsResponseSuccess | getGoogleCalendarAccountsResponseError)
+
+export const getGetGoogleCalendarAccountsUrl = () => {
+
+
+  
+
+  return `/google-calendar/accounts`
+}
+
+export const getGoogleCalendarAccounts = async ( options?: RequestInit): Promise<getGoogleCalendarAccountsResponse> => {
+  
+  return customInstance<getGoogleCalendarAccountsResponse>(getGetGoogleCalendarAccountsUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+
+
+export const getGetGoogleCalendarAccountsKey = () => [`/google-calendar/accounts`] as const;
+
+export type GetGoogleCalendarAccountsQueryResult = NonNullable<Awaited<ReturnType<typeof getGoogleCalendarAccounts>>>
+
+export const useGetGoogleCalendarAccounts = <TError = GetGoogleCalendarAccounts401 | GetGoogleCalendarAccounts500>(
+   options?: { swr?:SWRConfiguration<Awaited<ReturnType<typeof getGoogleCalendarAccounts>>, TError> & { swrKey?: Key, enabled?: boolean }, request?: SecondParameter<typeof customInstance> }
+) => {
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const isEnabled = swrOptions?.enabled !== false
+  const swrKey = swrOptions?.swrKey ?? (() => isEnabled ? getGetGoogleCalendarAccountsKey() : null);
+  const swrFn = () => getGoogleCalendarAccounts(requestOptions)
+
+  const query = useSwr<Awaited<ReturnType<typeof swrFn>>, TError>(swrKey, swrFn, swrOptions)
+
+  return {
+    swrKey,
+    ...query
+  }
+}
+export type deleteGoogleCalendarAccountsResponse200 = {
+  data: DeleteGoogleCalendarAccounts200
+  status: 200
+}
+
+export type deleteGoogleCalendarAccountsResponse401 = {
+  data: DeleteGoogleCalendarAccounts401
+  status: 401
+}
+
+export type deleteGoogleCalendarAccountsResponse404 = {
+  data: DeleteGoogleCalendarAccounts404
+  status: 404
+}
+
+export type deleteGoogleCalendarAccountsResponse500 = {
+  data: DeleteGoogleCalendarAccounts500
+  status: 500
+}
+    
+export type deleteGoogleCalendarAccountsResponseSuccess = (deleteGoogleCalendarAccountsResponse200) & {
+  headers: Headers;
+};
+export type deleteGoogleCalendarAccountsResponseError = (deleteGoogleCalendarAccountsResponse401 | deleteGoogleCalendarAccountsResponse404 | deleteGoogleCalendarAccountsResponse500) & {
+  headers: Headers;
+};
+
+export type deleteGoogleCalendarAccountsResponse = (deleteGoogleCalendarAccountsResponseSuccess | deleteGoogleCalendarAccountsResponseError)
+
+export const getDeleteGoogleCalendarAccountsUrl = (params: DeleteGoogleCalendarAccountsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/google-calendar/accounts?${stringifiedParams}` : `/google-calendar/accounts`
+}
+
+export const deleteGoogleCalendarAccounts = async (params: DeleteGoogleCalendarAccountsParams, options?: RequestInit): Promise<deleteGoogleCalendarAccountsResponse> => {
+  
+  return customInstance<deleteGoogleCalendarAccountsResponse>(getDeleteGoogleCalendarAccountsUrl(params),
+  {      
+    ...options,
+    method: 'DELETE'
+    
+    
+  }
+);}
+
+
+
+
+export const getDeleteGoogleCalendarAccountsMutationFetcher = (params: DeleteGoogleCalendarAccountsParams, options?: SecondParameter<typeof customInstance>) => {
+  return (_: Key, __: { arg: Arguments }) => {
+    return deleteGoogleCalendarAccounts(params, options);
+  }
+}
+export const getDeleteGoogleCalendarAccountsMutationKey = (params: DeleteGoogleCalendarAccountsParams,) => [`/google-calendar/accounts`, ...(params ? [params]: [])] as const;
+
+export type DeleteGoogleCalendarAccountsMutationResult = NonNullable<Awaited<ReturnType<typeof deleteGoogleCalendarAccounts>>>
+
+export const useDeleteGoogleCalendarAccounts = <TError = DeleteGoogleCalendarAccounts401 | DeleteGoogleCalendarAccounts404 | DeleteGoogleCalendarAccounts500>(
+  params: DeleteGoogleCalendarAccountsParams, options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof deleteGoogleCalendarAccounts>>, TError, Key, Arguments, Awaited<ReturnType<typeof deleteGoogleCalendarAccounts>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
+) => {
+
+  const {swr: swrOptions, request: requestOptions} = options ?? {}
+
+  const swrKey = swrOptions?.swrKey ?? getDeleteGoogleCalendarAccountsMutationKey(params);
+  const swrFn = getDeleteGoogleCalendarAccountsMutationFetcher(params, requestOptions);
 
   const query = useSWRMutation(swrKey, swrFn, swrOptions)
 
@@ -1135,6 +1353,11 @@ export type postTelegramResponse200 = {
   status: 200
 }
 
+export type postTelegramResponse400 = {
+  data: PostTelegram400
+  status: 400
+}
+
 export type postTelegramResponse401 = {
   data: PostTelegram401
   status: 401
@@ -1148,7 +1371,7 @@ export type postTelegramResponse500 = {
 export type postTelegramResponseSuccess = (postTelegramResponse200) & {
   headers: Headers;
 };
-export type postTelegramResponseError = (postTelegramResponse401 | postTelegramResponse500) & {
+export type postTelegramResponseError = (postTelegramResponse400 | postTelegramResponse401 | postTelegramResponse500) & {
   headers: Headers;
 };
 
@@ -1186,7 +1409,7 @@ export const getPostTelegramMutationKey = () => [`/telegram/`] as const;
 
 export type PostTelegramMutationResult = NonNullable<Awaited<ReturnType<typeof postTelegram>>>
 
-export const usePostTelegram = <TError = PostTelegram401 | PostTelegram500>(
+export const usePostTelegram = <TError = PostTelegram400 | PostTelegram401 | PostTelegram500>(
    options?: { swr?:SWRMutationConfiguration<Awaited<ReturnType<typeof postTelegram>>, TError, Key, PostTelegramBody, Awaited<ReturnType<typeof postTelegram>>> & { swrKey?: string }, request?: SecondParameter<typeof customInstance>}
 ) => {
 

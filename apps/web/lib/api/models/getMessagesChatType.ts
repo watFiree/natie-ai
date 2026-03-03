@@ -14,4 +14,5 @@ export const GetMessagesChatType = {
   email: 'email',
   x: 'x',
   telegram: 'telegram',
+  calendar: 'calendar',
 } as const;

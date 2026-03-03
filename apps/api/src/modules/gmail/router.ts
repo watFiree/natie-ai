@@ -1,115 +1,21 @@
-import crypto from 'node:crypto';
-import { GmailOAuthService } from './service';
-import { createOAuth2Client } from './clientFactory';
-import type { FastifyInstance } from 'fastify';
-import type { ZodTypeProvider } from 'fastify-type-provider-zod';
-import { scopes } from './consts';
+import { createOAuth2Client } from '../google/clientFactory';
 import { GmailAccountRepository } from './repository';
 import { authHandler } from '../auth/handler';
 import {
   DeleteGmailAccountQuerySchema,
   GmailAccountsResponseSchema,
-  OAuthCallbackQuerySchema,
-  RedirectResponseSchema,
   SuccessResponseSchema,
 } from './schema';
 import { ErrorResponseSchema } from '../../common/schema';
+import type { FastifyInstance } from 'fastify';
+import type { ZodTypeProvider } from 'fastify-type-provider-zod';
 
 export const GmailRouter = async (fastify: FastifyInstance) => {
   const typedFastify = fastify.withTypeProvider<ZodTypeProvider>();
   const repository = new GmailAccountRepository(fastify.prisma);
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
-  const successRedirect = `${frontendUrl}/app/email?google=success`;
-  const failedRedirect = `${frontendUrl}/app/email?google=failed`;
-  const alreadyRegisteredRedirect = `${frontendUrl}/app/email?google=already_registered`;
 
   typedFastify.get(
-    '/auth/google',
-    {
-      preHandler: authHandler,
-      schema: {
-        response: {
-          302: RedirectResponseSchema,
-          401: ErrorResponseSchema,
-        },
-      },
-    },
-    async (req, reply) => {
-      const state = crypto.randomBytes(24).toString('hex');
-      const svc = new GmailOAuthService(repository);
-
-      const url = svc.generateRedirectUrl({
-        state,
-        scopes,
-        accessType: 'offline',
-        prompt: 'consent',
-      });
-
-      reply.setCookie('google_oauth_state', state, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
-        maxAge: 5 * 60, // 5 minutes (seconds in Fastify)
-        signed: true,
-        path: '/',
-      });
-
-      return reply.redirect(url);
-    }
-  );
-
-  typedFastify.get(
-    '/oauth/google/callback',
-    {
-      preHandler: authHandler,
-      schema: {
-        querystring: OAuthCallbackQuerySchema,
-        response: {
-          302: RedirectResponseSchema,
-          401: ErrorResponseSchema,
-        },
-      },
-    },
-    async (req, reply) => {
-      const { code, state } = req.query;
-      if (!code || !state || !req.user?.id)
-        return reply.redirect(failedRedirect);
-
-      // Verify the OAuth state parameter against the signed cookie
-      const stateCookie = req.cookies.google_oauth_state;
-      if (!stateCookie) return reply.redirect(failedRedirect);
-
-      const unsignResult = req.unsignCookie(stateCookie);
-      if (!unsignResult.valid || unsignResult.value !== state)
-        return reply.redirect(failedRedirect);
-
-      // Clear the state cookie to prevent reuse
-      reply.clearCookie('google_oauth_state', { path: '/' });
-
-      try {
-        const svc = new GmailOAuthService(repository);
-
-        const tokens = await svc.exchangeCodeForTokens(code);
-        const email = await svc.getEmailFromIdToken(tokens);
-        if (!email) return reply.redirect(failedRedirect);
-
-        const existing = await repository.findByUserAndEmail(
-          req.user.id,
-          email
-        );
-        if (existing) return reply.redirect(alreadyRegisteredRedirect);
-
-        await svc.saveAccount(req.user.id, email, tokens);
-        return reply.redirect(successRedirect);
-      } catch (err) {
-        req.log.error(err, 'Google OAuth callback failed');
-        return reply.redirect(failedRedirect);
-      }
-    }
-  );
-
-  typedFastify.get(
-    '/gmail-accounts',
+    '/accounts',
     {
       preHandler: authHandler,
       schema: {
@@ -129,7 +35,7 @@ export const GmailRouter = async (fastify: FastifyInstance) => {
         return reply.send(
           accounts.map((account) => ({
             email: account.email,
-            provider: 'gmail' as const,
+            provider: 'gmail' satisfies 'gmail',
           }))
         );
       } catch (err) {
@@ -145,7 +51,7 @@ export const GmailRouter = async (fastify: FastifyInstance) => {
   /gmail-accounts with {email} in JSON body)
   */
   typedFastify.delete(
-    '/gmail-accounts',
+    '/accounts',
     {
       preHandler: authHandler,
       schema: {
