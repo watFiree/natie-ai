@@ -19,7 +19,10 @@ export function Hero() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden">
+    <section
+      ref={sectionRef}
+      className="relative min-h-screen flex items-center justify-center pt-16 overflow-hidden"
+    >
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div
           className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border bg-card/50 backdrop-blur-sm mb-8 animate-fade-in-up"

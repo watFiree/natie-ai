@@ -15,7 +15,7 @@ const examples: Example[] = [
       { role: 'user', text: "What's in my inbox today?" },
       {
         role: 'ai',
-        text: "You have 3 emails worth your attention:\n\n• Sarah invited you to a team sync tomorrow at 3pm\n• Your AWS bill is ready to review ($42.80)\n• James requested a PR review on natie-ai",
+        text: 'You have 3 emails worth your attention:\n\n• Sarah invited you to a team sync tomorrow at 3pm\n• Your AWS bill is ready to review ($42.80)\n• James requested a PR review on natie-ai',
       },
     ],
   },
