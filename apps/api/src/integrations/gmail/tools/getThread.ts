@@ -8,7 +8,7 @@ export class GmailGetThreadTool extends StructuredTool {
   description = 'Get a Gmail thread by ID for selected account';
 
   schema = z.object({
-    accountEmail: z.string().email(),
+    accountEmail: z.email(),
     threadId: z.string(),
   });
 

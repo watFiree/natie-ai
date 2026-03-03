@@ -4,6 +4,8 @@ import { PrismaClient } from '../../../prisma/generated/prisma/client';
 import { GmailOAuthService } from '../../modules/gmail/service';
 import { GmailAccountRepository } from '../../modules/gmail/repository';
 import { XAccountRepository } from '../../modules/x_account/repository';
+import { CalendarOAuthService } from '../../modules/google_calendar/service';
+import { CalendarAccountRepository } from '../../modules/google_calendar/repository';
 import { MessageRepository } from '../../modules/messages/repository';
 import { ChatRepository } from '../../modules/chat/repository';
 import { AgentRunner } from '../../integrations/common/runner';
@@ -57,12 +59,16 @@ export class TelegramGateway {
     const gmailAccountRepo = new GmailAccountRepository(this.prisma);
     const gmailService = new GmailOAuthService(gmailAccountRepo);
     const xAccountRepo = new XAccountRepository(this.prisma);
+    const calendarAccountRepo = new CalendarAccountRepository(this.prisma);
+    const calendarService = new CalendarOAuthService(calendarAccountRepo);
 
     this.natieService = new NatieService(
       this.prisma,
       gmailService,
       gmailAccountRepo,
-      xAccountRepo
+      xAccountRepo,
+      calendarService,
+      calendarAccountRepo
     );
   }
 

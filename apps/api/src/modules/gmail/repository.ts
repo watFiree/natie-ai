@@ -1,5 +1,5 @@
 import { PrismaClient } from '../../../prisma/generated/prisma/client';
-import type { GoogleTokens } from './consts';
+import type { GoogleTokens } from '../google/consts';
 import { encrypt, decrypt } from '../../common/encryption';
 
 export type GmailAccountData = {

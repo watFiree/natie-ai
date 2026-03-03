@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const GmailProviderSchema = z.literal('gmail');
 
 export const GmailAccountResponseSchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   provider: GmailProviderSchema,
 });
 
@@ -15,7 +15,7 @@ export const OAuthCallbackQuerySchema = z.object({
 });
 
 export const DeleteGmailAccountQuerySchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
 });
 
 export const SuccessResponseSchema = z.object({

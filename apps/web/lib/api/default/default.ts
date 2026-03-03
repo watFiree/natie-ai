@@ -11,6 +11,11 @@ import type {
   DeleteGmailAccounts404,
   DeleteGmailAccounts500,
   DeleteGmailAccountsParams,
+  DeleteGoogleCalendarAccounts200,
+  DeleteGoogleCalendarAccounts401,
+  DeleteGoogleCalendarAccounts404,
+  DeleteGoogleCalendarAccounts500,
+  DeleteGoogleCalendarAccountsParams,
   DeleteTelegram200,
   DeleteTelegram401,
   DeleteTelegram404,
@@ -22,7 +27,6 @@ import type {
   GetAuthCallback400,
   GetAuthCallback500,
   GetAuthCallbackParams,
-  GetAuthGoogle401,
   GetAuthLogin500,
   GetAuthLogout500,
   GetAuthStatus200,
@@ -30,13 +34,18 @@ import type {
   GetGmailAccounts200Item,
   GetGmailAccounts401,
   GetGmailAccounts500,
+  GetGoogleCalendarAccounts200Item,
+  GetGoogleCalendarAccounts401,
+  GetGoogleCalendarAccounts500,
   GetMessages200,
   GetMessages400,
   GetMessages401,
   GetMessages500,
   GetMessagesParams,
+  GetOauthGoogleCalendar401,
   GetOauthGoogleCallback401,
   GetOauthGoogleCallbackParams,
+  GetOauthGoogleGmail401,
   GetTelegram200,
   GetTelegram401,
   GetTelegram404,
@@ -55,6 +64,7 @@ import type {
   PostChatStream429,
   PostChatStreamBody,
   PostTelegram200,
+  PostTelegram400,
   PostTelegram401,
   PostTelegram500,
   PostTelegramBody,
@@ -228,34 +238,71 @@ export const getAuthLogout = async ( options?: RequestInit): Promise<getAuthLogo
 );}
 
 
-export type getAuthGoogleResponse302 = {
+export type getOauthGoogleGmailResponse302 = {
   data: unknown
   status: 302
 }
 
-export type getAuthGoogleResponse401 = {
-  data: GetAuthGoogle401
+export type getOauthGoogleGmailResponse401 = {
+  data: GetOauthGoogleGmail401
   status: 401
 }
     
 ;
-export type getAuthGoogleResponseError = (getAuthGoogleResponse302 | getAuthGoogleResponse401) & {
+export type getOauthGoogleGmailResponseError = (getOauthGoogleGmailResponse302 | getOauthGoogleGmailResponse401) & {
   headers: Headers;
 };
 
-export type getAuthGoogleResponse = (getAuthGoogleResponseError)
+export type getOauthGoogleGmailResponse = (getOauthGoogleGmailResponseError)
 
-export const getGetAuthGoogleUrl = () => {
+export const getGetOauthGoogleGmailUrl = () => {
 
 
   
 
-  return `/auth/google`
+  return `/oauth/google/gmail`
 }
 
-export const getAuthGoogle = async ( options?: RequestInit): Promise<getAuthGoogleResponse> => {
+export const getOauthGoogleGmail = async ( options?: RequestInit): Promise<getOauthGoogleGmailResponse> => {
   
-  return customInstance<getAuthGoogleResponse>(getGetAuthGoogleUrl(),
+  return customInstance<getOauthGoogleGmailResponse>(getGetOauthGoogleGmailUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+export type getOauthGoogleCalendarResponse302 = {
+  data: unknown
+  status: 302
+}
+
+export type getOauthGoogleCalendarResponse401 = {
+  data: GetOauthGoogleCalendar401
+  status: 401
+}
+    
+;
+export type getOauthGoogleCalendarResponseError = (getOauthGoogleCalendarResponse302 | getOauthGoogleCalendarResponse401) & {
+  headers: Headers;
+};
+
+export type getOauthGoogleCalendarResponse = (getOauthGoogleCalendarResponseError)
+
+export const getGetOauthGoogleCalendarUrl = () => {
+
+
+  
+
+  return `/oauth/google/calendar`
+}
+
+export const getOauthGoogleCalendar = async ( options?: RequestInit): Promise<getOauthGoogleCalendarResponse> => {
+  
+  return customInstance<getOauthGoogleCalendarResponse>(getGetOauthGoogleCalendarUrl(),
   {      
     ...options,
     method: 'GET'
@@ -338,7 +385,7 @@ export const getGetGmailAccountsUrl = () => {
 
   
 
-  return `/gmail-accounts`
+  return `/gmail/accounts`
 }
 
 export const getGmailAccounts = async ( options?: RequestInit): Promise<getGmailAccountsResponse> => {
@@ -394,12 +441,112 @@ export const getDeleteGmailAccountsUrl = (params: DeleteGmailAccountsParams,) =>
 
   const stringifiedParams = normalizedParams.toString();
 
-  return stringifiedParams.length > 0 ? `/gmail-accounts?${stringifiedParams}` : `/gmail-accounts`
+  return stringifiedParams.length > 0 ? `/gmail/accounts?${stringifiedParams}` : `/gmail/accounts`
 }
 
 export const deleteGmailAccounts = async (params: DeleteGmailAccountsParams, options?: RequestInit): Promise<deleteGmailAccountsResponse> => {
   
   return customInstance<deleteGmailAccountsResponse>(getDeleteGmailAccountsUrl(params),
+  {      
+    ...options,
+    method: 'DELETE'
+    
+    
+  }
+);}
+
+
+export type getGoogleCalendarAccountsResponse200 = {
+  data: GetGoogleCalendarAccounts200Item[]
+  status: 200
+}
+
+export type getGoogleCalendarAccountsResponse401 = {
+  data: GetGoogleCalendarAccounts401
+  status: 401
+}
+
+export type getGoogleCalendarAccountsResponse500 = {
+  data: GetGoogleCalendarAccounts500
+  status: 500
+}
+    
+export type getGoogleCalendarAccountsResponseSuccess = (getGoogleCalendarAccountsResponse200) & {
+  headers: Headers;
+};
+export type getGoogleCalendarAccountsResponseError = (getGoogleCalendarAccountsResponse401 | getGoogleCalendarAccountsResponse500) & {
+  headers: Headers;
+};
+
+export type getGoogleCalendarAccountsResponse = (getGoogleCalendarAccountsResponseSuccess | getGoogleCalendarAccountsResponseError)
+
+export const getGetGoogleCalendarAccountsUrl = () => {
+
+
+  
+
+  return `/google-calendar/accounts`
+}
+
+export const getGoogleCalendarAccounts = async ( options?: RequestInit): Promise<getGoogleCalendarAccountsResponse> => {
+  
+  return customInstance<getGoogleCalendarAccountsResponse>(getGetGoogleCalendarAccountsUrl(),
+  {      
+    ...options,
+    method: 'GET'
+    
+    
+  }
+);}
+
+
+export type deleteGoogleCalendarAccountsResponse200 = {
+  data: DeleteGoogleCalendarAccounts200
+  status: 200
+}
+
+export type deleteGoogleCalendarAccountsResponse401 = {
+  data: DeleteGoogleCalendarAccounts401
+  status: 401
+}
+
+export type deleteGoogleCalendarAccountsResponse404 = {
+  data: DeleteGoogleCalendarAccounts404
+  status: 404
+}
+
+export type deleteGoogleCalendarAccountsResponse500 = {
+  data: DeleteGoogleCalendarAccounts500
+  status: 500
+}
+    
+export type deleteGoogleCalendarAccountsResponseSuccess = (deleteGoogleCalendarAccountsResponse200) & {
+  headers: Headers;
+};
+export type deleteGoogleCalendarAccountsResponseError = (deleteGoogleCalendarAccountsResponse401 | deleteGoogleCalendarAccountsResponse404 | deleteGoogleCalendarAccountsResponse500) & {
+  headers: Headers;
+};
+
+export type deleteGoogleCalendarAccountsResponse = (deleteGoogleCalendarAccountsResponseSuccess | deleteGoogleCalendarAccountsResponseError)
+
+export const getDeleteGoogleCalendarAccountsUrl = (params: DeleteGoogleCalendarAccountsParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : value.toString())
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/google-calendar/accounts?${stringifiedParams}` : `/google-calendar/accounts`
+}
+
+export const deleteGoogleCalendarAccounts = async (params: DeleteGoogleCalendarAccountsParams, options?: RequestInit): Promise<deleteGoogleCalendarAccountsResponse> => {
+  
+  return customInstance<deleteGoogleCalendarAccountsResponse>(getDeleteGoogleCalendarAccountsUrl(params),
   {      
     ...options,
     method: 'DELETE'
@@ -762,6 +909,11 @@ export type postTelegramResponse200 = {
   status: 200
 }
 
+export type postTelegramResponse400 = {
+  data: PostTelegram400
+  status: 400
+}
+
 export type postTelegramResponse401 = {
   data: PostTelegram401
   status: 401
@@ -775,7 +927,7 @@ export type postTelegramResponse500 = {
 export type postTelegramResponseSuccess = (postTelegramResponse200) & {
   headers: Headers;
 };
-export type postTelegramResponseError = (postTelegramResponse401 | postTelegramResponse500) & {
+export type postTelegramResponseError = (postTelegramResponse400 | postTelegramResponse401 | postTelegramResponse500) & {
   headers: Headers;
 };
 

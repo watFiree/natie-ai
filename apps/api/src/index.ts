@@ -9,6 +9,8 @@ import {
 } from 'fastify-type-provider-zod';
 import swaggerPlugin from './plugins/swagger/plugin';
 import { GmailRouter } from './modules/gmail/router';
+import { GoogleRouter } from './modules/google/router';
+import { CalendarRouter } from './modules/google_calendar/router';
 import { XAccountRouter } from './modules/x_account/router';
 import { dbPlugin } from './modules/db/plugin';
 import { AuthRouter } from './modules/auth/router';
@@ -37,7 +39,9 @@ app.register(cookie, {
 
 app.register(dbPlugin);
 app.register(AuthRouter, { prefix: '/auth' });
-app.register(GmailRouter);
+app.register(GoogleRouter, { prefix: '/oauth/google' });
+app.register(GmailRouter, { prefix: '/gmail' });
+app.register(CalendarRouter, { prefix: '/google-calendar' });
 app.register(ChatRouter);
 app.register(XAccountRouter, { prefix: '/x-account' });
 app.register(TokenUsageRouter, { prefix: '/token-usage' });

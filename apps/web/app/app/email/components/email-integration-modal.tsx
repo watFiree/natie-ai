@@ -49,7 +49,7 @@ export function EmailIntegrationModal({
 
   const redirectUrl =
     selectedProvider === GetGmailAccounts200ItemProvider.gmail
-      ? buildApiUrl('/auth/google')
+      ? buildApiUrl('/oauth/google/gmail')
       : undefined;
 
   const handleOpenChange = (nextOpen: boolean) => {

@@ -22,9 +22,12 @@ import { GmailAgentService } from '../gmail/agentService';
 import { GmailOAuthService } from '../gmail/service';
 import { GmailAccountRepository } from '../gmail/repository';
 import { XAccountRepository } from '../x_account/repository';
+import { CalendarOAuthService } from '../google_calendar/service';
+import { CalendarAccountRepository } from '../google_calendar/repository';
 import { ChatType } from '../../../prisma/generated/prisma/client';
 import { ReactAgent } from 'langchain';
 import { z } from 'zod';
+import { CalendarAgentService } from '../google_calendar/agentService';
 
 const ACTIVE_CONVERSATION_ERROR_MESSAGE =
   'Another conversation is in progress. Please wait for it to complete.';
@@ -37,9 +40,11 @@ export const ChatRouter = async (fastify: FastifyInstance) => {
   const messageRepo = new MessageRepository(fastify.prisma);
   const gmailAccountRepo = new GmailAccountRepository(fastify.prisma);
   const xAccountRepo = new XAccountRepository(fastify.prisma);
+  const calendarAccountRepo = new CalendarAccountRepository(fastify.prisma);
 
   // Services
   const gmailService = new GmailOAuthService(gmailAccountRepo);
+  const calendarService = new CalendarOAuthService(calendarAccountRepo);
   const modelPricingRepo = new ModelPricingRepository(fastify.prisma);
   const tokenUsageRepo = new TokenUsageRepository(fastify.prisma);
   const tokenUsageService = new TokenUsageService(
@@ -57,9 +62,15 @@ export const ChatRouter = async (fastify: FastifyInstance) => {
     fastify.prisma,
     gmailService,
     gmailAccountRepo,
-    xAccountRepo
+    xAccountRepo,
+    calendarService,
+    calendarAccountRepo
   );
   const xAgentService = new XAgentService(xAccountRepo);
+  const calendarAgentService = new CalendarAgentService(
+    calendarService,
+    calendarAccountRepo
+  );
   const gmailAgentService = new GmailAgentService(
     fastify.prisma,
     gmailService,
@@ -81,6 +92,10 @@ export const ChatRouter = async (fastify: FastifyInstance) => {
       }
       case 'email': {
         const agent = await gmailAgentService.createAgent(userId);
+        return agent;
+      }
+      case 'calendar': {
+        const agent = await calendarAgentService.createAgent(userId);
         return agent;
       }
       default:

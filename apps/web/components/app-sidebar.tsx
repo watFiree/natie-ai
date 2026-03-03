@@ -5,6 +5,7 @@ import * as React from 'react';
 import {
   IconBrandTelegram,
   IconBrandX,
+  IconCalendar,
   IconHelp,
   IconMail,
   IconRobot,
@@ -46,6 +47,11 @@ const data = {
       title: 'X',
       url: '/app/x',
       icon: IconBrandX,
+    },
+    {
+      title: 'Calendar',
+      url: '/app/calendar',
+      icon: IconCalendar,
     },
   ],
   navSecondary: [

@@ -8,7 +8,7 @@ export class GmailSearchTool extends StructuredTool {
   description = 'Search Gmail messages for selected account';
 
   schema = z.object({
-    accountEmail: z.string().email(),
+    accountEmail: z.email(),
     query: z.string(),
   });
 
