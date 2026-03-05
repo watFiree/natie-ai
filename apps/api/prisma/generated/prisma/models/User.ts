@@ -187,6 +187,7 @@ export type UserWhereInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsListRelationFilter
   calendarAccounts?: Prisma.CalendarAccountListRelationFilter
   userIntegrations?: Prisma.UserIntegrationListRelationFilter
+  todoAppAccount?: Prisma.XOR<Prisma.TodoAppAccountNullableScalarRelationFilter, Prisma.TodoAppAccountWhereInput> | null
   telegramSettings?: Prisma.XOR<Prisma.TelegramSettingsNullableScalarRelationFilter, Prisma.TelegramSettingsWhereInput> | null
   chats?: Prisma.UserChatListRelationFilter
   tokenUsageRecords?: Prisma.TokenUsageRecordListRelationFilter
@@ -203,6 +204,7 @@ export type UserOrderByWithRelationInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsOrderByRelationAggregateInput
   calendarAccounts?: Prisma.CalendarAccountOrderByRelationAggregateInput
   userIntegrations?: Prisma.UserIntegrationOrderByRelationAggregateInput
+  todoAppAccount?: Prisma.TodoAppAccountOrderByWithRelationInput
   telegramSettings?: Prisma.TelegramSettingsOrderByWithRelationInput
   chats?: Prisma.UserChatOrderByRelationAggregateInput
   tokenUsageRecords?: Prisma.TokenUsageRecordOrderByRelationAggregateInput
@@ -222,6 +224,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   emailSettings?: Prisma.EmailIntegrationSettingsListRelationFilter
   calendarAccounts?: Prisma.CalendarAccountListRelationFilter
   userIntegrations?: Prisma.UserIntegrationListRelationFilter
+  todoAppAccount?: Prisma.XOR<Prisma.TodoAppAccountNullableScalarRelationFilter, Prisma.TodoAppAccountWhereInput> | null
   telegramSettings?: Prisma.XOR<Prisma.TelegramSettingsNullableScalarRelationFilter, Prisma.TelegramSettingsWhereInput> | null
   chats?: Prisma.UserChatListRelationFilter
   tokenUsageRecords?: Prisma.TokenUsageRecordListRelationFilter
@@ -260,6 +263,7 @@ export type UserCreateInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsCreateNestedManyWithoutUserInput
   calendarAccounts?: Prisma.CalendarAccountCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountCreateNestedOneWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatCreateNestedManyWithoutUserInput
   tokenUsageRecords?: Prisma.TokenUsageRecordCreateNestedManyWithoutUserInput
@@ -276,6 +280,7 @@ export type UserUncheckedCreateInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedCreateNestedManyWithoutUserInput
   calendarAccounts?: Prisma.CalendarAccountUncheckedCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationUncheckedCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedCreateNestedOneWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatUncheckedCreateNestedManyWithoutUserInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedCreateNestedManyWithoutUserInput
@@ -292,6 +297,7 @@ export type UserUpdateInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUpdateManyWithoutUserNestedInput
   calendarAccounts?: Prisma.CalendarAccountUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUpdateOneWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUpdateManyWithoutUserNestedInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUpdateManyWithoutUserNestedInput
@@ -308,6 +314,7 @@ export type UserUncheckedUpdateInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedUpdateManyWithoutUserNestedInput
   calendarAccounts?: Prisma.CalendarAccountUncheckedUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedUpdateOneWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUncheckedUpdateManyWithoutUserNestedInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedUpdateManyWithoutUserNestedInput
@@ -400,6 +407,20 @@ export type UserUpdateOneRequiredWithoutCalendarAccountsNestedInput = {
   upsert?: Prisma.UserUpsertWithoutCalendarAccountsInput
   connect?: Prisma.UserWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCalendarAccountsInput, Prisma.UserUpdateWithoutCalendarAccountsInput>, Prisma.UserUncheckedUpdateWithoutCalendarAccountsInput>
+}
+
+export type UserCreateNestedOneWithoutTodoAppAccountInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTodoAppAccountInput, Prisma.UserUncheckedCreateWithoutTodoAppAccountInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTodoAppAccountInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutTodoAppAccountNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutTodoAppAccountInput, Prisma.UserUncheckedCreateWithoutTodoAppAccountInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutTodoAppAccountInput
+  upsert?: Prisma.UserUpsertWithoutTodoAppAccountInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutTodoAppAccountInput, Prisma.UserUpdateWithoutTodoAppAccountInput>, Prisma.UserUncheckedUpdateWithoutTodoAppAccountInput>
 }
 
 export type UserCreateNestedOneWithoutXAccountInput = {
@@ -496,6 +517,7 @@ export type UserCreateWithoutGmailAccountsInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsCreateNestedManyWithoutUserInput
   calendarAccounts?: Prisma.CalendarAccountCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountCreateNestedOneWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatCreateNestedManyWithoutUserInput
   tokenUsageRecords?: Prisma.TokenUsageRecordCreateNestedManyWithoutUserInput
@@ -511,6 +533,7 @@ export type UserUncheckedCreateWithoutGmailAccountsInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedCreateNestedManyWithoutUserInput
   calendarAccounts?: Prisma.CalendarAccountUncheckedCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationUncheckedCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedCreateNestedOneWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatUncheckedCreateNestedManyWithoutUserInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedCreateNestedManyWithoutUserInput
@@ -542,6 +565,7 @@ export type UserUpdateWithoutGmailAccountsInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUpdateManyWithoutUserNestedInput
   calendarAccounts?: Prisma.CalendarAccountUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUpdateOneWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUpdateManyWithoutUserNestedInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUpdateManyWithoutUserNestedInput
@@ -557,6 +581,7 @@ export type UserUncheckedUpdateWithoutGmailAccountsInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedUpdateManyWithoutUserNestedInput
   calendarAccounts?: Prisma.CalendarAccountUncheckedUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedUpdateOneWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUncheckedUpdateManyWithoutUserNestedInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedUpdateManyWithoutUserNestedInput
@@ -572,6 +597,7 @@ export type UserCreateWithoutCalendarAccountsInput = {
   xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput
   emailSettings?: Prisma.EmailIntegrationSettingsCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountCreateNestedOneWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatCreateNestedManyWithoutUserInput
   tokenUsageRecords?: Prisma.TokenUsageRecordCreateNestedManyWithoutUserInput
@@ -587,6 +613,7 @@ export type UserUncheckedCreateWithoutCalendarAccountsInput = {
   xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationUncheckedCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedCreateNestedOneWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatUncheckedCreateNestedManyWithoutUserInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedCreateNestedManyWithoutUserInput
@@ -618,6 +645,7 @@ export type UserUpdateWithoutCalendarAccountsInput = {
   xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput
   emailSettings?: Prisma.EmailIntegrationSettingsUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUpdateOneWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUpdateManyWithoutUserNestedInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUpdateManyWithoutUserNestedInput
@@ -632,6 +660,87 @@ export type UserUncheckedUpdateWithoutCalendarAccountsInput = {
   gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput
   xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedUpdateManyWithoutUserNestedInput
+  userIntegrations?: Prisma.UserIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedUpdateOneWithoutUserNestedInput
+  telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput
+  chats?: Prisma.UserChatUncheckedUpdateManyWithoutUserNestedInput
+  tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutTodoAppAccountInput = {
+  id?: string
+  workosUserId: string
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  gmailAccounts?: Prisma.GmailAccountCreateNestedManyWithoutUserInput
+  xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput
+  emailSettings?: Prisma.EmailIntegrationSettingsCreateNestedManyWithoutUserInput
+  calendarAccounts?: Prisma.CalendarAccountCreateNestedManyWithoutUserInput
+  userIntegrations?: Prisma.UserIntegrationCreateNestedManyWithoutUserInput
+  telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput
+  chats?: Prisma.UserChatCreateNestedManyWithoutUserInput
+  tokenUsageRecords?: Prisma.TokenUsageRecordCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutTodoAppAccountInput = {
+  id?: string
+  workosUserId: string
+  email: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  gmailAccounts?: Prisma.GmailAccountUncheckedCreateNestedManyWithoutUserInput
+  xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput
+  emailSettings?: Prisma.EmailIntegrationSettingsUncheckedCreateNestedManyWithoutUserInput
+  calendarAccounts?: Prisma.CalendarAccountUncheckedCreateNestedManyWithoutUserInput
+  userIntegrations?: Prisma.UserIntegrationUncheckedCreateNestedManyWithoutUserInput
+  telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput
+  chats?: Prisma.UserChatUncheckedCreateNestedManyWithoutUserInput
+  tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutTodoAppAccountInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutTodoAppAccountInput, Prisma.UserUncheckedCreateWithoutTodoAppAccountInput>
+}
+
+export type UserUpsertWithoutTodoAppAccountInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutTodoAppAccountInput, Prisma.UserUncheckedUpdateWithoutTodoAppAccountInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutTodoAppAccountInput, Prisma.UserUncheckedCreateWithoutTodoAppAccountInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutTodoAppAccountInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutTodoAppAccountInput, Prisma.UserUncheckedUpdateWithoutTodoAppAccountInput>
+}
+
+export type UserUpdateWithoutTodoAppAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workosUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gmailAccounts?: Prisma.GmailAccountUpdateManyWithoutUserNestedInput
+  xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput
+  emailSettings?: Prisma.EmailIntegrationSettingsUpdateManyWithoutUserNestedInput
+  calendarAccounts?: Prisma.CalendarAccountUpdateManyWithoutUserNestedInput
+  userIntegrations?: Prisma.UserIntegrationUpdateManyWithoutUserNestedInput
+  telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput
+  chats?: Prisma.UserChatUpdateManyWithoutUserNestedInput
+  tokenUsageRecords?: Prisma.TokenUsageRecordUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutTodoAppAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workosUserId?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  gmailAccounts?: Prisma.GmailAccountUncheckedUpdateManyWithoutUserNestedInput
+  xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput
+  emailSettings?: Prisma.EmailIntegrationSettingsUncheckedUpdateManyWithoutUserNestedInput
+  calendarAccounts?: Prisma.CalendarAccountUncheckedUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUncheckedUpdateManyWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUncheckedUpdateManyWithoutUserNestedInput
@@ -648,6 +757,7 @@ export type UserCreateWithoutXAccountInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsCreateNestedManyWithoutUserInput
   calendarAccounts?: Prisma.CalendarAccountCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountCreateNestedOneWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatCreateNestedManyWithoutUserInput
   tokenUsageRecords?: Prisma.TokenUsageRecordCreateNestedManyWithoutUserInput
@@ -663,6 +773,7 @@ export type UserUncheckedCreateWithoutXAccountInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedCreateNestedManyWithoutUserInput
   calendarAccounts?: Prisma.CalendarAccountUncheckedCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationUncheckedCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedCreateNestedOneWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatUncheckedCreateNestedManyWithoutUserInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedCreateNestedManyWithoutUserInput
@@ -694,6 +805,7 @@ export type UserUpdateWithoutXAccountInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUpdateManyWithoutUserNestedInput
   calendarAccounts?: Prisma.CalendarAccountUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUpdateOneWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUpdateManyWithoutUserNestedInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUpdateManyWithoutUserNestedInput
@@ -709,6 +821,7 @@ export type UserUncheckedUpdateWithoutXAccountInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedUpdateManyWithoutUserNestedInput
   calendarAccounts?: Prisma.CalendarAccountUncheckedUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedUpdateOneWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUncheckedUpdateManyWithoutUserNestedInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedUpdateManyWithoutUserNestedInput
@@ -724,6 +837,7 @@ export type UserCreateWithoutEmailSettingsInput = {
   xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput
   calendarAccounts?: Prisma.CalendarAccountCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountCreateNestedOneWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatCreateNestedManyWithoutUserInput
   tokenUsageRecords?: Prisma.TokenUsageRecordCreateNestedManyWithoutUserInput
@@ -739,6 +853,7 @@ export type UserUncheckedCreateWithoutEmailSettingsInput = {
   xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput
   calendarAccounts?: Prisma.CalendarAccountUncheckedCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationUncheckedCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedCreateNestedOneWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatUncheckedCreateNestedManyWithoutUserInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedCreateNestedManyWithoutUserInput
@@ -770,6 +885,7 @@ export type UserUpdateWithoutEmailSettingsInput = {
   xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput
   calendarAccounts?: Prisma.CalendarAccountUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUpdateOneWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUpdateManyWithoutUserNestedInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUpdateManyWithoutUserNestedInput
@@ -785,6 +901,7 @@ export type UserUncheckedUpdateWithoutEmailSettingsInput = {
   xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput
   calendarAccounts?: Prisma.CalendarAccountUncheckedUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedUpdateOneWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUncheckedUpdateManyWithoutUserNestedInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedUpdateManyWithoutUserNestedInput
@@ -800,6 +917,7 @@ export type UserCreateWithoutUserIntegrationsInput = {
   xAccount?: Prisma.XAccountCreateNestedOneWithoutUserInput
   emailSettings?: Prisma.EmailIntegrationSettingsCreateNestedManyWithoutUserInput
   calendarAccounts?: Prisma.CalendarAccountCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountCreateNestedOneWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatCreateNestedManyWithoutUserInput
   tokenUsageRecords?: Prisma.TokenUsageRecordCreateNestedManyWithoutUserInput
@@ -815,6 +933,7 @@ export type UserUncheckedCreateWithoutUserIntegrationsInput = {
   xAccount?: Prisma.XAccountUncheckedCreateNestedOneWithoutUserInput
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedCreateNestedManyWithoutUserInput
   calendarAccounts?: Prisma.CalendarAccountUncheckedCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedCreateNestedOneWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatUncheckedCreateNestedManyWithoutUserInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedCreateNestedManyWithoutUserInput
@@ -846,6 +965,7 @@ export type UserUpdateWithoutUserIntegrationsInput = {
   xAccount?: Prisma.XAccountUpdateOneWithoutUserNestedInput
   emailSettings?: Prisma.EmailIntegrationSettingsUpdateManyWithoutUserNestedInput
   calendarAccounts?: Prisma.CalendarAccountUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUpdateOneWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUpdateManyWithoutUserNestedInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUpdateManyWithoutUserNestedInput
@@ -861,6 +981,7 @@ export type UserUncheckedUpdateWithoutUserIntegrationsInput = {
   xAccount?: Prisma.XAccountUncheckedUpdateOneWithoutUserNestedInput
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedUpdateManyWithoutUserNestedInput
   calendarAccounts?: Prisma.CalendarAccountUncheckedUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedUpdateOneWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUncheckedUpdateManyWithoutUserNestedInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedUpdateManyWithoutUserNestedInput
@@ -877,6 +998,7 @@ export type UserCreateWithoutChatsInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsCreateNestedManyWithoutUserInput
   calendarAccounts?: Prisma.CalendarAccountCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountCreateNestedOneWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput
   tokenUsageRecords?: Prisma.TokenUsageRecordCreateNestedManyWithoutUserInput
 }
@@ -892,6 +1014,7 @@ export type UserUncheckedCreateWithoutChatsInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedCreateNestedManyWithoutUserInput
   calendarAccounts?: Prisma.CalendarAccountUncheckedCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationUncheckedCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedCreateNestedOneWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedCreateNestedManyWithoutUserInput
 }
@@ -923,6 +1046,7 @@ export type UserUpdateWithoutChatsInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUpdateManyWithoutUserNestedInput
   calendarAccounts?: Prisma.CalendarAccountUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUpdateOneWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUpdateManyWithoutUserNestedInput
 }
@@ -938,6 +1062,7 @@ export type UserUncheckedUpdateWithoutChatsInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedUpdateManyWithoutUserNestedInput
   calendarAccounts?: Prisma.CalendarAccountUncheckedUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedUpdateOneWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -953,6 +1078,7 @@ export type UserCreateWithoutTokenUsageRecordsInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsCreateNestedManyWithoutUserInput
   calendarAccounts?: Prisma.CalendarAccountCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountCreateNestedOneWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatCreateNestedManyWithoutUserInput
 }
@@ -968,6 +1094,7 @@ export type UserUncheckedCreateWithoutTokenUsageRecordsInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedCreateNestedManyWithoutUserInput
   calendarAccounts?: Prisma.CalendarAccountUncheckedCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationUncheckedCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedCreateNestedOneWithoutUserInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatUncheckedCreateNestedManyWithoutUserInput
 }
@@ -999,6 +1126,7 @@ export type UserUpdateWithoutTokenUsageRecordsInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUpdateManyWithoutUserNestedInput
   calendarAccounts?: Prisma.CalendarAccountUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUpdateOneWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUpdateManyWithoutUserNestedInput
 }
@@ -1014,6 +1142,7 @@ export type UserUncheckedUpdateWithoutTokenUsageRecordsInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedUpdateManyWithoutUserNestedInput
   calendarAccounts?: Prisma.CalendarAccountUncheckedUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedUpdateOneWithoutUserNestedInput
   telegramSettings?: Prisma.TelegramSettingsUncheckedUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1029,6 +1158,7 @@ export type UserCreateWithoutTelegramSettingsInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsCreateNestedManyWithoutUserInput
   calendarAccounts?: Prisma.CalendarAccountCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatCreateNestedManyWithoutUserInput
   tokenUsageRecords?: Prisma.TokenUsageRecordCreateNestedManyWithoutUserInput
 }
@@ -1044,6 +1174,7 @@ export type UserUncheckedCreateWithoutTelegramSettingsInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedCreateNestedManyWithoutUserInput
   calendarAccounts?: Prisma.CalendarAccountUncheckedCreateNestedManyWithoutUserInput
   userIntegrations?: Prisma.UserIntegrationUncheckedCreateNestedManyWithoutUserInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedCreateNestedOneWithoutUserInput
   chats?: Prisma.UserChatUncheckedCreateNestedManyWithoutUserInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedCreateNestedManyWithoutUserInput
 }
@@ -1075,6 +1206,7 @@ export type UserUpdateWithoutTelegramSettingsInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUpdateManyWithoutUserNestedInput
   calendarAccounts?: Prisma.CalendarAccountUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUpdateManyWithoutUserNestedInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUpdateManyWithoutUserNestedInput
 }
@@ -1090,6 +1222,7 @@ export type UserUncheckedUpdateWithoutTelegramSettingsInput = {
   emailSettings?: Prisma.EmailIntegrationSettingsUncheckedUpdateManyWithoutUserNestedInput
   calendarAccounts?: Prisma.CalendarAccountUncheckedUpdateManyWithoutUserNestedInput
   userIntegrations?: Prisma.UserIntegrationUncheckedUpdateManyWithoutUserNestedInput
+  todoAppAccount?: Prisma.TodoAppAccountUncheckedUpdateOneWithoutUserNestedInput
   chats?: Prisma.UserChatUncheckedUpdateManyWithoutUserNestedInput
   tokenUsageRecords?: Prisma.TokenUsageRecordUncheckedUpdateManyWithoutUserNestedInput
 }
@@ -1181,6 +1314,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   emailSettings?: boolean | Prisma.User$emailSettingsArgs<ExtArgs>
   calendarAccounts?: boolean | Prisma.User$calendarAccountsArgs<ExtArgs>
   userIntegrations?: boolean | Prisma.User$userIntegrationsArgs<ExtArgs>
+  todoAppAccount?: boolean | Prisma.User$todoAppAccountArgs<ExtArgs>
   telegramSettings?: boolean | Prisma.User$telegramSettingsArgs<ExtArgs>
   chats?: boolean | Prisma.User$chatsArgs<ExtArgs>
   tokenUsageRecords?: boolean | Prisma.User$tokenUsageRecordsArgs<ExtArgs>
@@ -1218,6 +1352,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   emailSettings?: boolean | Prisma.User$emailSettingsArgs<ExtArgs>
   calendarAccounts?: boolean | Prisma.User$calendarAccountsArgs<ExtArgs>
   userIntegrations?: boolean | Prisma.User$userIntegrationsArgs<ExtArgs>
+  todoAppAccount?: boolean | Prisma.User$todoAppAccountArgs<ExtArgs>
   telegramSettings?: boolean | Prisma.User$telegramSettingsArgs<ExtArgs>
   chats?: boolean | Prisma.User$chatsArgs<ExtArgs>
   tokenUsageRecords?: boolean | Prisma.User$tokenUsageRecordsArgs<ExtArgs>
@@ -1234,6 +1369,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     emailSettings: Prisma.$EmailIntegrationSettingsPayload<ExtArgs>[]
     calendarAccounts: Prisma.$CalendarAccountPayload<ExtArgs>[]
     userIntegrations: Prisma.$UserIntegrationPayload<ExtArgs>[]
+    todoAppAccount: Prisma.$TodoAppAccountPayload<ExtArgs> | null
     telegramSettings: Prisma.$TelegramSettingsPayload<ExtArgs> | null
     chats: Prisma.$UserChatPayload<ExtArgs>[]
     tokenUsageRecords: Prisma.$TokenUsageRecordPayload<ExtArgs>[]
@@ -1643,6 +1779,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   emailSettings<T extends Prisma.User$emailSettingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$emailSettingsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EmailIntegrationSettingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   calendarAccounts<T extends Prisma.User$calendarAccountsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$calendarAccountsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CalendarAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   userIntegrations<T extends Prisma.User$userIntegrationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$userIntegrationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserIntegrationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  todoAppAccount<T extends Prisma.User$todoAppAccountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$todoAppAccountArgs<ExtArgs>>): Prisma.Prisma__TodoAppAccountClient<runtime.Types.Result.GetResult<Prisma.$TodoAppAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   telegramSettings<T extends Prisma.User$telegramSettingsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$telegramSettingsArgs<ExtArgs>>): Prisma.Prisma__TelegramSettingsClient<runtime.Types.Result.GetResult<Prisma.$TelegramSettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   chats<T extends Prisma.User$chatsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$chatsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   tokenUsageRecords<T extends Prisma.User$tokenUsageRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$tokenUsageRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TokenUsageRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -2180,6 +2317,25 @@ export type User$userIntegrationsArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.UserIntegrationScalarFieldEnum | Prisma.UserIntegrationScalarFieldEnum[]
+}
+
+/**
+ * User.todoAppAccount
+ */
+export type User$todoAppAccountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TodoAppAccount
+   */
+  select?: Prisma.TodoAppAccountSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TodoAppAccount
+   */
+  omit?: Prisma.TodoAppAccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TodoAppAccountInclude<ExtArgs> | null
+  where?: Prisma.TodoAppAccountWhereInput
 }
 
 /**

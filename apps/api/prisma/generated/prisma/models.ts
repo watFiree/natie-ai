@@ -11,6 +11,7 @@
 export type * from './models/User'
 export type * from './models/GmailAccount'
 export type * from './models/CalendarAccount'
+export type * from './models/TodoAppAccount'
 export type * from './models/XAccount'
 export type * from './models/EmailIntegrationSettings'
 export type * from './models/Integration'

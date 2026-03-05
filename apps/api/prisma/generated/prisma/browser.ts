@@ -33,6 +33,11 @@ export type GmailAccount = Prisma.GmailAccountModel
  */
 export type CalendarAccount = Prisma.CalendarAccountModel
 /**
+ * Model TodoAppAccount
+ * 
+ */
+export type TodoAppAccount = Prisma.TodoAppAccountModel
+/**
  * Model XAccount
  * 
  */

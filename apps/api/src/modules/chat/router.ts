@@ -24,6 +24,10 @@ import { GmailAccountRepository } from '../gmail/repository';
 import { XAccountRepository } from '../x_account/repository';
 import { CalendarOAuthService } from '../google_calendar/service';
 import { CalendarAccountRepository } from '../google_calendar/repository';
+import { TodoAppAccountRepository } from '../todo_app/repository';
+import { TodoAppTokenService } from '../todo_app/tokenService';
+import { TodoAgentService } from '../todo_app/agentService';
+import { TickTickOAuthService } from '../ticktick/service';
 import { ChatType } from '../../../prisma/generated/prisma/client';
 import { ReactAgent } from 'langchain';
 import { z } from 'zod';
@@ -41,10 +45,16 @@ export const ChatRouter = async (fastify: FastifyInstance) => {
   const gmailAccountRepo = new GmailAccountRepository(fastify.prisma);
   const xAccountRepo = new XAccountRepository(fastify.prisma);
   const calendarAccountRepo = new CalendarAccountRepository(fastify.prisma);
+  const todoAppAccountRepo = new TodoAppAccountRepository(fastify.prisma);
 
   // Services
   const gmailService = new GmailOAuthService(gmailAccountRepo);
   const calendarService = new CalendarOAuthService(calendarAccountRepo);
+  const tickTickOAuthService = new TickTickOAuthService();
+  const todoAppTokenService = new TodoAppTokenService(
+    todoAppAccountRepo,
+    tickTickOAuthService
+  );
   const modelPricingRepo = new ModelPricingRepository(fastify.prisma);
   const tokenUsageRepo = new TokenUsageRepository(fastify.prisma);
   const tokenUsageService = new TokenUsageService(
@@ -64,12 +74,18 @@ export const ChatRouter = async (fastify: FastifyInstance) => {
     gmailAccountRepo,
     xAccountRepo,
     calendarService,
-    calendarAccountRepo
+    calendarAccountRepo,
+    todoAppAccountRepo,
+    todoAppTokenService
   );
   const xAgentService = new XAgentService(xAccountRepo);
   const calendarAgentService = new CalendarAgentService(
     calendarService,
     calendarAccountRepo
+  );
+  const todoAgentService = new TodoAgentService(
+    todoAppTokenService,
+    todoAppAccountRepo
   );
   const gmailAgentService = new GmailAgentService(
     fastify.prisma,
@@ -96,6 +112,10 @@ export const ChatRouter = async (fastify: FastifyInstance) => {
       }
       case 'calendar': {
         const agent = await calendarAgentService.createAgent(userId);
+        return agent;
+      }
+      case 'todo': {
+        const agent = await todoAgentService.createAgent(userId);
         return agent;
       }
       default:

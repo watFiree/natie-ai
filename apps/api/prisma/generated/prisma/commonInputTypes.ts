@@ -136,6 +136,23 @@ export type EnumCalendarProviderWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumCalendarProviderFilter<$PrismaModel>
 }
 
+export type EnumTodoAppProviderFilter<$PrismaModel = never> = {
+  equals?: $Enums.TodoAppProvider | Prisma.EnumTodoAppProviderFieldRefInput<$PrismaModel>
+  in?: $Enums.TodoAppProvider[] | Prisma.ListEnumTodoAppProviderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TodoAppProvider[] | Prisma.ListEnumTodoAppProviderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTodoAppProviderFilter<$PrismaModel> | $Enums.TodoAppProvider
+}
+
+export type EnumTodoAppProviderWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TodoAppProvider | Prisma.EnumTodoAppProviderFieldRefInput<$PrismaModel>
+  in?: $Enums.TodoAppProvider[] | Prisma.ListEnumTodoAppProviderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TodoAppProvider[] | Prisma.ListEnumTodoAppProviderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTodoAppProviderWithAggregatesFilter<$PrismaModel> | $Enums.TodoAppProvider
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTodoAppProviderFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTodoAppProviderFilter<$PrismaModel>
+}
+
 export type EnumIntegrationTypeFilter<$PrismaModel = never> = {
   equals?: $Enums.IntegrationType | Prisma.EnumIntegrationTypeFieldRefInput<$PrismaModel>
   in?: $Enums.IntegrationType[] | Prisma.ListEnumIntegrationTypeFieldRefInput<$PrismaModel>
@@ -490,6 +507,23 @@ export type NestedEnumCalendarProviderWithAggregatesFilter<$PrismaModel = never>
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumCalendarProviderFilter<$PrismaModel>
   _max?: Prisma.NestedEnumCalendarProviderFilter<$PrismaModel>
+}
+
+export type NestedEnumTodoAppProviderFilter<$PrismaModel = never> = {
+  equals?: $Enums.TodoAppProvider | Prisma.EnumTodoAppProviderFieldRefInput<$PrismaModel>
+  in?: $Enums.TodoAppProvider[] | Prisma.ListEnumTodoAppProviderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TodoAppProvider[] | Prisma.ListEnumTodoAppProviderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTodoAppProviderFilter<$PrismaModel> | $Enums.TodoAppProvider
+}
+
+export type NestedEnumTodoAppProviderWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TodoAppProvider | Prisma.EnumTodoAppProviderFieldRefInput<$PrismaModel>
+  in?: $Enums.TodoAppProvider[] | Prisma.ListEnumTodoAppProviderFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TodoAppProvider[] | Prisma.ListEnumTodoAppProviderFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTodoAppProviderWithAggregatesFilter<$PrismaModel> | $Enums.TodoAppProvider
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTodoAppProviderFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTodoAppProviderFilter<$PrismaModel>
 }
 
 export type NestedEnumIntegrationTypeFilter<$PrismaModel = never> = {

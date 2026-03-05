@@ -19,6 +19,8 @@ import { TelegramSettingsRouter } from './gateways/telegram/router';
 import { InMemoryAgentLockService } from './modules/agent_lock/service';
 import { ChatRouter } from './modules/chat/router';
 import { TokenUsageRouter } from './modules/token_usage/router';
+import { TickTickRouter } from './modules/ticktick/router';
+import { TodoAppRouter } from './modules/todo_app/router';
 
 const app = fastify({ logger: true });
 app.setValidatorCompiler(validatorCompiler);
@@ -40,8 +42,10 @@ app.register(cookie, {
 app.register(dbPlugin);
 app.register(AuthRouter, { prefix: '/auth' });
 app.register(GoogleRouter, { prefix: '/oauth/google' });
+app.register(TickTickRouter, { prefix: '/oauth/ticktick' });
 app.register(GmailRouter, { prefix: '/gmail' });
 app.register(CalendarRouter, { prefix: '/google-calendar' });
+app.register(TodoAppRouter, { prefix: '/todo-app' });
 app.register(ChatRouter);
 app.register(XAccountRouter, { prefix: '/x-account' });
 app.register(TokenUsageRouter, { prefix: '/token-usage' });

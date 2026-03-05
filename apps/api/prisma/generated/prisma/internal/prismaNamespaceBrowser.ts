@@ -54,6 +54,7 @@ export const ModelName = {
   User: 'User',
   GmailAccount: 'GmailAccount',
   CalendarAccount: 'CalendarAccount',
+  TodoAppAccount: 'TodoAppAccount',
   XAccount: 'XAccount',
   EmailIntegrationSettings: 'EmailIntegrationSettings',
   Integration: 'Integration',
@@ -119,6 +120,20 @@ export const CalendarAccountScalarFieldEnum = {
 } as const
 
 export type CalendarAccountScalarFieldEnum = (typeof CalendarAccountScalarFieldEnum)[keyof typeof CalendarAccountScalarFieldEnum]
+
+
+export const TodoAppAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  provider: 'provider',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TodoAppAccountScalarFieldEnum = (typeof TodoAppAccountScalarFieldEnum)[keyof typeof TodoAppAccountScalarFieldEnum]
 
 
 export const XAccountScalarFieldEnum = {

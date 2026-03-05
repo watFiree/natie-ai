@@ -16,6 +16,13 @@ export const CalendarProvider = {
 export type CalendarProvider = (typeof CalendarProvider)[keyof typeof CalendarProvider]
 
 
+export const TodoAppProvider = {
+  TickTick: 'TickTick'
+} as const
+
+export type TodoAppProvider = (typeof TodoAppProvider)[keyof typeof TodoAppProvider]
+
+
 export const IntegrationType = {
   email: 'email',
   x: 'x'
@@ -29,7 +36,8 @@ export const ChatType = {
   email: 'email',
   x: 'x',
   telegram: 'telegram',
-  calendar: 'calendar'
+  calendar: 'calendar',
+  todo: 'todo'
 } as const
 
 export type ChatType = (typeof ChatType)[keyof typeof ChatType]

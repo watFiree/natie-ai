@@ -12,11 +12,17 @@ import {
   createCalendarSubagentTool,
   type CalendarSubagentDeps,
 } from '../../integrations/google_calendar/agent';
+import {
+  createTodoSubagentTool,
+  type TodoSubagentDeps,
+} from '../../integrations/todo/agent';
 import { createClient as createXClient } from '../../integrations/x/clientFactory';
 import type { GmailOAuthService } from '../gmail/service';
 import type { GmailAccountRepository } from '../gmail/repository';
 import type { CalendarOAuthService } from '../google_calendar/service';
 import type { CalendarAccountRepository } from '../google_calendar/repository';
+import type { TodoAppAccountRepository } from '../todo_app/repository';
+import type { TodoAppTokenService } from '../todo_app/tokenService';
 import type { XAccountRepository } from '../../modules/x_account/repository';
 import { model } from './model';
 import { createSystemPrompt } from './system';
@@ -28,7 +34,9 @@ export class NatieService {
     private gmailAccountRepo: GmailAccountRepository,
     private xAccountRepo: XAccountRepository,
     private calendarService: CalendarOAuthService,
-    private calendarAccountRepo: CalendarAccountRepository
+    private calendarAccountRepo: CalendarAccountRepository,
+    private todoAppAccountRepo: TodoAppAccountRepository,
+    private todoAppTokenService: TodoAppTokenService
   ) {}
 
   async createMainAgent(userId: string): Promise<ReactAgent> {
@@ -76,6 +84,16 @@ export class NatieService {
         calendarAccounts: calendarAccounts.map((a) => a.email),
       };
       subagentTools.push(createCalendarSubagentTool(calendarDeps));
+    }
+
+    // Todo subagent (if user has a todo app connected)
+    const todoAccount = await this.todoAppAccountRepo.findByUserId(userId);
+    if (todoAccount) {
+      const tokenProvider = () =>
+        this.todoAppTokenService.getEnsuredAccessToken(userId);
+
+      const todoDeps: TodoSubagentDeps = { tokenProvider };
+      subagentTools.push(createTodoSubagentTool(todoDeps));
     }
 
     return createLangChainAgent({

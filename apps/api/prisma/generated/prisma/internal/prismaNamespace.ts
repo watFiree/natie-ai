@@ -387,6 +387,7 @@ export const ModelName = {
   User: 'User',
   GmailAccount: 'GmailAccount',
   CalendarAccount: 'CalendarAccount',
+  TodoAppAccount: 'TodoAppAccount',
   XAccount: 'XAccount',
   EmailIntegrationSettings: 'EmailIntegrationSettings',
   Integration: 'Integration',
@@ -411,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "gmailAccount" | "calendarAccount" | "xAccount" | "emailIntegrationSettings" | "integration" | "userIntegration" | "userChat" | "message" | "modelPricing" | "tokenUsageRecord" | "telegramSettings"
+    modelProps: "user" | "gmailAccount" | "calendarAccount" | "todoAppAccount" | "xAccount" | "emailIntegrationSettings" | "integration" | "userIntegration" | "userChat" | "message" | "modelPricing" | "tokenUsageRecord" | "telegramSettings"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -634,6 +635,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.CalendarAccountCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.CalendarAccountCountAggregateOutputType> | number
+        }
+      }
+    }
+    TodoAppAccount: {
+      payload: Prisma.$TodoAppAccountPayload<ExtArgs>
+      fields: Prisma.TodoAppAccountFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.TodoAppAccountFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoAppAccountPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.TodoAppAccountFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoAppAccountPayload>
+        }
+        findFirst: {
+          args: Prisma.TodoAppAccountFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoAppAccountPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.TodoAppAccountFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoAppAccountPayload>
+        }
+        findMany: {
+          args: Prisma.TodoAppAccountFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoAppAccountPayload>[]
+        }
+        create: {
+          args: Prisma.TodoAppAccountCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoAppAccountPayload>
+        }
+        createMany: {
+          args: Prisma.TodoAppAccountCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.TodoAppAccountCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoAppAccountPayload>[]
+        }
+        delete: {
+          args: Prisma.TodoAppAccountDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoAppAccountPayload>
+        }
+        update: {
+          args: Prisma.TodoAppAccountUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoAppAccountPayload>
+        }
+        deleteMany: {
+          args: Prisma.TodoAppAccountDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.TodoAppAccountUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.TodoAppAccountUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoAppAccountPayload>[]
+        }
+        upsert: {
+          args: Prisma.TodoAppAccountUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$TodoAppAccountPayload>
+        }
+        aggregate: {
+          args: Prisma.TodoAppAccountAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateTodoAppAccount>
+        }
+        groupBy: {
+          args: Prisma.TodoAppAccountGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TodoAppAccountGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.TodoAppAccountCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.TodoAppAccountCountAggregateOutputType> | number
         }
       }
     }
@@ -1382,6 +1457,20 @@ export const CalendarAccountScalarFieldEnum = {
 export type CalendarAccountScalarFieldEnum = (typeof CalendarAccountScalarFieldEnum)[keyof typeof CalendarAccountScalarFieldEnum]
 
 
+export const TodoAppAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  provider: 'provider',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type TodoAppAccountScalarFieldEnum = (typeof TodoAppAccountScalarFieldEnum)[keyof typeof TodoAppAccountScalarFieldEnum]
+
+
 export const XAccountScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -1595,6 +1684,20 @@ export type EnumCalendarProviderFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'CalendarProvider[]'
  */
 export type ListEnumCalendarProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CalendarProvider[]'>
+    
+
+
+/**
+ * Reference to a field of type 'TodoAppProvider'
+ */
+export type EnumTodoAppProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TodoAppProvider'>
+    
+
+
+/**
+ * Reference to a field of type 'TodoAppProvider[]'
+ */
+export type ListEnumTodoAppProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TodoAppProvider[]'>
     
 
 
@@ -1814,6 +1917,7 @@ export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   gmailAccount?: Prisma.GmailAccountOmit
   calendarAccount?: Prisma.CalendarAccountOmit
+  todoAppAccount?: Prisma.TodoAppAccountOmit
   xAccount?: Prisma.XAccountOmit
   emailIntegrationSettings?: Prisma.EmailIntegrationSettingsOmit
   integration?: Prisma.IntegrationOmit
